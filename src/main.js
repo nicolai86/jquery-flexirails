@@ -214,7 +214,9 @@ function initializeView() {
     $.fr.currentView.order = {by:null, direction:null};
   }
 
-  $.fr.currentView.totalResults = 1;
+  if (!$.fr.currentView.hasOwnProperty('totalResults')) {
+    $.fr.currentView.totalResults = 1; 
+  }
   $.fr.currentView.hasContextMenu = true;
   
   if ($.fr.currentView.hasOwnProperty('current_page')) {
@@ -308,13 +310,12 @@ function setViewOptions() {
   $(":input[name=per_page]").val($.fr.currentView.perPage);
 }
 
-function setFlexirailsOptions(data, total) {
+function setFlexirailsOptions(data) {
   if ($.fi.appendResults) {
     return;
   }
 
-  $.fr.pagination.last = Math.ceil(total / ($.fr.currentView.perPage == -1 ? total : $.fr.currentView.perPage));
-  $.fr.currentView.totalResults = total;
+  $.fr.pagination.last = Math.ceil($.fr.currentView.totalResults / ($.fr.currentView.perPage == -1 ? total : $.fr.currentView.perPage));
   $.fr.currentView.currentPage = data["currentPage"];
   
   setViewOptions();
@@ -504,9 +505,10 @@ function appendClasses(td, index, col) {
 }
 
 function buildFlexiview(data, textStatus, XMLHttpRequest) {
-  setFlexirailsOptions(data, data.total);
+  $.fr.currentView.totalResults = parseInt(data.total);
   
-  $.fr.currentView.total = data.total;
+  setFlexirailsOptions(data);
+  
   var ghostColumnStyle = 'min-width: 1px; max-width: 1px; width: 1px; border-right: none';
 
   if (!$.fi.appendResults) {
