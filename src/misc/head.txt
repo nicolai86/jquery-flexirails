@@ -1,0 +1,11 @@
+/**
+ * FlexiRails - a plugin for the jQuery JavaScript Library
+ * http://empuxa.com/
+ * http://jquery.com/
+ *
+ * Copyright 2010, Raphael Randschau, empuxa GmbH
+ * licensed under the MIT license.
+ *
+ * Date: Fri Jun 25 19:53:52 2010 +0100
+ */
+(function($, undefined) {
