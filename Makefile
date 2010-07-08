@@ -1,15 +1,17 @@
-SRC_DIR = public/javascripts
+SRC_DIR = src
 BUILD_DIR = build
+BIN_DIR = bin
 
 JS_SRC_FILES = \
-	${SRC_DIR}/src/{main,utils,search,navigation,sorting,ordering,context_menu,localization}.js
+	${SRC_DIR}/{main,utils,search,navigation,sorting,ordering,context_menu,localization}.js
 
-zip:
-	@rm -fr ${SRC_DIR}/flexirails.js
+create:
+	@rm -fr ${BUILD_DIR}
+	@mkdir ${BUILD_DIR}
 
 	@echo "building js..."
-	@cat ${SRC_DIR}/src/misc/head.txt ${JS_SRC_FILES} ${SRC_DIR}/src/misc/foot.txt > ${SRC_DIR}/flexirails.js
+	@cat ${SRC_DIR}/misc/head.txt ${JS_SRC_FILES} ${SRC_DIR}/misc/foot.txt > ${BUILD_DIR}/flexirails.js
 
 	@echo "compressing js..."
-	@java -jar ${BUILD_DIR}/compiler.jar --js ${SRC_DIR}/flexirails.js \
-  > ${SRC_DIR}/flexirails.min.js
+	@java -jar ${BIN_DIR}/compiler.jar --js ${BUILD_DIR}/flexirails.js \
+  > ${BUILD_DIR}/flexirails.min.js
