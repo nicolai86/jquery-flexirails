@@ -9,12 +9,27 @@ function createSearchMenu(container) {
   fieldset.append(searchAllLabel);
   fieldset.append($(document.createElement('div')).attr({'class' : 'clear'}));
 
+  var attributes = [];
+  for (var i=0; i < $.fr.currentView.cols.length; i++) {
+    attributes.push($.fr.currentView.cols[i]);
+  }
+  
+  attributes.sort(function(a, b) {
+    if (a.title == b.title) {
+      return 0;
+    }
+    return (a.title < b.title) ? -1 : 1;
+  });
+  
   var queryTemplate = $(document.createElement('div')).attr({style : 'display: inline;', 'class' : 'query_template main'});
   var selectTag = $(document.createElement('select')).attr({id : 'attributes', name : 'attributes'});
-  for (var i=0; i < $.fr.currentView.cols.length; i++) {
-    var col = $.fr.currentView.cols[i];
+  for (var i=0; i < attributes.length; i++) {
+    var col = attributes[i];
     selectTag.append($('<option value="'+col.reflectionPath+'">'+col.title+'</option>'))
   };
+  
+  delete attributes;
+  
   queryTemplate.append(selectTag).append(' ');
   var operatorTag = $(document.createElement('select')).attr({id : 'operator', name : 'operator'});
   for (var i=0; i < $.fr.currentView.operators.length; i++) {
