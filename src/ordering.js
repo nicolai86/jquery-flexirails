@@ -6,7 +6,7 @@ function setupOrderByColumns() {
       return;
     }
 
-    $("th."+col.cacheName).click(function() {
+    $("th."+col.cacheName).click(function sortByColumn() {
       var now = new Date().getTime();
       if (now - $.fi.lastClick < 200) {
         return;

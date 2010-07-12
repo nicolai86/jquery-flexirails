@@ -14,7 +14,7 @@ function createSearchMenu(container) {
     attributes.push($.fr.currentView.cols[i]);
   }
   
-  attributes.sort(function(a, b) {
+  attributes.sort(function sortColumns(a, b) {
     if (a.title == b.title) {
       return 0;
     }
@@ -52,14 +52,14 @@ function createSearchMenu(container) {
   $(document.createElement('div')).addClass('js-query-insert').insertAfter(queryTemplate);
 
   var searchButton = $(document.createElement('input')).attr({name:'submit_query',type:'submit',value:$.t('actions.search')});
-  searchButton.click(function() {
+  searchButton.click(function executeSearch() {
     searchFlexidata();
     return false;
   })
   fieldset.append(searchButton).append(' ');;
 
   var clearButton = $(document.createElement('input')).attr({name:'reset_query',type:'submit',value:$.t('actions.clearSearch'),style:'color:red;'});
-  clearButton.click(function() {
+  clearButton.click(function clearSearch() {
     clearQuery('.flexisearch');
     return false;
   });
@@ -166,20 +166,17 @@ function restoreSearch() {
       }
     }
   }
-  //"search":{"searchAll":"true","query":{"0":{"value":"300","operator":"lesser_or_equal","attribute":"company_attendances.id"},"1":{"value":"200","operator":"greater_or_equal","attribute":"company_attendances.id"}}}}
 }
 
 function addSearchMenuEventHandlers(container) {
-  $('input[name=query_parameter]', container).keypress(function(e) {
-    updateQuery(e);
-  });
+  $('input[name=query_parameter]', container).keypress(updateQuery);
   
-  $('input[name=remove_query_condition]',container).bind('click',function() {
+  $('input[name=remove_query_condition]',container).bind('click',function removeQueryCondition() {
     removeQuery(this);
     return false;
   });
   
-  $('input[name=add_query_condition]',container).bind('click',function() {
+  $('input[name=add_query_condition]',container).bind('click',function addQueryCondition() {
     duplicateAndAppendQueryTemplate(); 
     return false;
   });

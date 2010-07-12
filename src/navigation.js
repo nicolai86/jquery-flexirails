@@ -12,7 +12,7 @@ function createNavigation(container) {
     var option = $(document.createElement('option')).attr({value:$.fr.defaults.perPageOptions[i]}).append($.fr.defaults.perPageOptions[i] == -1 ? $.t('results.loadAll') : $.fr.defaults.perPageOptions[i]);
     perPageSelect.append(option);
   }
-  perPageSelect.change(function() {
+  perPageSelect.change(function changePerPageOption() {
     updatePerPage(perPageSelect.val());
   });
   perPageOptions.append(perPageSelect);
@@ -22,7 +22,7 @@ function createNavigation(container) {
   var toFirstPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
     $(document.createElement('img')).attr({src:'/images/first.png'})
   );
-  toFirstPage.click(function(){
+  toFirstPage.click(function paginateToFirstPage(){
     paginate($.fr.pagination.first);
     return false;
   });
@@ -31,7 +31,7 @@ function createNavigation(container) {
   var toPrevPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
     $(document.createElement('img')).attr({src:'/images/prev.png'})
   );
-  toPrevPage.click(function() {
+  toPrevPage.click(function paginateToPrevPage() {
     paginate(Math.max(parseInt($.fr.currentView.currentPage) - 1, $.fr.pagination.first));
     return false;
   });
@@ -40,7 +40,7 @@ function createNavigation(container) {
   var pageInfo = $(document.createElement('span'));
   pageInfo.append($.t('results.page'));
   var pageInfoBox = $(document.createElement('input')).attr({'class':'js-fr-from-page', name:'current_page_box', type:'text'})
-  pageInfoBox.change(function() {
+  pageInfoBox.change(function paginateToAnyPage() {
     paginate($(this).val());
   })
   pageInfo.append(pageInfoBox);
@@ -51,7 +51,7 @@ function createNavigation(container) {
   var toNextPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
     $(document.createElement('img')).attr({src:'/images/next.png'})
   );
-  toNextPage.click(function() {
+  toNextPage.click(function paginateToNextPage() {
     paginate(Math.min(parseInt($.fr.currentView.currentPage) + 1, $.fr.pagination.last));
     return false;
   });
@@ -60,7 +60,7 @@ function createNavigation(container) {
   var toLastPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
     $(document.createElement('img')).attr({src:'/images/last.png'})
   );
-  toLastPage.click(function(){
+  toLastPage.click(function paginateToLastPage(){
     paginate($.fr.pagination.last);
     return false;
   });

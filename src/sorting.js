@@ -31,22 +31,22 @@ function updateFlexiheadersSortable(event, ui) {
   setupFirstLastColumns();
 }
 
-function flexiheadersSortable(container, view) {  
-  if (!view.sortable) {
-    $(container).sortable('destroy');
+function flexiheadersSortable() {  
+  if (!$.fr.currentView.sortable) {
+    $($.fi.flexiHeader).sortable('destroy');
   } else {
-    $(container).sortable('destroy');
+    $($.fi.flexiHeader).sortable('destroy');
     // Header sortable
-    $(container).sortable(
+    $($.fi.flexiHeader).sortable(
       {
         helper    : 'clone',
         items     : 'th[class*=sortable]',
-        start: function(event, ui) {
+        start: function headerDragStarted(event, ui) {
           var val = $(ui.item).attr('class').split(' ')[0];
           $("td."+val).hide();
           $(ui.helper).addClass('dragged');
         },
-        beforeStop: function(event, ui) {
+        beforeStop: function headerDreagStopped(event, ui) {
           $(ui.helper).removeClass('dragged');
           var val = $(ui.item).attr('class').split(' ')[0];
           $("td."+val).show();
