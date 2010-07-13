@@ -60,7 +60,7 @@ var publicMethods = {
   
   replaceView         : function(aView) {
     delete $.fr.currentView;
-    clearQuery();
+    clearQuery(false);
     $.fr['currentView'] = $.extend({}, aView);
     $.flexirails('invalidateView');
   },
@@ -259,6 +259,11 @@ function initializeView() {
     $.fr.currentView.sortable = true;
   }
   
+  if ($.fr.currentView.hasOwnProperty('has_contextmenu')) {
+    $.fr.currentView.hasContextMenu = $.fr.currentView.has_contextmenu == 'true';
+    delete $.fr.currentView.has_contextmenu;
+  }
+  
   $.fi.initializingView = false;
 }
 
@@ -344,7 +349,7 @@ function setFlexirailsOptions(data) {
     var attrs = data['query']['attributes'];
     var vals  = data['query']['values'];
     
-    clearQuery();
+    $(".query_template:not([class*=main])").remove();
     var first = true;
     for (var i=0; i < ops.length; i++) {
       var container;
@@ -359,6 +364,8 @@ function setFlexirailsOptions(data) {
       $(":input[name=operator]", container).val(ops[i]);
       $(":input[name=query_parameter]", container).val(vals[i]);
     }
+    
+    updateViewQuery();
   }
   $.fi.dontExecuteQueries = false;
 
@@ -467,7 +474,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   if (!$.fi.appendResults) {
     $.fi.loadedRows = 0;
     $(".flexirow").remove();
-    $(".header").children().remove();
+    $($.fi.flexiHeader).children().remove();
 
     for (var i = 0; i < $.fr.currentView.cols.length; i++) {
       var col = $.fr.currentView.cols[i];
@@ -498,7 +505,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   var cur_req = Math.round($.fi.loadedRows / $.fr.defaults.maxResultsPerQuery);
 
   if (arr.length == 0) {
-    $.fi.flexiTable.find(".header").next().remove();
+    $.fi.flexiHeader.next().remove();
     var _tr = $(document.createElement('tr')).addClass('no_results');
     _tr.append($(document.createElement('td')).addClass('center').attr('colspan', $.fr.currentView.visibleColumnCount + 1).append('Keine Einträge vorhanden'));
     $.fi.flexiTable.append(_tr);
@@ -562,28 +569,10 @@ function buildFlexiOptions(options, override) {
 
   opts["order"] = orderByOptions();
 
-  var q_params = $(":input[name=query_parameter]");
-  var q_ops = $(":input[name=operator]");
-  var q_attrs = $(":input[name=attributes]");
-  var query = new Object();
-  for (var i = 0; i < q_params.length; i++) {
-    var q = $(q_params[i]).val();
-    if ($.trim(q) != "") {
-      query[i] = {
-        attribute: $(q_attrs[i]).val(),
-        operator: $(q_ops[i]).val(),
-        value: q
-      };
-    }
-  }
+  updateViewQuery();
 
-  if (!$.isEmptyObject(query)) {
-    $.fr.currentView.search = {
-      query: query,
-      searchAll: $(":input[name=search_all]").attr('checked')
-    }
-
-    opts["query"] = query;
+  if (!$.isEmptyObject($.fr.currentView.search.query)) {
+    opts["query"] = $.fr.currentView.search.query;
     opts["search_all"] = $.fr.currentView.search.searchAll
     opts["flexirails"] = "search";
   }

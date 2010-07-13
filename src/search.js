@@ -11,7 +11,9 @@ function createSearchMenu(container) {
 
   var attributes = [];
   for (var i=0; i < $.fr.currentView.cols.length; i++) {
-    attributes.push($.fr.currentView.cols[i]);
+    if ($.fr.currentView.cols[i].searchable) {
+      attributes.push($.fr.currentView.cols[i]);
+    }
   }
   
   attributes.sort(function sortColumns(a, b) {
@@ -42,7 +44,7 @@ function createSearchMenu(container) {
   var queryParameter = $(document.createElement('input')).attr({id:'query_parameter',name:'query_parameter',type:'text', value:''});
   queryTemplate.append(queryParameter).append(' ');
 
-  var removeOption = $(document.createElement('input')).attr({name:'remove_query_condition',type:'submit',value:$.t('actions.removeParameter'),style:'width: 28px;','onclick':'removeQuery(this); return false;'});
+  var removeOption = $(document.createElement('input')).attr({name:'remove_query_condition',type:'submit',value:$.t('actions.removeParameter'),style:'width: 28px;'});
   queryTemplate.append(removeOption).append(' ');
 
   var addOption = $(document.createElement('input')).attr({name:'add_query_condition',style:'width: 28px',type:'submit',value:$.t('actions.addParameter')});
@@ -60,7 +62,7 @@ function createSearchMenu(container) {
 
   var clearButton = $(document.createElement('input')).attr({name:'reset_query',type:'submit',value:$.t('actions.clearSearch'),style:'color:red;'});
   clearButton.click(function clearSearch() {
-    clearQuery('.flexisearch');
+    clearQuery(true);
     return false;
   });
   fieldset.append(clearButton);
@@ -95,35 +97,37 @@ function removeQuery(container) {
 }
 
 function updateViewQuery() {
-  var q_params = $(":input[name=query_parameter]");
-  var q_ops = $(":input[name=operator]");
-  var q_attrs = $(":input[name=attributes]");
+  var params = $(":input[name=query_parameter]");
+  var ops = $(":input[name=operator]");
+  var attrs = $(":input[name=attributes]");
+  
   var query = new Object();
-  for (var i = 0; i < q_params.length; i++) {
-    var q = $(q_params[i]).val();
-    if ($.trim(q) != "") {
+  for (var i = 0; i < params.length; i++) {
+    var q = $.trim($(params[i]).val());
+    if (q.length > 0) {
       query[i] = {
-        attribute: $(q_attrs[i]).val(),
-        operator: $(q_ops[i]).val(),
+        attribute: $(attrs[i]).val(),
+        operator: $(ops[i]).val(),
         value: q
-      };
+      }
     }
   }
 
-  if (!$.isEmptyObject(query)) {
-    $.fr.currentView.search = {
-      query: query,
-      searchAll: $(":input[name=search_all]").attr('checked')
-    }
+  $.fr.currentView.search = {
+    query: query,
+    searchAll: $(":input[name=search_all]").attr('checked')
   }
 }
 
-function clearQuery() {
+function clearQuery(invokeUpdated) {
   $(".query_template:not([class*=main])").remove();
   $(":input[name=query_parameter]", $(".query_template")).val('');
   $(":input[name=operator]", $(".query_template")).val('contains');
+  
   updateViewQuery();
-  invokeViewUpdated();
+  if (invokeViewUpdated == true) {
+    invokeViewUpdated();
+  }
 }
 
 function searchFlexidata() {
@@ -146,12 +150,12 @@ function restoreSearch() {
     }
     
     if ($.fr.currentView.search.hasOwnProperty('query')) {
-      clearQuery();
+
+      var query = $.fr.currentView.search.query;
+      clearQuery(false);
       var first = true;
-              
-      for (var key in $.fr.currentView.search.query) {
-        
-        var q = $.fr.currentView.search.query[key];
+      for (var key in query) {
+        var q = query[key];
         var container;
         if (first) {
           first = false;
@@ -165,6 +169,8 @@ function restoreSearch() {
         $("#query_parameter", container).val(q.value);
       }
     }
+    
+    updateViewQuery();
   }
 }
 
