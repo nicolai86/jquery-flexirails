@@ -60,7 +60,9 @@ var publicMethods = {
   
   replaceView         : function(aView) {
     delete $.fr.currentView;
-    clearQuery(false);
+    $(".query_template:not([class*=main])").remove();
+    $(":input[name=query_parameter]", $(".query_template")).val('');
+    $(":input[name=operator]", $(".query_template")).val('contains');
     $.fr['currentView'] = $.extend({}, aView);
     $.flexirails('invalidateView');
   },

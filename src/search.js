@@ -63,6 +63,7 @@ function createSearchMenu(container) {
   var clearButton = $(document.createElement('input')).attr({name:'reset_query',type:'submit',value:$.t('actions.clearSearch'),style:'color:red;'});
   clearButton.click(function clearSearch() {
     clearQuery(true);
+    reloadFlexidata();
     return false;
   });
   fieldset.append(clearButton);
