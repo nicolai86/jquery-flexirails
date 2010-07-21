@@ -132,7 +132,11 @@ function clearQuery(invokeUpdated) {
 }
 
 function searchFlexidata() {
+  $.fr.currentView.currentPage = 1;
+  $(".js-fr-from-page").val($.fr.currentView.currentPage);
+  
   $.get($.fi.requestURL, buildFlexiOptions(), buildFlexiview, "json");
+  
   invokeViewUpdated();
 }
 

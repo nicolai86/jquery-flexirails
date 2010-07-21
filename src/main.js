@@ -270,7 +270,7 @@ function initializeView() {
 }
 
 function appendFlexiData() {
-  if (($.fr.currentView.perPage * ($.fr.currentView.currentPage - 1) + $.fi.loadedRows) < $.fr.currentView.total) {
+  if (($.fr.currentView.perPage * ($.fr.currentView.currentPage - 1) + $.fi.loadedRows) < $.fr.currentView.totalResults) {
     $.fi.appendResults = true;
     
     $.get($.fi.requestURL, buildFlexiOptions({}, {
@@ -549,7 +549,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   
   $.fi.loadingData = false;
   
-  if ($.fi.loadedRows < $.fr.currentView.perPage && $.fi.loadedRows < data.total) {
+  if ($.fi.loadedRows < $.fr.currentView.perPage && $.fi.loadedRows < $.fr.currentView.totalResults) {
     appendFlexiData();
   } else {
     $.fi.appendResults = false;
