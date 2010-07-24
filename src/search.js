@@ -126,7 +126,7 @@ function clearQuery(invokeUpdated) {
   $(":input[name=operator]", $(".query_template")).val('contains');
   
   updateViewQuery();
-  if (invokeViewUpdated == true) {
+  if (invokeUpdated == true) {
     invokeViewUpdated();
   }
 }

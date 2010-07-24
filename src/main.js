@@ -65,6 +65,8 @@ var publicMethods = {
     $(":input[name=operator]", $(".query_template")).val('contains');
     $.fr['currentView'] = $.extend({}, aView);
     $.flexirails('invalidateView');
+    
+    invokeViewUpdated();
   },
   
   navigationCreated   : function(fnc) {
