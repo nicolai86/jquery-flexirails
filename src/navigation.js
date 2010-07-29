@@ -96,9 +96,11 @@ function paginate(to_page) {
 }
 
 function updatePerPage(new_per_page) {
-  if (new_per_page == -1 && !confirm(flexirails_load_all_confirmation)) {
-    $(":input[name=per_page]").val($.fr.currentView.perPage);
-    return;
+  if (new_per_page == -1) {
+    if (!confirm($.t('confirm.loadAll'))) {
+      $(":input[name=per_page]").val($.fr.currentView.perPage);
+      return;
+    }
   }
 
   if (new_per_page != $.fr.currentView.perPage) {

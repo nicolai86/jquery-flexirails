@@ -131,7 +131,7 @@ var publicMethods = {
     
     setViewOptions();
 
-    if ($.fr.currentView.perPage == -1 || $.fr.pagination.last == $.fr.pagination.first || $.fr.currentView.total == 0) {
+    if ($.fr.currentView.perPage == -1 || $.fr.pagination.last == $.fr.pagination.first || $.fr.currentView.totalResults == 0) {
       $(".pagination.logic").hide();
     } else {
       $(".pagination.logic").show();
@@ -275,8 +275,13 @@ function appendFlexiData() {
   if (($.fr.currentView.perPage * ($.fr.currentView.currentPage - 1) + $.fi.loadedRows) < $.fr.currentView.totalResults) {
     $.fi.appendResults = true;
     
+    var limit = $.fr.defaults.maxResultsPerQuery;
+    if ($.fr.currentView.perPage > 0) {
+      limit = Math.min( $.fr.defaults.maxResultsPerQuery, $.fr.currentView.perPage - $.fi.loadedRows )
+    }
+    
     $.get($.fi.requestURL, buildFlexiOptions({}, {
-      limit: Math.min( $.fr.defaults.maxResultsPerQuery, $.fr.currentView.perPage - $.fi.loadedRows ),
+      limit: limit,
       offset: $.fi.loadedRows
     }), buildFlexiview, "json"); 
   }
@@ -342,7 +347,7 @@ function setFlexirailsOptions(data) {
     return;
   }
 
-  $.fr.pagination.last = Math.ceil($.fr.currentView.totalResults / ($.fr.currentView.perPage == -1 ? total : $.fr.currentView.perPage));
+  $.fr.pagination.last = Math.ceil($.fr.currentView.totalResults / ($.fr.currentView.perPage == -1 ? data.total : $.fr.currentView.perPage));
   $.fr.currentView.currentPage = data["currentPage"];
   
   setViewOptions();
@@ -469,7 +474,7 @@ function appendClasses(td, index, col) {
 }
 
 function buildFlexiview(data, textStatus, XMLHttpRequest) {
-  $.fr.currentView.totalResults = parseInt(data.total);
+  $.fr.currentView.totalResults = parseInt(data.total) || 0;
   
   setFlexirailsOptions(data);
   
@@ -551,7 +556,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   
   $.fi.loadingData = false;
   
-  if ($.fi.loadedRows < $.fr.currentView.perPage && $.fi.loadedRows < $.fr.currentView.totalResults) {
+  if (($.fi.loadedRows < $.fr.currentView.perPage || $.fr.currentView.perPage == -1) && $.fi.loadedRows < $.fr.currentView.totalResults) {
     appendFlexiData();
   } else {
     $.fi.appendResults = false;

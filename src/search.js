@@ -136,12 +136,12 @@ function searchFlexidata() {
   $(".js-fr-from-page").val($.fr.currentView.currentPage);
   
   $.get($.fi.requestURL, buildFlexiOptions(), buildFlexiview, "json");
-  
   invokeViewUpdated();
 }
 
 function updateQuery(event) {
-  if (event.keyCode == 13) {
+  var key = window.event ? window.event.keyCode : event.which;
+  if (key == 13) {
     searchFlexidata();
   }
 }

@@ -9,6 +9,9 @@ var fl = $.fl = {
     title             : 'Suche',
     meetAllCriteria   : 'Muss alle Kriterien erfüllen'
   },
+  confirm : {
+    loadAll           : 'Wirklich alle Ergebnisse laden?'
+  },
   results : {
     perPage           : 'Ergebnisse pro Seite:',
     page              : 'Seite ',
