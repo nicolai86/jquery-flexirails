@@ -105,7 +105,7 @@ function updateViewQuery() {
   var query = new Object();
   for (var i = 0; i < params.length; i++) {
     var q = $.trim($(params[i]).val());
-    if (q.length > 0) {
+    if (q.length > 0 || $(ops[i]).val() == 'is_null' || $(ops[i]).val() == 'is_not_null') {
       query[i] = {
         attribute: $(attrs[i]).val(),
         operator: $(ops[i]).val(),
