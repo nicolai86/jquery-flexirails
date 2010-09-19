@@ -1,3 +1,5 @@
+#include "../src/macros.js"
+
 // public flexirails object
 var fr = $.fr = {
   formatterFunctions  : {},

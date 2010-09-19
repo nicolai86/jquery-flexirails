@@ -12,7 +12,7 @@ FlexiRails works with jQuery >= 1.4.2. FlexiRails needs a server-side backend. C
 
 Checkout the project, fire up a terminal, cd into the project path and enter
 
-    make create
+    ant clean distribute
       
 You're done!
 
