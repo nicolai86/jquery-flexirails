@@ -565,7 +565,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
     $.fi.appendResults = false;
     $(".js-fr-from-page").removeAttr('disabled');
   }
-  END_TIME()
+  TIME_END()
 }
 
 function buildFlexiOptions(options, override) {

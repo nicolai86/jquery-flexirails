@@ -26,8 +26,8 @@ function time_end() {
   console.timeEnd(name);
 };
 
-#define TIME(x) time(x)
-#define TIME_END() time_end()
+#define TIME(x) time(x);
+#define TIME_END() time_end();
 #define COUNT(x) console.count(x);
 #define TRACE() console.trace();
 #else
