@@ -3,11 +3,38 @@
 
 #ifdef DEBUG
 function assert(condition, message) {
-  console.log("fuu");
-}
+  if (!condition) {
+    console.log(message);
+  }
+};
+
 #define ASSERT(x, y) assert(x, y)
+#define LOG(x) { console.log(x) };
 #else
 #define ASSERT(x, y)
-#endif
+#define LOG(x)
+#endif /* DEBUG */
 
-#endif
+#ifdef PROFILE
+var profileNames = new Array();
+function time(name) {
+  profileNames.push(name);
+  console.time(name);
+};
+function time_end() {
+  var name = profileNames.pop();
+  console.timeEnd(name);
+};
+
+#define TIME(x) time(x)
+#define TIME_END() time_end()
+#define COUNT(x) console.count(x);
+#define TRACE() console.trace();
+#else
+#define START_TIMER(x)
+#define END_TIMER()
+#define COUNT(x)
+#define TRACE()
+#endif /* PROFILE */
+
+#endif /* INCLUDE_JS */

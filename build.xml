@@ -33,7 +33,7 @@
   <target name="js.preprocess" depends="js.concatenate">
     <apply executable="cpp" dest="${build}">
       <fileset dir="${build}" includes="concatenated.js"/>
-      <arg line="-P -C"/> <!-- -DDEBUG -->
+      <arg line="-P -C -DDEBUG -DPROFILE"/> <!--  -->
       <srcfile/>
       <targetfile/>
       <mapper type="glob" from="concatenated.js" to="preprocessed.js"/>
