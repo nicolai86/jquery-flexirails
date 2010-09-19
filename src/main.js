@@ -476,6 +476,7 @@ function appendClasses(td, index, col) {
 }
 
 function buildFlexiview(data, textStatus, XMLHttpRequest) {
+  TIME("build flexirails view")
   $.fr.currentView.totalResults = parseInt(data.total) || 0;
   
   setFlexirailsOptions(data);
@@ -564,6 +565,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
     $.fi.appendResults = false;
     $(".js-fr-from-page").removeAttr('disabled');
   }
+  END_TIME()
 }
 
 function buildFlexiOptions(options, override) {
