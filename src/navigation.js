@@ -20,7 +20,7 @@ function createNavigation(container) {
   
   var pagination = $(document.createElement('div')).addClass('pagination');
   var toFirstPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/first.png'})
+    $(document.createElement('img')).attr({src:'/images/flexirails/first.png'})
   );
   toFirstPage.click(function paginateToFirstPage(){
     paginate($.fr.pagination.first);
@@ -29,7 +29,7 @@ function createNavigation(container) {
   pagination.append(toFirstPage);
   
   var toPrevPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/prev.png'})
+    $(document.createElement('img')).attr({src:'/images/flexirails/prev.png'})
   );
   toPrevPage.click(function paginateToPrevPage() {
     paginate(Math.max(parseInt($.fr.currentView.currentPage) - 1, $.fr.pagination.first));
@@ -49,7 +49,7 @@ function createNavigation(container) {
   pagination.append(pageInfo);
   
   var toNextPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/next.png'})
+    $(document.createElement('img')).attr({src:'/images/flexirails/next.png'})
   );
   toNextPage.click(function paginateToNextPage() {
     paginate(Math.min(parseInt($.fr.currentView.currentPage) + 1, $.fr.pagination.last));
@@ -58,7 +58,7 @@ function createNavigation(container) {
   pagination.append(toNextPage);
   
   var toLastPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/last.png'})
+    $(document.createElement('img')).attr({src:'/images/flexirails/last.png'})
   );
   toLastPage.click(function paginateToLastPage(){
     paginate($.fr.pagination.last);
