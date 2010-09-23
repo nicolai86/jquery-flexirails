@@ -1,75 +1,61 @@
 function createNavigation(container) {
-  container.addClass('flexinavigation');
-  
-  var perPageLabel = $(document.createElement('div')).addClass('label');
-  perPageLabel.append($.t('results.perPage'));
-  container.append(perPageLabel);
-  
-  var perPageOptions = $(document.createElement('div')).addClass('select');
-  
-  var perPageSelect = $(document.createElement('select')).attr({id:'per_page',name:'per_page'});
-  for (var i = 0; i < $.fr.defaults.perPageOptions.length; i++) {
-    var option = $(document.createElement('option')).attr({value:$.fr.defaults.perPageOptions[i]}).append($.fr.defaults.perPageOptions[i] == -1 ? $.t('results.loadAll') : $.fr.defaults.perPageOptions[i]);
-    perPageSelect.append(option);
+  if (!$.fr.hasOwnProperty('navigationTemplate')) {
+    $.fr.navigationTemplateSource = '<div>'+
+      '<div class="label">{{locales/resultsPerPage}}</div>'+
+      '<div class="select">'+
+        '<select id="per_page" name="per_page">'+
+          '{{#resultsPerPage}}'+
+            '<option value="{{value}}">{{label}}</option>'+
+          '{{/resultsPerPage}}'+
+        '</select>'+
+      '</div>'+
+      '<div class="pagination">'+
+        '<a style="cursor: pointer;">'+
+          '<img src="/images/flexirails/first.png">'+
+        '</a>'+
+        '<a style="cursor: pointer;">'+
+          '<img src="/images/flexirails/prev.png">'+
+        '</a>'+
+        '<span>'+
+          '{{locales/page}}'+
+          '<input class="js-fr-from-page" name="current_page_box" type="text">'+
+          '{{locales/of}}'+
+          '<span class="to">1</span>'+
+        '</span>'+
+        '<a style="cursor: pointer;">'+
+          '<img src="/images/flexirails/next.png">'+
+        '</a>'+
+        '<a style="cursor: pointer;">'+
+          '<img src="/images/flexirails/last.png">'+
+        '</a>'+
+      '</div>'+
+      '<div class="results label">'+
+        '<span class="total_results">1</span>'+
+        'Results'+
+      '</div>'+
+    '</div>';
+    $.fr.navigationTemplate = Handlebars.compile($.fr.navigationTemplateSource);
   }
-  perPageSelect.change(function changePerPageOption() {
-    updatePerPage(perPageSelect.val());
-  });
-  perPageOptions.append(perPageSelect);
-  container.append(perPageOptions);
   
-  var pagination = $(document.createElement('div')).addClass('pagination');
-  var toFirstPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/flexirails/first.png'})
-  );
-  toFirstPage.click(function paginateToFirstPage(){
-    paginate($.fr.pagination.first);
-    return false;
-  });
-  pagination.append(toFirstPage);
+  var resultsPerPage = new Array();
+  for (var i = 0; i < $.fr.defaults.perPageOptions.length; i++) {
+    resultsPerPage.push({ 
+      value : $.fr.defaults.perPageOptions[i],
+      label : ($.fr.defaults.perPageOptions[i] == -1 ? $.t('results.loadAll') : $.fr.defaults.perPageOptions[i])
+    });
+  };
   
-  var toPrevPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/flexirails/prev.png'})
-  );
-  toPrevPage.click(function paginateToPrevPage() {
-    paginate(Math.max(parseInt($.fr.currentView.currentPage) - 1, $.fr.pagination.first));
-    return false;
-  });
-  pagination.append(toPrevPage);
-  
-  var pageInfo = $(document.createElement('span'));
-  pageInfo.append($.t('results.page'));
-  var pageInfoBox = $(document.createElement('input')).attr({'class':'js-fr-from-page', name:'current_page_box', type:'text'})
-  pageInfoBox.change(function paginateToAnyPage() {
-    paginate($(this).val());
-  })
-  pageInfo.append(pageInfoBox);
-  pageInfo.append($.t('results.of'));
-  pageInfo.append($('<span class="to">'+$.fr.pagination.last+'</span>'));
-  pagination.append(pageInfo);
-  
-  var toNextPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/flexirails/next.png'})
-  );
-  toNextPage.click(function paginateToNextPage() {
-    paginate(Math.min(parseInt($.fr.currentView.currentPage) + 1, $.fr.pagination.last));
-    return false;
-  });
-  pagination.append(toNextPage);
-  
-  var toLastPage = $(document.createElement('a')).attr('style', 'cursor: pointer;').append(
-    $(document.createElement('img')).attr({src:'/images/flexirails/last.png'})
-  );
-  toLastPage.click(function paginateToLastPage(){
-    paginate($.fr.pagination.last);
-    return false;
-  });
-  pagination.append(toLastPage);
-  
-  var results = $(document.createElement('div')).addClass('results').addClass('label');
-  results.append($(document.createElement('span')).addClass('total_results')).append(' ').append($.t('results.total'));
-  container.append(pagination);
-  container.append(results);
+  container.addClass('flexinavigation');
+  var data = {
+    "locales"             : {
+      "resultsPerPage"    : $.t('results.perPage'),
+      "page"              : $.t('results.page'),
+      "of"                : $.t('results.of')
+    },
+    "resultsPerPage"      : resultsPerPage
+  };
+  var navigation = $.fr.navigationTemplate(data);
+  container.append(navigation);
   
   invokeNavigationCreated(container);
 }

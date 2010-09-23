@@ -5,7 +5,7 @@ searching, pagination, custom column ordering and much more out of the box.
 
 ## Requirements
 
-jQuery.flexirails works with jQuery >= 1.4.2 and requires a server-side backend. Checkout the [Ruby on Rails plugin](http://github.com/nicolai86/flexirails).
+jQuery.flexirails works with jQuery >= 1.4.2, Handlebar.js and requires a server-side backend. Checkout the [Ruby on Rails plugin](http://github.com/nicolai86/flexirails).
 
 ## building jQuery.flexirails
 

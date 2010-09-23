@@ -1,21 +1,43 @@
 function createSearchMenu(container) {
   container.children().remove();
-  var fieldset = $(document.createElement('fieldset')).attr({'class' : 'mb'});
-  var searchLegend = $(document.createElement('legend')).append($.t('search.title'));
-  fieldset.append(searchLegend);
-  var searchAll = $(document.createElement('input')).attr({id:'search_all',name:'search_all',type:'checkbox',value:'1'});
-  fieldset.append(searchAll);
-  var searchAllLabel = $(document.createElement('label')).attr({'for':'search_all','style':'display:block;'}).append($.t('search.meetAllCriteria'));
-  fieldset.append(searchAllLabel);
-  fieldset.append($(document.createElement('div')).attr({'class' : 'clear'}));
-
+  
+  if (!$.fr.hasOwnProperty('searchTemplate')) {
+    $.fr.searchTemplateSource = '<fieldset class="mb">'+
+      '<legend>{{locales/title}}</legend>'+
+      '<input id="search_all" name="search_all" type="checkbox" value="1">'+
+      '<label for="search_all" style="display:block;">{{locales/meetAllCriteria}}</label>'+
+      '<div class="clear"></div>'+
+      '<div style="display: inline;" class="query_template main">'+
+        '<select id="attributes" name="attributes">'+
+          '{{#attributes}}'+
+            '<option value="{{reflectionPath}}">{{title}}</option>'+
+          '{{/attributes}}'+
+        '</select>'+
+        '<select id="operator" name="operator">'+
+          '{{#operators}}'+
+            '<option value="{{value}}">{{label}}</option>'+
+          '{{/operators}}'+
+        '</select>'+
+        '<input id="query_parameter" name="query_parameter" type="text">'+
+        '<input name="remove_query_condition" type="submit" value="{{locales/removeParameter}}" style="width: 28px;">'+
+        '<input name="add_query_condition" style="width: 28px" type="submit" value="{{locales/addParameter}}">'+
+        '<div class="clear"></div>'+
+      '</div>'+
+      '<div class="js-query-insert"></div>'+
+      '<input name="submit_query" type="submit" value="{{locales/search}}">'+
+      '<input name="reset_query" type="submit" value="{{locales/reset}}" style="color:red;">'+
+    '</fieldset>';
+    
+    $.fr.searchTemplate = Handlebars.compile($.fr.searchTemplateSource);
+  }
+  
   var attributes = [];
   for (var i=0; i < $.fr.currentView.cols.length; i++) {
     if ($.fr.currentView.cols[i].searchable) {
       attributes.push($.fr.currentView.cols[i]);
     }
   }
-  
+
   attributes.sort(function sortColumns(a, b) {
     if (a.title == b.title) {
       return 0;
@@ -23,53 +45,34 @@ function createSearchMenu(container) {
     return (a.title < b.title) ? -1 : 1;
   });
   
-  var queryTemplate = $(document.createElement('div')).attr({style : 'display: inline;', 'class' : 'query_template main'});
-  var selectTag = $(document.createElement('select')).attr({id : 'attributes', name : 'attributes'});
-  for (var i=0; i < attributes.length; i++) {
-    var col = attributes[i];
-    selectTag.append($('<option value="'+col.reflectionPath+'">'+col.title+'</option>'))
+  var data = {
+    "locales" : {
+      "title"               : $.t('search.title'),
+      "meetAllCriteria"     : $.t('search.meetAllCriteria'),
+      "addParameter"        : $.t('actions.addParameter'),
+      "removeParameter"     : $.t('actions.removeParameter'),
+      "search"              : $.t('actions.search'),
+      "reset"               : $.t('actions.clearSearch')
+    },
+    "operators"       : $.fr.currentView.operators,
+    "attributes"      : attributes
   };
   
+  var search = $.fr.searchTemplate(data);
   delete attributes;
   
-  queryTemplate.append(selectTag).append(' ');
-  var operatorTag = $(document.createElement('select')).attr({id : 'operator', name : 'operator'});
-  for (var i=0; i < $.fr.currentView.operators.length; i++) {
-    var operator = $.fr.currentView.operators[i];
-    operatorTag.append($('<option value="'+operator.value+'">'+operator.label+'</option>'))
-  };
-  queryTemplate.append(operatorTag).append(' ');
-  fieldset.append(queryTemplate);
-
-  var queryParameter = $(document.createElement('input')).attr({id:'query_parameter',name:'query_parameter',type:'text', value:''});
-  queryTemplate.append(queryParameter).append(' ');
-
-  var removeOption = $(document.createElement('input')).attr({name:'remove_query_condition',type:'submit',value:$.t('actions.removeParameter'),style:'width: 28px;'});
-  queryTemplate.append(removeOption).append(' ');
-
-  var addOption = $(document.createElement('input')).attr({name:'add_query_condition',style:'width: 28px',type:'submit',value:$.t('actions.addParameter')});
-  queryTemplate.append(addOption).append(' ');
-  queryTemplate.append($(document.createElement('div')).addClass('clear'));
-
-  $(document.createElement('div')).addClass('js-query-insert').insertAfter(queryTemplate);
-
-  var searchButton = $(document.createElement('input')).attr({name:'submit_query',type:'submit',value:$.t('actions.search')});
-  searchButton.click(function executeSearch() {
-    searchFlexidata();
-    return false;
-  })
-  fieldset.append(searchButton).append(' ');;
-
-  var clearButton = $(document.createElement('input')).attr({name:'reset_query',type:'submit',value:$.t('actions.clearSearch'),style:'color:red;'});
-  clearButton.click(function clearSearch() {
+  container.append(search);
+  addSearchMenuEventHandlers(container);
+  
+  $(':input[name=reset_query]',container).click(function() {
     clearQuery(true);
     reloadFlexidata();
     return false;
   });
-  fieldset.append(clearButton);
-
-  container.append(fieldset);
-  addSearchMenuEventHandlers(fieldset);
+  $(':input[name=submit_query]',container).click(function() {
+    searchFlexidata();
+    return false;
+  });
   
   invokeSearchCreated(container);
 }
