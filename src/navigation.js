@@ -10,10 +10,10 @@ function createNavigation(container) {
         '</select>'+
       '</div>'+
       '<div class="pagination">'+
-        '<a style="cursor: pointer;">'+
+        '<a style="cursor: pointer;" name="toFirstPage">'+
           '<img src="/images/flexirails/first.png">'+
         '</a>'+
-        '<a style="cursor: pointer;">'+
+        '<a style="cursor: pointer;" name="toPrevPage">'+
           '<img src="/images/flexirails/prev.png">'+
         '</a>'+
         '<span>'+
@@ -22,10 +22,10 @@ function createNavigation(container) {
           '{{locales/of}}'+
           '<span class="to">1</span>'+
         '</span>'+
-        '<a style="cursor: pointer;">'+
+        '<a style="cursor: pointer;" name="toNextPage">'+
           '<img src="/images/flexirails/next.png">'+
         '</a>'+
-        '<a style="cursor: pointer;">'+
+        '<a style="cursor: pointer;" name="toLastPage">'+
           '<img src="/images/flexirails/last.png">'+
         '</a>'+
       '</div>'+
@@ -55,7 +55,14 @@ function createNavigation(container) {
     "resultsPerPage"      : resultsPerPage
   };
   var navigation = $.fr.navigationTemplate(data);
+  
   container.append(navigation);
+  $(":input[name=per_page]",container).change(changePerPageOption);
+  $("a[name=toFirstPage]",container).click(paginateToFirstPage);
+  $("a[name=toPrevPage]",container).click(paginateToPrevPage);
+  $("a[name=toNextPage]",container).click(paginateToNextPage);
+  $("a[name=toLastPage]",container).click(paginateToLastPage);
+  $(":input[name=current_page_box]",container).change(paginateToAnyPage);
   
   invokeNavigationCreated(container);
 }
@@ -68,6 +75,25 @@ function invokeNavigationCreated(container) {
   }
 }
 
+function paginateToAnyPage() {
+  paginate($(this).val());
+}
+function paginateToFirstPage(){
+  paginate($.fr.pagination.first);
+  return false;
+}
+function paginateToPrevPage() {
+  paginate(Math.max(parseInt($.fr.currentView.currentPage) - 1, $.fr.pagination.first));
+  return false;
+}
+function paginateToNextPage() {
+  paginate(Math.min(parseInt($.fr.currentView.currentPage) + 1, $.fr.pagination.last));
+  return false;
+}
+function paginateToLastPage(){
+  paginate($.fr.pagination.last);
+  return false;
+}
 
 function paginate(to_page) {
   if (to_page > $.fr.pagination.last || to_page < 1) {
@@ -79,6 +105,10 @@ function paginate(to_page) {
     invokeViewUpdated();
     reloadFlexidata();
   }
+}
+
+function changePerPageOption() {
+  updatePerPage($(this).val());
 }
 
 function updatePerPage(new_per_page) {

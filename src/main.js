@@ -561,6 +561,9 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   
   if (($.fi.loadedRows < $.fr.currentView.perPage || $.fr.currentView.perPage == -1) && $.fi.loadedRows < $.fr.currentView.totalResults) {
     appendFlexiData();
+    if ($.fr.currentView.currentPage == $.fr.pagination.last) {
+      $(".js-fr-from-page").removeAttr('disabled');
+    }
   } else {
     $.fi.appendResults = false;
     $(".js-fr-from-page").removeAttr('disabled');
@@ -583,11 +586,10 @@ function buildFlexiOptions(options, override) {
   opts["order"] = orderByOptions();
 
   updateViewQuery();
-
   if (!$.isEmptyObject($.fr.currentView.search.query)) {
-    opts["query"] = $.fr.currentView.search.query;
-    opts["search_all"] = $.fr.currentView.search.searchAll
-    opts["flexirails"] = "search";
+    opts["query"]       = $.fr.currentView.search.query;
+    opts["search_all"]  = $.fr.currentView.search.searchAll;
+    opts["flexirails"]  = "search";
   }
 
   $.extend(opts, override);

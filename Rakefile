@@ -1,7 +1,9 @@
+desc "Removes all old build and distribution files"
 task :clean do
-  sh "rm -fr build"
+  sh "rm -fr build dist"
 end
 
+desc "Concatenates all JavaScript files into one"
 task :concatenate => :clean do 
   sh "mkdir build"
   sh "touch build/concatenated.js"
@@ -10,17 +12,19 @@ task :concatenate => :clean do
   end
 end
 
+desc "Runs the C preprocessor to allow usage of macros inside javascript"
 task :preprocess => :concatenate do
-  sh "cpp -P -C -DDEBUG -DPROFILE build/concatenated.js build/preprocessed.js"
+  sh "cd build && cpp -P -C -DDEBUG -DPROFILE concatenated.js preprocessed.js"
 end
 
+desc "Minifies the JavaScript for deployment"
 task :compile => :preprocess do 
   sh "java -jar bin/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js build/preprocessed.js --js_output_file build/compiled.js" 
 end
 
+desc "Builds flexirails JavaScript"
 task :build => [:clean, :compile] do
-  sh "cp build/compiled.js flexirails.min.js"
-  sh "cp build/preprocessed.js flexirails.js"
-  Rake::Task["clean"].reenable
-  Rake::Task["clean"].invoke
+  sh "mkdir dist"
+  sh "cp build/compiled.js dist/flexirails.min.js"
+  sh "cp build/preprocessed.js dist/flexirails.js"
 end
