@@ -21,6 +21,8 @@ var fr = $.fr = {
     perPageOptions        : [5, 25, 50, 100, 250, -1]
   },
   
+  authToken: null,
+  
   clientSideCaching   : false // not used yet: client side SQLite caching
 };
 
@@ -47,6 +49,10 @@ var fi = $.fi = {
 }
 
 var publicMethods = {
+  authToken : function (val) {
+    $.fr.authToken = val;
+  },
+  
   // Registers an custom cell formatter for a given object-attribute path
   registerFormatter   : function(reflection_path, fnc) {
     $.fr.formatterFunctions[reflection_path] = fnc;
@@ -591,6 +597,11 @@ function buildFlexiOptions(options, override) {
     opts["search_all"]  = $.fr.currentView.search.searchAll;
     opts["flexirails"]  = "search";
   }
+  
+  if ( $.fr.authToken ) {
+    opts["authenticity_token"] = $.fr.authToken;
+  }
+  
 
   $.extend(opts, override);
   return opts;

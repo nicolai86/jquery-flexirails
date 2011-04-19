@@ -14,7 +14,8 @@ end
 
 desc "Runs the C preprocessor to allow usage of macros inside javascript"
 task :preprocess => :concatenate do
-  sh "cd build && cpp -P -C -DDEBUG -DPROFILE concatenated.js preprocessed.js"
+  #-DDEBUG -DPROFILE
+  sh "cd build && cpp -P -C  concatenated.js preprocessed.js"
 end
 
 desc "Minifies the JavaScript for deployment"

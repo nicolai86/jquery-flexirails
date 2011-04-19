@@ -31,8 +31,8 @@ function time_end() {
 #define COUNT(x) console.count(x);
 #define TRACE() console.trace();
 #else
-#define START_TIMER(x)
-#define END_TIMER()
+#define TIME(x)
+#define TIME_END(x)
 #define COUNT(x)
 #define TRACE()
 #endif /* PROFILE */
