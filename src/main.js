@@ -45,7 +45,8 @@ var fi = $.fi = {
   appendResults       : false,
   loadingData         : false,
   dontExecuteQueries  : false,
-  initializingView    : false
+  initializingView    : false,
+  buildFlexiview      : null
 }
 
 var publicMethods = {
@@ -288,10 +289,17 @@ function appendFlexiData() {
       limit = Math.min( $.fr.defaults.maxResultsPerQuery, $.fr.currentView.perPage - $.fi.loadedRows )
     }
     
-    $.get($.fi.requestURL, buildFlexiOptions({}, {
-      limit: limit,
-      offset: $.fi.loadedRows
-    }), buildFlexiview, "json"); 
+    $.ajax({
+      type: 'GET',
+      url: $.fi.requestURL,
+      data: buildFlexiOptions({}, {
+        limit: limit,
+        offset: $.fi.loadedRows
+      }),
+      success: buildFlexiview,
+      processData: false,
+      dataType: 'json'
+    });
   }
 }
 
@@ -303,7 +311,15 @@ function reloadFlexidata() {
   $(".js-fr-from-page").attr('disabled','disabled');
 
   $.fi.hiddenColumns = new Object();
-  $.get( $.fi.requestURL, buildFlexiOptions(), buildFlexiview, "json" );
+  
+  $.ajax({
+    type: 'GET',
+    url: $.fi.requestURL,
+    data: buildFlexiOptions(),
+    success: buildFlexiview,
+    processData: false,
+    dataType: 'json'
+  });
 
   $.fi.loadingData = true;
   $.fi.appendResults = false;

@@ -138,7 +138,14 @@ function searchFlexidata() {
   $.fr.currentView.currentPage = 1;
   $(".js-fr-from-page").val($.fr.currentView.currentPage);
   
-  $.get($.fi.requestURL, buildFlexiOptions(), buildFlexiview, "json");
+  $.ajax({
+    type: 'GET',
+    url: $.fi.requestURL,
+    data: buildFlexiOptions(),
+    success: buildFlexiview,
+    processData: false,
+    dataType: 'json'
+  });
   invokeViewUpdated();
 }
 
