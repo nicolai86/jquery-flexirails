@@ -297,7 +297,6 @@ function appendFlexiData() {
         offset: $.fi.loadedRows
       }),
       success: buildFlexiview,
-      processData: false,
       dataType: 'json'
     });
   }
@@ -317,7 +316,6 @@ function reloadFlexidata() {
     url: $.fi.requestURL,
     data: buildFlexiOptions(),
     success: buildFlexiview,
-    processData: false,
     dataType: 'json'
   });
 
@@ -618,7 +616,6 @@ function buildFlexiOptions(options, override) {
     opts["authenticity_token"] = $.fr.authToken;
   }
   
-
   $.extend(opts, override);
   return opts;
 }

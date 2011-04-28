@@ -143,7 +143,6 @@ function searchFlexidata() {
     url: $.fi.requestURL,
     data: buildFlexiOptions(),
     success: buildFlexiview,
-    processData: false,
     dataType: 'json'
   });
   invokeViewUpdated();
