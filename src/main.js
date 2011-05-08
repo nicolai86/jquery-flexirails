@@ -289,6 +289,8 @@ function appendFlexiData() {
       limit = Math.min( $.fr.defaults.maxResultsPerQuery, $.fr.currentView.perPage - $.fi.loadedRows )
     }
     
+    LOG( "(flexirails) appending data ..." + (new Date()) )
+    
     $.ajax({
       type: 'GET',
       url: $.fi.requestURL,
@@ -310,6 +312,8 @@ function reloadFlexidata() {
   $(".js-fr-from-page").attr('disabled','disabled');
 
   $.fi.hiddenColumns = new Object();
+  
+  LOG( "(flexirails) reloading data ..." + (new Date()) )
   
   $.ajax({
     type: 'GET',

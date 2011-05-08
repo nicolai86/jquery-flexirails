@@ -138,6 +138,8 @@ function searchFlexidata() {
   $.fr.currentView.currentPage = 1;
   $(".js-fr-from-page").val($.fr.currentView.currentPage);
   
+  LOG( "(flexirails) searching data ..." + (new Date()) )
+  
   $.ajax({
     type: 'GET',
     url: $.fi.requestURL,
