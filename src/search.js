@@ -209,5 +209,10 @@ function invokeSearchCreated(container) {
     for (var i=0; i < $.fr.searchCreated.length; i++) {
       $.fr.searchCreated[i].apply(this, [container]);
     }
+    for (var prop in $.fr.searchCreated) {
+      if ($.fr.searchCreated.hasOwnProperty(prop)) {
+        $.fr.searchCreated[prop].apply(this, [container]);
+      }
+    }
   }
 }

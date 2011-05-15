@@ -18,7 +18,8 @@ var fr = $.fr = {
   defaults            : {
     maxResultsPerQuery    : 50,
     perPage               : 25,
-    perPageOptions        : [5, 25, 50, 100, 250, -1]
+    perPageOptions        : [5, 25, 50, 100, 250, -1],
+    ghostStyle            :'min-width: 1px; max-width: 1px; width: 1px; border-right: none'
   },
   
   authToken: null,
@@ -60,11 +61,15 @@ var publicMethods = {
   },
   
   // Registers a callback function which is called as soon as the view finished initialization
-  viewFinished        : function(fnc) {
+  viewFinished        : function(fnc, name) {
     if ($.fr.viewFinished == null) {
       $.fr.viewFinished = new Array();
     }
-    $.fr.viewFinished.push(fnc);
+    if (typeof(name) != "undefined") {
+      $.fr.viewFinished[name] = fnc;
+    } else {
+      $.fr.viewFinished.push(fnc);
+    }
   },
   
   replaceView         : function(aView) {
@@ -85,19 +90,34 @@ var publicMethods = {
     $.fr.navigationCreated.push(fnc);
   },
   
-  searchCreated       : function(fnc) {
+  searchCreated       : function(fnc, name) {
     if ($.fr.searchCreated == null) {
       $.fr.searchCreated = new Array();
     }
-    $.fr.searchCreated.push(fnc);
+    if (typeof(name) != "undefined") {
+      $.fr.searchCreated[name] = fnc;
+    } else {
+      $.fr.searchCreated.push(fnc);
+    }
   },
   
   // Registers a callback function which is invoked as soon as the view changes
-  viewUpdated         : function(fnc) {
+  viewUpdated         : function(fnc, name) {
     if ($.fr.viewUpdated == null) {
       $.fr.viewUpdated = new Array();
     }
-    $.fr.viewUpdated.push(fnc);
+    if (typeof(name) != "undefined") {
+      $.fr.viewUpdated[name] = fnc;
+    } else {
+      $.fr.viewUpdated.push(fnc);
+    }
+  },
+  
+  // update a row in the current display
+  updateRow           : function(obj) {
+    var _tr = buildFlexiRow( obj );
+    $(".row-"+obj['id'],$.fi.flexiTable).replaceWith(_tr);
+    invokeViewUpdated();
   },
   
   // Applies all view related settings to the current DOM
@@ -332,13 +352,23 @@ function invokeViewFinished() {
     for (var i=0; i < $.fr.viewFinished.length; i++) {
       $.fr.viewFinished[i].call(this);
     }
-  }      
+  }  
+  for (var prop in $.fr.viewFinished) {
+    if ($.fr.viewFinished.hasOwnProperty(prop)) {
+      $.fr.viewFinished[prop].call(this);
+    }
+  }    
 }
 
 function invokeViewUpdated() {
   if ($.fr.viewUpdated != null && !$.fi.initializingView && !$.fi.dontExecuteQueries) {
     for (var i=0; i < $.fr.viewUpdated.length; i++) {
       $.fr.viewUpdated[i].call(this);
+    }
+  }
+  for (var prop in $.fr.viewUpdated) {
+    if ($.fr.viewUpdated.hasOwnProperty(prop)) {
+      $.fr.viewUpdated[prop].call(this);
     }
   }
 }
@@ -505,8 +535,6 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   
   setFlexirailsOptions(data);
   
-  var ghostColumnStyle = 'min-width: 1px; max-width: 1px; width: 1px; border-right: none';
-  
   if (!$.fi.appendResults) {
     $.fi.loadedRows = 0;
     $(".flexirow").remove();
@@ -522,7 +550,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
         $.fi.hiddenColumns[col.cacheName][0] = th;
       }
     }
-    $(".header").append($(document.createElement('th')).attr('style', ghostColumnStyle));
+    $(".header").append($(document.createElement('th')).attr('style', $.fr.defaults.ghostStyle));
 
     if ($.fr.currentView.sort.reflectionPath != '') {
       $("th."+$.fr.currentView.sort.reflectionPath).addClass("sorted");
@@ -550,30 +578,8 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   }
 
   for (var i = 0; i < arr.length; i++) { 
-    var _tr = $(document.createElement('tr'));
-    _tr.addClass('flexirow');
-
     var obj = arr[i];
-
-    for (var j = 0; j < $.fr.currentView.cols.length; j++) { 
-      var col = $.fr.currentView.cols[j];
-      
-      var td = $(document.createElement('td'));
-      $.fr.formatterFunctions[col.cacheName](td, obj, col, $.extractAttribute(obj, col.reflectionPath));
-      appendClasses(td, j, col);
-      
-      if (col.visible) {
-        _tr.append(td);
-      } else {
-        if ($.fi.hiddenColumns[col.cacheName][1] == null) {
-          $.fi.hiddenColumns[col.cacheName][1] = td;
-        } else {
-          $.fi.hiddenColumns[col.cacheName][1].push(td);
-        }
-      }
-    }
-
-    _tr.append($(document.createElement('td')).attr('style',ghostColumnStyle));
+    var _tr = buildFlexiRow( obj );
     $.fi.flexiTable.append(_tr);
   }
 
@@ -593,6 +599,36 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
     $(".js-fr-from-page").removeAttr('disabled');
   }
   TIME_END()
+}
+
+function buildFlexiRow(obj) {
+  var _tr = $(document.createElement('tr'));
+  _tr.addClass('flexirow');
+  
+  if (obj.hasOwnProperty('id')) {
+    _tr.addClass('row-' + obj['id']);
+  }
+
+  for (var j = 0; j < $.fr.currentView.cols.length; j++) { 
+    var col = $.fr.currentView.cols[j];
+    
+    var td = $(document.createElement('td'));
+    $.fr.formatterFunctions[col.cacheName](td, obj, col, $.extractAttribute(obj, col.reflectionPath));
+    appendClasses(td, j, col);
+    
+    if (col.visible) {
+      _tr.append(td);
+    } else {
+      if ($.fi.hiddenColumns[col.cacheName][1] == null) {
+        $.fi.hiddenColumns[col.cacheName][1] = td;
+      } else {
+        $.fi.hiddenColumns[col.cacheName][1].push(td);
+      }
+    }
+  }
+
+  _tr.append($(document.createElement('td')).attr('style',$.fr.defaults.ghostStyle));
+  return _tr;
 }
 
 function buildFlexiOptions(options, override) {
