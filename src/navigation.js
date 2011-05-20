@@ -10,24 +10,16 @@ function createNavigation(container) {
         '</select>'+
       '</div>'+
       '<div class="pagination">'+
-        '<a style="cursor: pointer;" name="toFirstPage">'+
-          '<img src="/images/flexirails/first.png">'+
-        '</a>'+
-        '<a style="cursor: pointer;" name="toPrevPage">'+
-          '<img src="/images/flexirails/prev.png">'+
-        '</a>'+
+        '<a name="toFirstPage"><span style="cursor: pointer;" class="first"></span></a>'+
+        '<a name="toPrevPage"><span style="cursor: pointer;" class="prev"></span></a>'+
         '<span>'+
           '{{locales/page}}'+
           '<input class="js-fr-from-page" name="current_page_box" type="text">'+
           '{{locales/of}}'+
           '<span class="to">1</span>'+
         '</span>'+
-        '<a style="cursor: pointer;" name="toNextPage">'+
-          '<img src="/images/flexirails/next.png">'+
-        '</a>'+
-        '<a style="cursor: pointer;" name="toLastPage">'+
-          '<img src="/images/flexirails/last.png">'+
-        '</a>'+
+        '<a name="toNextPage"><span style="cursor: pointer;" class="next"></span></a>'+
+        '<a name="toLastPage"><span style="cursor: pointer;" class="last"></span></a>'+
       '</div>'+
       '<div class="results label">'+
         '<span class="total_results">1</span>'+
