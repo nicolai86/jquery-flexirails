@@ -577,11 +577,14 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
     $.fi.flexiTable.find(".no_results").remove();
   }
 
+  var parent = $.fi.flexiTable.parent();
+  $.fi.flexiTable.detach();
   for (var i = 0; i < arr.length; i++) { 
     var obj = arr[i];
     var _tr = buildFlexiRow( obj );
     $.fi.flexiTable.append(_tr);
   }
+  parent.append($.fi.flexiTable);
 
   setupFirstLastColumns();
   setupOrderByColumns();

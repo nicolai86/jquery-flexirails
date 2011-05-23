@@ -49,12 +49,12 @@ function createNavigation(container) {
   var navigation = $.fr.navigationTemplate(data);
   
   container.append(navigation);
-  $(":input[name=per_page]",container).change(changePerPageOption);
-  $("a[name=toFirstPage]",container).click(paginateToFirstPage);
-  $("a[name=toPrevPage]",container).click(paginateToPrevPage);
-  $("a[name=toNextPage]",container).click(paginateToNextPage);
-  $("a[name=toLastPage]",container).click(paginateToLastPage);
-  $(":input[name=current_page_box]",container).change(paginateToAnyPage);
+  $(container).delegate("a[name=toFirstPage]","click",paginateToFirstPage);
+  $(container).delegate("a[name=toPrevPage]","click",paginateToPrevPage);
+  $(container).delegate("a[name=toNextPage]","click",paginateToNextPage);
+  $(container).delegate("a[name=toLastPage]","click",paginateToLastPage);
+  $(container).delegate(":input[name=current_page_box]", "change", paginateToAnyPage);
+  $(container).delegate(":input[name=per_page]", "change", changePerPage);
   
   invokeNavigationCreated(container);
 }
@@ -67,6 +67,9 @@ function invokeNavigationCreated(container) {
   }
 }
 
+function changePerPage() {
+  updatePerPage($(this).val());
+}
 function paginateToAnyPage() {
   paginate($(this).val());
 }
