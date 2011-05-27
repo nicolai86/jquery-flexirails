@@ -33,7 +33,7 @@ function createSearchMenu(container) {
   
   var attributes = [];
   for (var i=0; i < $.fr.currentView.cols.length; i++) {
-    if ($.fr.currentView.cols[i].searchable) {
+    if ($.fr.currentView.cols[i].searchable || $.fr.currentView.cols[i].onlySearchable) {
       attributes.push($.fr.currentView.cols[i]);
     }
   }

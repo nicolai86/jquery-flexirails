@@ -542,6 +542,9 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
 
     for (var i = 0; i < $.fr.currentView.cols.length; i++) {
       var col = $.fr.currentView.cols[i];
+      if (col.onlySearchable) {
+        continue;
+      }
       var th = $(document.createElement('th')).addClass(col.cacheName).addClass('sortable').append(col.title);
       if (col.visible) {
         $(".header").append(th);
@@ -614,6 +617,9 @@ function buildFlexiRow(obj) {
 
   for (var j = 0; j < $.fr.currentView.cols.length; j++) { 
     var col = $.fr.currentView.cols[j];
+    if (col.onlySearchable) {
+      continue;
+    }
     
     var td = $(document.createElement('td'));
     $.fr.formatterFunctions[col.cacheName](td, obj, col, $.extractAttribute(obj, col.reflectionPath));

@@ -14,6 +14,9 @@ function createContextMenu(container) {
 
   for (var i=0; i < $.fr.currentView.cols.length; i++) {
     var col = $.fr.currentView.cols[i];
+    if (col.onlySearchable) {
+      continue;
+    }
 
     var li = $(document.createElement('li')).addClass(col.cacheName);
     var toggle = $(document.createElement('input')).attr({
