@@ -3,7 +3,7 @@ function createNavigation(container) {
     $.fr.navigationTemplateSource = '<div>'+
       '<div class="label">{{locales/resultsPerPage}}</div>'+
       '<div class="select">'+
-        '<select id="per_page" name="per_page">'+
+        '<select id="per_page" name="per_page" style="position: relative; top: 5px;">'+
           '{{#resultsPerPage}}'+
             '<option value="{{value}}">{{label}}</option>'+
           '{{/resultsPerPage}}'+
@@ -12,18 +12,18 @@ function createNavigation(container) {
       '<div class="pagination">'+
         '<a name="toFirstPage"><span style="cursor: pointer;" class="first"></span></a>'+
         '<a name="toPrevPage"><span style="cursor: pointer;" class="prev"></span></a>'+
-        '<span>'+
+        '<span style="vertical-align: top">'+
           '{{locales/page}}'+
-          '<input class="js-fr-from-page" name="current_page_box" type="text">'+
+          '<input class="js-fr-from-page" name="current_page_box" type="text" style="position: relative; top: -3px;">'+
           '{{locales/of}}'+
-          '<span class="to">1</span>'+
+          '<span class="to" style="vertical-align: top">1</span>'+
         '</span>'+
         '<a name="toNextPage"><span style="cursor: pointer;" class="next"></span></a>'+
         '<a name="toLastPage"><span style="cursor: pointer;" class="last"></span></a>'+
       '</div>'+
       '<div class="results label">'+
         '<span class="total_results">1</span>'+
-        'Results'+
+        ' Results'+
       '</div>'+
     '</div>';
     $.fr.navigationTemplate = Handlebars.compile($.fr.navigationTemplateSource);
@@ -63,6 +63,11 @@ function invokeNavigationCreated(container) {
   if ($.fr.navigationCreated != null) {
     for (var i=0; i < $.fr.navigationCreated.length; i++) {
       $.fr.navigationCreated[i].apply(this, [container]);
+    }
+  }
+  for (var prop in $.fr.navigationCreated) {
+    if ($.fr.navigationCreated.hasOwnProperty(prop)) {
+      $.fr.navigationCreated[prop].call(this, container);
     }
   }
 }

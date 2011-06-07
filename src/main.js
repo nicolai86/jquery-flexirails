@@ -7,9 +7,11 @@ var fr = $.fr = {
   viewFinished        : null, // done creating a complete flexirails view
   viewUpdated         : null, // flexirails view settings changed
   currentView         : null,
+  rowSelected         : null,
+  rowDeselected         : null,
   navigationCreated   : null, // callback when a navigationMenu has been created
   searchCreated       : null, // callback when a searchMenu has been created
-  
+
   pagination          : {
     last              : 1,
     first             : 1
@@ -47,6 +49,7 @@ var fi = $.fi = {
   loadingData         : false,
   dontExecuteQueries  : false,
   initializingView    : false,
+  selectionEnabled    : true,
   buildFlexiview      : null
 }
 
@@ -58,6 +61,18 @@ var publicMethods = {
   // Registers an custom cell formatter for a given object-attribute path
   registerFormatter   : function(reflection_path, fnc) {
     $.fr.formatterFunctions[reflection_path] = fnc;
+  },
+  
+  rowSelectedCallback : function(fnc) {
+    $.fr.rowSelected = fnc;
+  },
+  
+  rowDeselectedCallback : function(fnc) {
+    $.fr.rowDeselected = fnc;
+  },
+  
+  requestOptions: function() {
+    return buildFlexiOptions();
   },
   
   // Registers a callback function which is called as soon as the view finished initialization
@@ -83,11 +98,15 @@ var publicMethods = {
     invokeViewUpdated();
   },
   
-  navigationCreated   : function(fnc) {
+  navigationCreated   : function(fnc,name) {
     if ($.fr.navigationCreated == null) {
       $.fr.navigationCreated = new Array();
     }
-    $.fr.navigationCreated.push(fnc);
+    if (typeof(name) != "undefined") {
+      $.fr.navigationCreated[name] = fnc;
+    } else {
+      $.fr.navigationCreated.push(fnc);
+    }
   },
   
   searchCreated       : function(fnc, name) {
@@ -118,6 +137,14 @@ var publicMethods = {
     var _tr = buildFlexiRow( obj );
     $(".row-"+obj['id'],$.fi.flexiTable).replaceWith(_tr);
     invokeViewUpdated();
+  },
+  
+  createFlexiTable : function () {
+    $("#flexitable").remove();
+    $.fi.flexiTable      = $(document.createElement('table')).attr('id','flexitable');
+    $.fi.flexiHeader     = $(document.createElement('tr')).addClass('header');
+    $.fi.flexiTable.append($.fi.flexiHeader);
+    $.fi.flexiContainer.append($.fi.flexiTable);
   },
   
   // Applies all view related settings to the current DOM
@@ -198,9 +225,8 @@ $.fn.flexirails = function(view, url, settings) {
     initializeView();
     
     $.fi.flexiContainer  = $(document.createElement('div')).addClass('flexirails');
-    $.fi.flexiTable      = $(document.createElement('table')).addClass('flexitable');
-    $.fi.flexiHeader     = $(document.createElement('tr')).addClass('header');
-    $.fi.flexiTable.append($.fi.flexiHeader);
+    
+    $.flexirails('createFlexiTable')();
 
     $.fi.flexiContainerMenu = $(document.createElement('div'));
     createContextMenu($.fi.flexiContainerMenu);
@@ -324,6 +350,10 @@ function appendFlexiData() {
   }
 }
 
+function showLoadingInfo() {
+  $("#flexitable").remove();
+};
+
 function reloadFlexidata() {  
   if ($.fi.requestURL == null || $.fi.dontExecuteQueries || $.fi.initializingView || $.fi.loadingData) {
     return;
@@ -357,7 +387,10 @@ function invokeViewFinished() {
     if ($.fr.viewFinished.hasOwnProperty(prop)) {
       $.fr.viewFinished[prop].call(this);
     }
-  }    
+  }  
+  if ( $.fi.selectionEnabled ) {
+    setupSelection();
+  }
 }
 
 function invokeViewUpdated() {
@@ -370,6 +403,9 @@ function invokeViewUpdated() {
     if ($.fr.viewUpdated.hasOwnProperty(prop)) {
       $.fr.viewUpdated[prop].call(this);
     }
+  }
+  if ( $.fi.selectionEnabled ) {
+    setupSelection();
   }
 }
 
@@ -530,6 +566,8 @@ function appendClasses(td, index, col) {
 }
 
 function buildFlexiview(data, textStatus, XMLHttpRequest) {
+  $.flexirails('createFlexiTable')();
+  
   TIME("build flexirails view")
   $.fr.currentView.totalResults = parseInt(data.total) || 0;
   
@@ -538,7 +576,7 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
   if (!$.fi.appendResults) {
     $.fi.loadedRows = 0;
     $(".flexirow").remove();
-    $($.fi.flexiHeader).children().remove();
+    $.fi.flexiHeader.children().remove();
 
     for (var i = 0; i < $.fr.currentView.cols.length; i++) {
       var col = $.fr.currentView.cols[i];
@@ -547,13 +585,13 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
       }
       var th = $(document.createElement('th')).addClass(col.cacheName).addClass('sortable').append(col.title);
       if (col.visible) {
-        $(".header").append(th);
+        $.fi.flexiHeader.append(th);
       } else {
         $.fi.hiddenColumns[col.cacheName] = new Array();
         $.fi.hiddenColumns[col.cacheName][0] = th;
       }
     }
-    $(".header").append($(document.createElement('th')).attr('style', $.fr.defaults.ghostStyle));
+    $.fi.flexiHeader.append($(document.createElement('th')).attr('style', $.fr.defaults.ghostStyle));
 
     if ($.fr.currentView.sort.reflectionPath != '') {
       $("th."+$.fr.currentView.sort.reflectionPath).addClass("sorted");

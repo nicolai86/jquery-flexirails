@@ -128,6 +128,8 @@ function clearQuery(invokeUpdated) {
   $(":input[name=query_parameter]", $(".query_template")).val('');
   $(":input[name=operator]", $(".query_template")).val('contains');
   
+  showLoadingInfo();
+  
   updateViewQuery();
   if (invokeUpdated == true) {
     invokeViewUpdated();
@@ -147,6 +149,9 @@ function searchFlexidata() {
     success: buildFlexiview,
     dataType: 'json'
   });
+  
+  showLoadingInfo();
+  
   invokeViewUpdated();
 }
 

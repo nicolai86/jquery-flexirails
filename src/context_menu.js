@@ -102,4 +102,5 @@ function toggleFlexiColumn(reflectionPath) {
   }
   flexiheadersSortable();
   setupFirstLastColumns();
+  invokeViewUpdated();
 }

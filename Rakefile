@@ -7,7 +7,7 @@ desc "Concatenates all JavaScript files into one"
 task :concatenate => :clean do 
   sh "mkdir build"
   sh "touch build/concatenated.js"
-  ["misc/head.txt","main.js","utils.js","search.js","navigation.js","sorting.js", "ordering.js", "context_menu.js", "localization.js","misc/foot.txt"].each do |file|
+  ["misc/head.txt","main.js","utils.js","selection.js","search.js","navigation.js","sorting.js", "ordering.js", "context_menu.js", "localization.js","misc/foot.txt"].each do |file|
     sh "cat src/#{file} >> build/concatenated.js"
   end
 end
