@@ -276,6 +276,10 @@ function initializeView() {
     $.fr.currentView.order = {by:null, direction:null};
   }
 
+  if (!$.fr.currentView.hasOwnProperty('hasSelectableRows')) {
+    $.fr.currentView.hasSelectableRows = false;
+  }
+
   if (!$.fr.currentView.hasOwnProperty('totalResults')) {
     $.fr.currentView.totalResults = 1; 
   }
@@ -565,15 +569,14 @@ function appendClasses(td, index, col) {
   return td.addClass(col.cacheName);
 }
 
-function buildFlexiview(data, textStatus, XMLHttpRequest) {
-  $.flexirails('createFlexiTable')();
-  
+function buildFlexiview(data, textStatus, XMLHttpRequest) {  
   TIME("build flexirails view")
   $.fr.currentView.totalResults = parseInt(data.total) || 0;
   
   setFlexirailsOptions(data);
   
   if (!$.fi.appendResults) {
+    $.flexirails('createFlexiTable')();
     $.fi.loadedRows = 0;
     $(".flexirow").remove();
     $.fi.flexiHeader.children().remove();
@@ -629,6 +632,11 @@ function buildFlexiview(data, textStatus, XMLHttpRequest) {
 
   setupFirstLastColumns();
   setupOrderByColumns();
+  flexiheadersSortable();
+  setupFirstLastColumns();
+  activateContextMenu();
+  flexiheadersSortable();
+  setupSelection();
   invokeViewFinished();
   
   $.fi.loadingData = false;

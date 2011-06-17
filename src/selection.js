@@ -1,8 +1,10 @@
 function setupSelection() {
   $("tr.flexirow").unbind('click');
-  $("tr.flexirow").click(function(evnt) {
-    rowSelected($(this), evnt);
-  });
+  if ($.fr.currentView.hasSelectableRows) {
+    $("tr.flexirow").click(function(evnt) {
+      rowSelected($(this), evnt);
+    });
+  }
 }
 
 function rowSelected(row, evnt) {
