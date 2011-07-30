@@ -17,4 +17,6 @@ You're done! The build is placed under ./dist .
 
 ## ToDo
 
-- add proper, up2date test cases
+- rewrite using coffeescript (achieve proper js lint, seperation of concerns, ...)
+- add qunit tests
+- possiblity to work with JS Arrays as well as remote datasources
