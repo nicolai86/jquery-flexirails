@@ -15,7 +15,8 @@
         
       try 
         loadSource name for name in [
-          '/src/coffee/plugin'
+          '/src/coffee/plugin',
+          '/src/coffee/localization'
         ]
       catch e
         console.log "Error loading jquery-flexirails source code:", e
@@ -26,7 +27,8 @@
         
       try
         executeTest name for name in [
-          'flexirails/plugin.test'
+          'flexirails/plugin.test',
+          'flexirails/localization.test'
         ]
       catch e
         console.log "Error loading test-suite:", e
