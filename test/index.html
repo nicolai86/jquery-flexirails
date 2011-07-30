@@ -21,10 +21,14 @@
     </script>
     
     <script type="text/coffeescript">
-      
+      executeTest = (file) ->
+        path = "#{file}.coffee"
+        console.log "loading #{path}"
+        CoffeeScript.load path
+        
       require [], () ->
         try
-          CoffeeScript.load "#{name.coffee}" for name in [
+          executeTest name for name in [
             'flexirails/plugin.test'
           ]
         catch e
@@ -34,7 +38,7 @@
   </head>
   
   <body>
-    <h1 id="qunit-header">FlexiRails 2 tests</h1>
+    <h1 id="qunit-header">jquery-flexirails test suite</h1>
     <h2 id="qunit-banner"></h2>
     <h2 id="qunit-userAgent"></h2>
     <ol id="qunit-tests"></ol>
