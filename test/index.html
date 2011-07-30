@@ -1,38 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <!-- testing dependencies -->
     <script src="js/jquery-1.6.2.js"></script>
     <script src="js/qunit.js"></script>
     <script src="js/coffee-script-1.1.1.js"></script>
-    <script src="js/require-0.25.0.js"></script>
     
     <link  href="css/qunit.css" type="text/css" media="screen" rel="stylesheet"/>
-
-    <!-- require.js settings -->
-    <script type="text/javascript">
-      require({
-        paths: {
-          flexirails: "../src/coffee",
-          
-          test: "./coffee"
-        }
-      });
-    </script>
     
+    <!-- test suite initializer -->
     <script type="text/coffeescript">
-      executeTest = (file) ->
+      loadSource = (file) ->
         path = "#{file}.coffee"
-        console.log "loading #{path}"
         CoffeeScript.load path
         
-      require [], () ->
-        try
-          executeTest name for name in [
-            'flexirails/plugin.test'
-          ]
-        catch e
-          console.log e
+      try 
+        loadSource name for name in [
+          '/src/coffee/plugin'
+        ]
+      catch e
+        console.log "Error loading jquery-flexirails source code:", e
+    
+      executeTest = (file) ->
+        path = "#{file}.coffee"
+        CoffeeScript.load path
+        
+      try
+        executeTest name for name in [
+          'flexirails/plugin.test'
+        ]
+      catch e
+        console.log "Error loading test-suite:", e
       
     </script>
   </head>

@@ -1,4 +1,4 @@
 module "jquery-flexirails"
 
 test "$.flexirails should be available", ->
-  equals (typeof $.flexirails), "function", "$.flexirails should be a function"
+  equals (typeof $.fn.flexirails), "function", "$.fn.flexirails should be a function"
