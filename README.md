@@ -32,3 +32,4 @@ All tests are loaded automatically and executed.
 - rewrite using coffeescript (achieve proper js lint, seperation of concerns, ...)
 - add qunit tests
 - possiblity to work with JS Arrays as well as remote datasources
+- support multiple flexirails  table on a single page

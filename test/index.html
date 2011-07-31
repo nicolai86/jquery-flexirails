@@ -1,35 +1,28 @@
 <html>
   <head>
     <!-- testing dependencies -->
-    <script src="../public/js/jquery-1.6.2.js"></script>
+    <script src="/dependencies/jquery-1.6.2.js"></script>
     <script src="js/qunit.js"></script>
-    <script src="../public/js/coffee-script-1.1.1.js"></script>
+    <script src="/dependencies/coffee-script-1.1.1.js"></script>
     
     <link  href="css/qunit.css" type="text/css" media="screen" rel="stylesheet"/>
     
     <!-- test suite initializer -->
     <script type="text/coffeescript">
-      loadSource = (file) ->
-        path = "#{file}.coffee"
-        CoffeeScript.load path
+      loadSourceAndTests = (file) ->
+        source = "/src/coffee/#{file}.coffee"
+        test = "flexirails/#{file}.test.coffee"
         
-      try 
-        loadSource name for name in [
-          '/src/coffee/plugin'
-        ]
-      catch e
-        console.log "Error loading jquery-flexirails source code:", e
-    
-      executeTest = (file) ->
-        path = "#{file}.coffee"
-        CoffeeScript.load path
+        console.log source
+        console.log test
         
-      try
-        executeTest name for name in [
-          'flexirails/plugin.test'
-        ]
-      catch e
-        console.log "Error loading test-suite:", e
+        CoffeeScript.load source
+        CoffeeScript.load test
+        
+      loadSourceAndTests name for name in [
+        'plugin',
+        'adapter'
+      ]
       
     </script>
   </head>
