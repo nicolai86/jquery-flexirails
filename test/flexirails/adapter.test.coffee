@@ -8,6 +8,17 @@ test "ArrayAdapter should be available", ->
   
 test "RemoteAdapter should be available", ->
   equals (typeof RemoteAdapter), 'function', 'RemoteAdapter is not available'
+
+module "Adapter"
+
+adapter = new Adapter()
+
+test "Adapter perPage option defaults to 5", ->  
+  equals adapter.options.perPage, 5, "perPage defaults to 5"
+  
+test "PerPage should change", ->
+  adapter.perPage 2
+  equals adapter.options.perPage, 2, "perPage should have been overwritten"
   
 module "ArrayAdapter"
 
@@ -34,9 +45,8 @@ test "Can sort data ascending on a given attribute", ->
   equals (adapter.data[0].id), 1, "First element has lowest ID"
   equals (adapter.data[adapter.data.length-1].id), 4, "Last element has highest ID"
   
-test "Starts ready event when done sorting", ->
+test "Fires ready event when done sorting", ->
   $(adapter).bind 'ready', () ->
     ok true, "callback was called"
   adapter.sort 'name'
-  
   

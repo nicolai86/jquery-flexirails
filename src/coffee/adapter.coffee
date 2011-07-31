@@ -5,16 +5,33 @@ Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
 
 # Datasource adapter stub. All methods must be implemented to have a custom adapter
 class Adapter
-  # Sort the data of an adapter by a given column
+  constructor: (@options = {}) ->
+    @options.perPage ?= 5
+    
+  # sets the perPage option
+  perPage: (val) ->
+    @options.perPage = val
+    
+  # Sort the data of an adapter by a given column. As soon as the data is sorted
+  # an ready event has to be triggered on the Adapter
   sort: (column) ->
+    $(this).trigger 'ready'
   
   # Paginate the data to a given page
   paginate: (to) ->
+    $(this).trigger 'ready'
+    
+  # Returns the currently visible data
+  data: () ->
+    []
     
 # Static array adapter
-class ArrayAdapter
-  constructor: (@data) ->
+class ArrayAdapter extends Adapter
+  constructor: (@data, @options = {}) ->    
+    @paginate 1
+    super @opts
     
+  #
   sort: (column, asc = true) ->
     # helper functions for array sorting
     orderAscending = (a, b) ->
@@ -39,7 +56,18 @@ class ArrayAdapter
     else
       @data.sort orderDescending
       
-    $(this).trigger 'ready'
+    super()
+  
+  #
+  paginate: (to) ->
+    @minIndex = (to - 1) * @options.perPage
+    @maxIndex = to * @options.perPage
+    
+    super()
+    
+  #
+  paginatedData: () ->
+    Array.prototype.slice.call( @data, @minIndex, @maxIndex )
 
 # Remote data source adapter
 class RemoteAdapter
