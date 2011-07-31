@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <!-- dependencies -->
+    <script src="js/jquery-1.6.2.js"></script>
+    <script src="js/coffee-script-1.1.1.js"></script>
+    <script src="dist/flexirails.js"></script>
+    
+    <!-- sample initializer -->
+    <script type="text/coffeescript">
+      $ ->
+        cities = [
+          { name: 'Kiel', country: 'Germany' },
+          { name: 'New York', country: 'USA' }
+        ]
+        $("#example1").flexirails cities
+    </script>
+  </head>
+  
+  <body>
+    <!-- layout -->
+    <div id="outer">
+      <div id="inner">
+        
+        <!-- flexirails using a static array -->
+        <h1>Flexirails Sample</h1>
+        <div id="example1"></div>
+        
+        
+      </div>
+    </div>
+  </body>
+</html>
