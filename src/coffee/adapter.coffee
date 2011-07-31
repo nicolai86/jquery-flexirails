@@ -38,6 +38,8 @@ class ArrayAdapter
       @data.sort orderAscending
     else
       @data.sort orderDescending
+      
+    $(this).trigger 'ready'
 
 # Remote data source adapter
 class RemoteAdapter

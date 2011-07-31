@@ -34,4 +34,9 @@ test "Can sort data ascending on a given attribute", ->
   equals (adapter.data[0].id), 1, "First element has lowest ID"
   equals (adapter.data[adapter.data.length-1].id), 4, "Last element has highest ID"
   
+test "Starts ready event when done sorting", ->
+  $(adapter).bind 'ready', () ->
+    ok true, "callback was called"
+  adapter.sort 'name'
+  
   
