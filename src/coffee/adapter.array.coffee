@@ -1,8 +1,9 @@
 # Static array adapter
 class ArrayAdapter extends Adapter
-  constructor: (@data, @options = {}) ->    
+  constructor: (data, options = {}) ->        
+    super options
+    @data = data
     @paginate 1
-    super @opts
     
   #
   sort: (column, asc = true) ->
@@ -24,10 +25,11 @@ class ArrayAdapter extends Adapter
         0
         
     # switch sorting based on flag
-    if asc
-      @data.sort orderAscending
-    else
-      @data.sort orderDescending
+    if @data.length > 0
+      if asc
+        @data.sort orderAscending
+      else
+        @data.sort orderDescending
       
     super()
   
@@ -42,4 +44,4 @@ class ArrayAdapter extends Adapter
   paginatedData: () ->
     Array.prototype.slice.call( @data, @minIndex, @maxIndex )
 
-this.ArrayAdapter = ArrayAdapter
+window.ArrayAdapter = ArrayAdapter

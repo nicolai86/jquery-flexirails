@@ -1,26 +1,33 @@
 <html>
   <head>
     <!-- testing dependencies -->
+    <link  href="css/qunit.css" type="text/css" media="screen" rel="stylesheet"/>
+    
     <script src="/dependencies/jquery-1.6.2.js"></script>
     <script src="js/qunit.js"></script>
+    <script src="js/specit.js"></script>
+    <!-- <script src="js/specit.tests.js"></script> -->
     <script src="/dependencies/coffee-script-1.1.1.js"></script>
-    
-    <link  href="css/qunit.css" type="text/css" media="screen" rel="stylesheet"/>
+    <script src="/dist/flexirails.js"></script>
     
     <!-- test suite initializer -->
     <script type="text/coffeescript">
-      loadSourceAndTests = (file) ->
-        source = "/src/coffee/#{file}.coffee"
+      loadTest = (file) ->
         test = "flexirails/#{file}.test.coffee"
-        
-        CoffeeScript.load source
         CoffeeScript.load test
         
-      loadSourceAndTests name for name in [
+      loadSource = (file) ->
+        source = "/src/coffee/#{file}.coffee"
+        CoffeeScript.load source
+        
+      files =   [
         'plugin',
         'adapter',
         'adapter.array'
       ]
+        
+      # loadSource name for name in files
+      loadTest name for name in files
       
     </script>
   </head>

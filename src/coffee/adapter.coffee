@@ -5,9 +5,11 @@ Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
 
 # Datasource adapter stub. All methods must be implemented to have a custom adapter
 class Adapter
-  constructor: (@options = {}) ->
+  constructor: (options = {}) ->
+    @options = options
     @options.perPage ?= 5
     @options.currentPage ?= 1
+    @data = []
     
   # sets the perPage option
   perPage: (val) ->
@@ -27,13 +29,8 @@ class Adapter
     $(this).trigger 'ready'
     
   # Returns the currently visible data
-  data: () ->
-    []
+  paginatedData: () ->
+    @data
     
-# Remote data source adapter
-class RemoteAdapter
-  constructor: (@url) ->
-  
 # export datasource wrapper to scope
-this.Adapter = Adapter
-this.RemoteAdapter = RemoteAdapter
+window.Adapter = Adapter

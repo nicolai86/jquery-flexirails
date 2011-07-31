@@ -1,25 +1,21 @@
-module "flexirails-adapter"
-
-test "Adapter should be available", ->
-  equals (typeof Adapter), 'function', 'Adapter is not available'
-
-test "ArrayAdapter should be available", ->
-  equals (typeof ArrayAdapter), 'function', 'ArrayAdapter is not available'
+describe "flexirails-adapter", ->
+  adapter = null
   
-test "RemoteAdapter should be available", ->
-  equals (typeof RemoteAdapter), 'function', 'RemoteAdapter is not available'
-
-
-module "Adapter"
-
-adapter = new Adapter()
-
-test "Adapter perPage option defaults to 5", ->  
-  equals adapter.options.perPage, 5, "perPage doesnt default to 5"
+  before ->
+    adapter = new Adapter {}
+    
+  after ->
+    adapter = new Adapter {}
+    
+  it "should have a defaul perPage of 5", ->  
+    assert(adapter.options.perPage).should eql, 5
   
-test "Adapter currentPage option defaults to 1", ->
-  equals adapter.options.currentPage, 1, "currentPage doesnt default to 1"
+  it "Adapter currentPage option defaults to 1", ->
+    assert(adapter.options.currentPage).should eql, 1
   
-test "PerPage should change", ->
-  adapter.perPage 2
-  equals adapter.options.perPage, 2, "perPage should have been overwritten"
+  it "perPage should change options.perPage value", ->
+    adapter.perPage 2
+    assert(adapter.options.perPage).should eql, 2
+  
+  it "paginatedData should be available", ->
+    assert(typeof adapter.paginatedData).should eql, 'function'
