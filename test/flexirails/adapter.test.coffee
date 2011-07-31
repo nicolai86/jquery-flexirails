@@ -9,6 +9,7 @@ test "ArrayAdapter should be available", ->
 test "RemoteAdapter should be available", ->
   equals (typeof RemoteAdapter), 'function', 'RemoteAdapter is not available'
 
+
 module "Adapter"
 
 adapter = new Adapter()
@@ -19,6 +20,7 @@ test "Adapter perPage option defaults to 5", ->
 test "PerPage should change", ->
   adapter.perPage 2
   equals adapter.options.perPage, 2, "perPage should have been overwritten"
+  
   
 module "ArrayAdapter"
 
@@ -48,5 +50,9 @@ test "Can sort data ascending on a given attribute", ->
 test "Fires ready event when done sorting", ->
   $(adapter).bind 'ready', () ->
     ok true, "callback was called"
+    $(adapter).unbind 'ready'
   adapter.sort 'name'
   
+test "PerPage should change paginatedData", ->
+  adapter.perPage 2
+  equals (adapter.paginatedData().length), 2, "perPage should change paginatedData"

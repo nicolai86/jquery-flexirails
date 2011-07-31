@@ -7,10 +7,13 @@ Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
 class Adapter
   constructor: (@options = {}) ->
     @options.perPage ?= 5
+    @options.currentPage ?= 1
     
   # sets the perPage option
   perPage: (val) ->
     @options.perPage = val
+    
+    @paginate @options.currentPage
     
   # Sort the data of an adapter by a given column. As soon as the data is sorted
   # an ready event has to be triggered on the Adapter
@@ -19,6 +22,8 @@ class Adapter
   
   # Paginate the data to a given page
   paginate: (to) ->
+    @options.currentPage = to
+    
     $(this).trigger 'ready'
     
   # Returns the currently visible data
@@ -63,7 +68,7 @@ class ArrayAdapter extends Adapter
     @minIndex = (to - 1) * @options.perPage
     @maxIndex = to * @options.perPage
     
-    super()
+    super to
     
   #
   paginatedData: () ->
