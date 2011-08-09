@@ -8,32 +8,37 @@ describe 'flexirails-adapter.array', ->
     { id: 4, name: 'Ann' }
   ]
   
-  before ->
+  beforeEach ->
     adapter = new ArrayAdapter data
+    
+    this.addMatchers {
+      toBeA: (type) ->
+        this.actual instanceof type
+    }
   
   it "can be instanciated", ->
     adapter = new ArrayAdapter []
-    assert(adapter).should beA, ArrayAdapter
+    expect(adapter).toBeA ArrayAdapter
     
   it "can sort data descending given an attribute", ->
     $(adapter).one 'ready', ->
-      assert(adapter.data[0].id).should be, 4
-      assert(adapter.data[adapter.data.length-1].id).should be, 1
+      expect(adapter.data[0].id).toBe 4
+      expect(adapter.data[adapter.data.length-1].id).toBe 1
     adapter.sort 'id', false
   
   it "can sort data ascending given an attribute", ->
     $(adapter).one 'ready', ->
-      assert(adapter.data[0].id).should be, 1
-      assert(adapter.data[adapter.data.length-1].id).should be, 4
+      expect(adapter.data[0].id).toBe 1
+      expect(adapter.data[adapter.data.length-1].id).toBe 4
     adapter.sort 'id', true
   
   it "should fire a ready event when done sorting", ->
     $(adapter).one 'ready', ->
-      ok true, "callback was called"
+      expect(true).toBeTruthy()
     adapter.sort 'name'
   
   it "should change paginatedData on perPage call", ->
     $(adapter).one 'ready', ->
-      assert(adapter.paginatedData().length).should be, 2
+      expect(adapter.paginatedData().length).toBe 2
     adapter.perPage 2
     

@@ -45,7 +45,7 @@ methods =
     $this.append data.createFlexiTable data
     
   # set up a datasource for flexirails
-  initializeAdapter: (ds, $this = $ @) ->
+  initializeAdapter: (ds, $this) ->
     data = $this.data 'flexirails'
     
     if ds instanceof Array
@@ -71,7 +71,7 @@ methods =
     { cells: rowData }
     
   # populates the table with data
-  populateTable: ($this = $ @) ->
+  populateTable: ($this) ->
     data = $this.data 'flexirails'
     ds = data.datasource
     
@@ -86,8 +86,8 @@ methods =
   # destroy this flexirails instance
   destroy:  () ->
     $this = $ @
-    $this.find(".fr-table").remove()
     $this.data 'flexirails', null
+    $this.find(".fr-table").remove()
     
   #
   init : (datasource, view = {}, locales = {}, opts = {}) ->
@@ -104,8 +104,6 @@ methods =
       methods.compileViews $this
       methods.createTable $this
       methods.initializeAdapter datasource, $this
-      
-      console.log "not initialized"
     else
       console.log "initialized"
     

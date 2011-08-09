@@ -1,21 +1,21 @@
 describe "flexirails-adapter", ->
   adapter = null
   
-  before ->
+  beforeEach ->
     adapter = new Adapter {}
     
-  after ->
+  afterEach ->
     adapter = new Adapter {}
     
   it "should have a defaul perPage of 5", ->  
-    assert(adapter.options.perPage).should eql, 5
+    expect(adapter.options.perPage).toBe 5
   
   it "Adapter currentPage option defaults to 1", ->
-    assert(adapter.options.currentPage).should eql, 1
+    expect(adapter.options.currentPage).toBe 1
   
   it "perPage should change options.perPage value", ->
     adapter.perPage 2
-    assert(adapter.options.perPage).should eql, 2
+    expect(adapter.options.perPage).toBe 2
   
   it "paginatedData should be available", ->
-    assert(typeof adapter.paginatedData).should eql, 'function'
+    expect(typeof adapter.paginatedData).toBe 'function'
