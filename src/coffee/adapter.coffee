@@ -16,7 +16,7 @@ class Adapter
   perPage: (val) ->
     @options.perPage = val
     
-    @paginate @options.currentPage
+    @paginate 1
     
   # Sort the data of an adapter by a given column. As soon as the data is sorted
   # an ready event has to be triggered on the Adapter

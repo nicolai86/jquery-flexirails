@@ -34,15 +34,15 @@ flexirails =
   compileViews: ($this) ->
     data = $this.data 'flexirails'
     
-    data.flexiTableView = Handlebars.compile flexiTable
-    data.flexiRowView = Handlebars.compile flexiRow
+    data.createFlexiTable = Handlebars.compile flexiTable
+    data.createFlexiRow = Handlebars.compile flexiRow
     
     $this.data 'flexirails', data
 
   # creates the flexitable and appends it to the container
   createTable: ($this) ->
     data = $this.data 'flexirails'
-    $this.append data.flexiTableView data
+    $this.append data.createFlexiTable data
     
   # set up a datasource for flexirails
   initializeAdapter: ($this, ds) ->
@@ -53,6 +53,9 @@ flexirails =
     else
       data.datasource = new RemoteAdapter ds
     
+    $(data.datasource).bind 'ready', () ->
+      flexirails.populateTable $this
+      
     data.datasource.paginate 1
       
     $this.data 'flexirails', data
@@ -73,8 +76,12 @@ flexirails =
     ds = data.datasource
     
     table = $this.find(".fr-table")
+    table.find("tr:not(.fr-header)").remove()
+    
     for item in ds.paginatedData()
-      table.append data.flexiRowView flexirails.buildRowData $this, item
+      rowData = flexirails.buildRowData $this, item
+      table.append data.createFlexiRow rowData
+      true
     
   #
   init : (datasource, view = {}, locales = {}, opts = {}) ->
@@ -88,10 +95,10 @@ flexirails =
 
       $this.data 'flexirails', data
       
-      flexirails.initializeAdapter $this, datasource
       flexirails.compileViews $this
       flexirails.createTable $this
-      flexirails.populateTable $this
+      flexirails.initializeAdapter $this, datasource
+      #flexirails.populateTable $this
       
       console.log "not initialized"
     else
