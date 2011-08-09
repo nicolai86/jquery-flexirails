@@ -7,15 +7,15 @@ describe "flexirails-adapter", ->
   afterEach ->
     adapter = new Adapter {}
     
-  it "should have a defaul perPage of 5", ->  
+  it "should have a default perPage value of 5", ->  
     expect(adapter.options.perPage).toBe 5
   
-  it "Adapter currentPage option defaults to 1", ->
+  it "should have a default currentPage value of 1", ->
     expect(adapter.options.currentPage).toBe 1
   
-  it "perPage should change options.perPage value", ->
+  it "should change perPage option value when calling perPage", ->
     adapter.perPage 2
     expect(adapter.options.perPage).toBe 2
   
-  it "paginatedData should be available", ->
+  it "should export paginatedData as a function", ->
     expect(typeof adapter.paginatedData).toBe 'function'

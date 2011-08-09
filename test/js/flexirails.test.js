@@ -65,17 +65,17 @@
     afterEach(function() {
       return adapter = new Adapter({});
     });
-    it("should have a defaul perPage of 5", function() {
+    it("should have a default perPage value of 5", function() {
       return expect(adapter.options.perPage).toBe(5);
     });
-    it("Adapter currentPage option defaults to 1", function() {
+    it("should have a default currentPage value of 1", function() {
       return expect(adapter.options.currentPage).toBe(1);
     });
-    it("perPage should change options.perPage value", function() {
+    it("should change perPage option value when calling perPage", function() {
       adapter.perPage(2);
       return expect(adapter.options.perPage).toBe(2);
     });
-    return it("paginatedData should be available", function() {
+    return it("should export paginatedData as a function", function() {
       return expect(typeof adapter.paginatedData).toBe('function');
     });
   });
