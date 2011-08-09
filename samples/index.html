@@ -10,7 +10,7 @@
     <!-- sample initializer -->
     <script type="text/coffeescript">
       $ ->
-        cities = [
+        window.cities = [
           { name: 'Kiel', country: 'Germany' },
           { name: 'New York', country: 'USA' },
           { name: 'Oklahoma', country: 'USA' },
@@ -20,7 +20,7 @@
           { name: 'München', country: 'Germany' }
         ]
         
-        view = 
+        window.view = 
           columns: [
             {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
           ]
@@ -34,10 +34,11 @@
     <div id="outer">
       <div id="inner">
         
-        <!-- flexirails using a static array -->
-        <h1>Flexirails Sample</h1>
+        <h1>Flexirails Array Sample</h1>
         <div id="example1"></div>
         
+        <h1>Flexirails Remote Sample</h1>
+        <div id="example2"></div>
         
       </div>
     </div>

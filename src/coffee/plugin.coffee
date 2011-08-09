@@ -28,7 +28,7 @@ flexiRow = '''<tr class="fr-row">
 ###
 These methods can be used to interact with flexirails
 ###
-flexirails =
+methods =
 
   # compiles all Handlebars templates 
   compileViews: ($this) ->
@@ -45,7 +45,7 @@ flexirails =
     $this.append data.createFlexiTable data
     
   # set up a datasource for flexirails
-  initializeAdapter: ($this, ds) ->
+  initializeAdapter: (ds, $this = $ @) ->
     data = $this.data 'flexirails'
     
     if ds instanceof Array
@@ -54,7 +54,7 @@ flexirails =
       data.datasource = new RemoteAdapter ds
     
     $(data.datasource).bind 'ready', () ->
-      flexirails.populateTable $this
+      methods.populateTable $this
       
     data.datasource.paginate 1
       
@@ -71,7 +71,7 @@ flexirails =
     { cells: rowData }
     
   # populates the table with data
-  populateTable: ($this) ->
+  populateTable: ($this = $ @) ->
     data = $this.data 'flexirails'
     ds = data.datasource
     
@@ -79,9 +79,15 @@ flexirails =
     table.find("tr:not(.fr-header)").remove()
     
     for item in ds.paginatedData()
-      rowData = flexirails.buildRowData $this, item
+      rowData = methods.buildRowData $this, item
       table.append data.createFlexiRow rowData
       true
+    
+  # destroy this flexirails instance
+  destroy:  () ->
+    $this = $ @
+    $this.find(".fr-table").remove()
+    $this.data 'flexirails', null
     
   #
   init : (datasource, view = {}, locales = {}, opts = {}) ->
@@ -95,10 +101,9 @@ flexirails =
 
       $this.data 'flexirails', data
       
-      flexirails.compileViews $this
-      flexirails.createTable $this
-      flexirails.initializeAdapter $this, datasource
-      #flexirails.populateTable $this
+      methods.compileViews $this
+      methods.createTable $this
+      methods.initializeAdapter datasource, $this
       
       console.log "not initialized"
     else
@@ -109,9 +114,11 @@ Call $('#mydiv').flexirails(datasource, view, locals, options) to initialize
 jquery-flexirails for a given datasource on a given div
 ###
 $.fn.flexirails = (method) ->
-  if method of flexirails
-    return flexirails[ method ].apply this, Array.prototype.slice.call( arguments, 1 )
+  if method of methods
+    fnc = methods[ method ]
+    args = Array.prototype.slice.call( arguments, 1 )
+    return fnc.apply this, args
   else
     # no method was called. try to initialize flexirails
-    flexirails.init.apply this, arguments
+    methods.init.apply this, arguments
     

@@ -16,21 +16,24 @@ describe 'flexirails-adapter.array', ->
     assert(adapter).should beA, ArrayAdapter
     
   it "can sort data descending given an attribute", ->
+    $(adapter).one 'ready', ->
+      assert(adapter.data[0].id).should be, 4
+      assert(adapter.data[adapter.data.length-1].id).should be, 1
     adapter.sort 'id', false
-    assert(adapter.data[0].id).should be, 4
-    assert(adapter.data[adapter.data.length-1].id).should be, 1
   
   it "can sort data ascending given an attribute", ->
+    $(adapter).one 'ready', ->
+      assert(adapter.data[0].id).should be, 1
+      assert(adapter.data[adapter.data.length-1].id).should be, 4
     adapter.sort 'id', true
-    assert(adapter.data[0].id).should be, 1
-    assert(adapter.data[adapter.data.length-1].id).should be, 4
   
   it "should fire a ready event when done sorting", ->
-    $(adapter).bind 'ready', () ->
+    $(adapter).one 'ready', ->
       ok true, "callback was called"
-      $(adapter).unbind 'ready'
     adapter.sort 'name'
   
   it "should change paginatedData on perPage call", ->
+    $(adapter).one 'ready', ->
+      assert(adapter.paginatedData().length).should be, 2
     adapter.perPage 2
-    assert(adapter.paginatedData().length).should be, 2
+    
