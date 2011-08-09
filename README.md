@@ -1,7 +1,7 @@
 # flexirails
 
 flexirails is an easy to use table plugin for jQuery, which supports features like 
-searching, pagination, custom column ordering and much much more out of the box.  
+searching, pagination, custom column ordering and much much more out of the box. 
 The plugin is fully tested and written in Coffee-Script.
 
 ## Running the tests
@@ -20,9 +20,6 @@ Then all you have to do is
   
 All tests are loaded automatically and executed.
 
-## ToDo
+## Please Note
 
-- rewrite using coffeescript (achieve proper js lint, seperation of concerns, ...)
-- add qunit tests
-- possiblity to work with JS Arrays as well as remote datasources
-- support multiple flexirails  table on a single page
+- The plugin is currently being rewritten using coffeescript, to achieve proper seperation of concerns, cleaner code and js lint compliance
