@@ -3,14 +3,6 @@
 flexirails is an easy to use table plugin for jQuery, which supports features like 
 searching, pagination, custom column ordering and much much more out of the box.
 
-## Requirements
-
-todo
-
-## building jquery-flexirails
-
-todo
-
 ## Running the tests
 
 To execute the test suite you should be 
