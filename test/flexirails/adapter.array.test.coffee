@@ -31,6 +31,6 @@ describe 'flexirails-adapter.array', ->
       $(adapter).unbind 'ready'
     adapter.sort 'name'
   
-  it "perPage should change paginatedData", ->
+  it "should change paginatedData on perPage call", ->
     adapter.perPage 2
     assert(adapter.paginatedData().length).should be, 2

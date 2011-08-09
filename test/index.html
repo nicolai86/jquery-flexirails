@@ -16,17 +16,12 @@
         test = "flexirails/#{file}.test.coffee"
         CoffeeScript.load test
         
-      loadSource = (file) ->
-        source = "/src/coffee/#{file}.coffee"
-        CoffeeScript.load source
-        
       files =   [
         'plugin',
         'adapter',
         'adapter.array'
       ]
         
-      # loadSource name for name in files
       loadTest name for name in files
       
     </script>
