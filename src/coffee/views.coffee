@@ -19,7 +19,7 @@ flexiRow = '''<tr class="fr-row">
 </tr>'''
 
 # Flexirails pagination
-pagination = '''<div>
+navigation = '''<div class="fr-navigation">
 <div>
   Results per Page
   <select>

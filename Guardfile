@@ -5,7 +5,7 @@ guard 'shell' do
     "#{Time.now.strftime "%H:%M"} : flexirails compiled."
   end
   
-  watch(%r{^test/flexirails/.+\.coffee}) do
+  watch(%r{^test/flexirails/.+\.coffee}) do |m|
     %x{ coffee -j test/js/flexirails.test.js -c test/flexirails/plugin.test.coffee test/flexirails/adapter.test.coffee test/flexirails/adapter.array.test.coffee }
     "#{Time.now.strftime "%H:%M"} : flexirails tests compiled."
   end
