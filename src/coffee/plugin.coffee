@@ -11,7 +11,7 @@ flexiTable = '''<table class="fr-table">
 <tbody>
   <tr class="fr-header">
     {{#view/columns}}
-      <td>{{title}}</td>
+      <td class="{{selector}}">{{title}}</td>
     {{/view/columns}}
   </tr>
 </tbody>
@@ -30,13 +30,26 @@ These methods can be used to interact with flexirails
 ###
 methods =
 
-  # compiles all Handlebars templates 
+  # compiles all Handlebars templates
   compileViews: ($this) ->
     data = $this.data 'flexirails'
     
     data.createFlexiTable = Handlebars.compile flexiTable
     data.createFlexiRow = Handlebars.compile flexiRow
     
+    $this.data 'flexirails', data
+    
+  #
+  prepareView: ($this) ->
+    data = $this.data 'flexirails'
+    
+    view = data.view
+
+    if view.hasOwnProperty 'columns'
+      for column in view.columns
+        column.selector ?= column.attribute
+      
+    data.view = view
     $this.data 'flexirails', data
 
   # creates the flexitable and appends it to the container
@@ -102,6 +115,7 @@ methods =
       $this.data 'flexirails', data
       
       methods.compileViews $this
+      methods.prepareView $this
       methods.createTable $this
       methods.initializeAdapter datasource, $this
     else

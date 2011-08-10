@@ -16,17 +16,17 @@ describe 'flexirails-adapter.array', ->
         this.actual instanceof type
     }
   
-  it "can be instanciated", ->
+  it "should be instanciable", ->
     adapter = new ArrayAdapter []
     expect(adapter).toBeA ArrayAdapter
     
-  it "can sort data descending given an attribute", ->
+  it "should be able to sort data in descending order", ->
     $(adapter).one 'ready', ->
       expect(adapter.data[0].id).toBe 4
       expect(adapter.data[adapter.data.length-1].id).toBe 1
     adapter.sort 'id', false
   
-  it "can sort data ascending given an attribute", ->
+  it "should be able to sort data in ascending order", ->
     $(adapter).one 'ready', ->
       expect(adapter.data[0].id).toBe 1
       expect(adapter.data[adapter.data.length-1].id).toBe 4

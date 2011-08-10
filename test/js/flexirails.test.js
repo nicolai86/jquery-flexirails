@@ -105,18 +105,18 @@
         }
       });
     });
-    it("can be instanciated", function() {
+    it("should be instanciable", function() {
       adapter = new ArrayAdapter([]);
       return expect(adapter).toBeA(ArrayAdapter);
     });
-    it("can sort data descending given an attribute", function() {
+    it("should be able to sort data in descending order", function() {
       $(adapter).one('ready', function() {
         expect(adapter.data[0].id).toBe(4);
         return expect(adapter.data[adapter.data.length - 1].id).toBe(1);
       });
       return adapter.sort('id', false);
     });
-    it("can sort data ascending given an attribute", function() {
+    it("should be able to sort data in ascending order", function() {
       $(adapter).one('ready', function() {
         expect(adapter.data[0].id).toBe(1);
         return expect(adapter.data[adapter.data.length - 1].id).toBe(4);
