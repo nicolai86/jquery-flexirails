@@ -19,7 +19,7 @@ flexiTable = '''<table class="fr-table">
 
 flexiRow = '''<tr class="fr-row">
   {{#cells}}
-    <td class="fr-cell">
+    <td class="fr-cell {{selector}}">
       {{value}}
     </td>
   {{/cells}}
@@ -79,7 +79,10 @@ methods =
     
     rowData = []
     for column in data.view.columns
-      rowData.push { value: item[column.attribute] }
+      rowData.push { 
+        value: item[column.attribute] 
+        selector: column.attribute
+      }
       
     { cells: rowData }
     

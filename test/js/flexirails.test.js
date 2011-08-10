@@ -1,5 +1,6 @@
 (function() {
   describe("jquery-flexirails", function() {
+    var data, view;
     it("should export $.flexirails", function() {
       return expect(typeof $.fn.flexirails).toEqual("function");
     });
@@ -18,28 +19,27 @@
         return expect($(".fr-header").length).toBeGreaterThan(0);
       });
     });
-    return describe("flexirails-header", function() {
-      var data, view;
-      data = [
+    data = [
+      {
+        city: 'Kiel',
+        country: 'Germany'
+      }, {
+        city: 'New York',
+        country: 'USA'
+      }
+    ];
+    view = {
+      columns: [
         {
-          city: 'Kiel',
-          country: 'Germany'
+          title: 'City',
+          attribute: 'city'
         }, {
-          city: 'New York',
-          country: 'USA'
+          title: 'Country',
+          attribute: 'country'
         }
-      ];
-      view = {
-        columns: [
-          {
-            title: 'City',
-            attribute: 'city'
-          }, {
-            title: 'Country',
-            attribute: 'country'
-          }
-        ]
-      };
+      ]
+    };
+    describe("flexirails-header", function() {
       beforeEach(function() {
         $("#flexirails").empty();
         return $("#flexirails").flexirails(data, view);
@@ -50,9 +50,21 @@
       it("should create a td for every column", function() {
         return expect($(".fr-header").children().length).toBe(2);
       });
-      return it("should set the correct td selector", function() {
+      return it("should add the attribute as td selector", function() {
         expect($(".city").length).toBeGreaterThan(0);
         return expect($(".country").length).toBeGreaterThan(0);
+      });
+    });
+    return describe("flexirails-column", function() {
+      beforeEach(function() {
+        $("#flexirails").empty();
+        return $("#flexirails").flexirails(data, view);
+      });
+      afterEach(function() {
+        return $("#flexirails").flexirails('destroy');
+      });
+      return it("should add the attribute as td selector", function() {
+        return expect($(".fr-row .city").length).toBeGreaterThan(0);
       });
     });
   });

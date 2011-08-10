@@ -16,19 +16,20 @@ describe "jquery-flexirails", ->
     
     it "should add a header row to the table", ->
       expect( $(".fr-header").length ).toBeGreaterThan 0
-    
-  describe "flexirails-header", ->
-    data = [
-      { city: 'Kiel', country: 'Germany' },
-      { city: 'New York', country: 'USA' }
+  
+  # mock data
+  data = [
+    { city: 'Kiel', country: 'Germany' },
+    { city: 'New York', country: 'USA' }
+  ]
+  
+  view = 
+    columns: [
+      { title: 'City', attribute: 'city' },
+      { title: 'Country', attribute: 'country' }
     ]
-    
-    view = 
-      columns: [
-        { title: 'City', attribute: 'city' },
-        { title: 'Country', attribute: 'country' }
-      ]
-    
+  
+  describe "flexirails-header", ->
     beforeEach ->
       $("#flexirails").empty()
       $("#flexirails").flexirails data, view
@@ -39,7 +40,18 @@ describe "jquery-flexirails", ->
     it "should create a td for every column", ->
       expect( $(".fr-header").children().length ).toBe 2
       
-    it "should set the correct td selector", ->
+    it "should add the attribute as td selector", ->
       expect( $(".city").length ).toBeGreaterThan 0
       expect( $(".country").length ).toBeGreaterThan 0
+      
+  describe "flexirails-column", ->
+    beforeEach ->
+      $("#flexirails").empty()
+      $("#flexirails").flexirails data, view
+    
+    afterEach ->
+      $("#flexirails").flexirails 'destroy'
+      
+    it "should add the attribute as td selector", ->
+      expect( $(".fr-row .city").length ).toBeGreaterThan 0
       
