@@ -4,7 +4,7 @@ Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
 ###
 
 # Datasource adapter stub. All methods must be implemented to have a custom adapter
-class Adapter
+class window.Adapter
   constructor: (options = {}) ->
     @options = options
     @options.perPage ?= 5
@@ -33,6 +33,3 @@ class Adapter
   # Returns the currently visible data
   paginatedData: () ->
     @data
-    
-# export datasource wrapper to scope
-window.Adapter = Adapter

@@ -1,5 +1,5 @@
 # Static array adapter
-class ArrayAdapter extends Adapter
+class window.ArrayAdapter extends Adapter
   constructor: (data, options = {}) ->        
     super options
     @data = data
@@ -43,5 +43,3 @@ class ArrayAdapter extends Adapter
   #
   paginatedData: () ->
     Array.prototype.slice.call( @data, @minIndex, @maxIndex )
-
-window.ArrayAdapter = ArrayAdapter

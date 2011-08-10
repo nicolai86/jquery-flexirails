@@ -5,27 +5,6 @@ Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
 $ = jQuery
 
 ###
-Flexirails views
-###
-flexiTable = '''<table class="fr-table">
-<tbody>
-  <tr class="fr-header">
-    {{#view/columns}}
-      <td class="{{selector}}">{{title}}</td>
-    {{/view/columns}}
-  </tr>
-</tbody>
-</table>'''
-
-flexiRow = '''<tr class="fr-row">
-  {{#cells}}
-    <td class="fr-cell {{selector}}">
-      {{value}}
-    </td>
-  {{/cells}}
-</tr>'''
-
-###
 These methods can be used to interact with flexirails
 ###
 methods =
@@ -73,7 +52,7 @@ methods =
       
     $this.data 'flexirails', data
     
-  #
+  # builds the rowData object for the Handlebars row template
   buildRowData: ($this, item) ->
     data = $this.data 'flexirails'
     
@@ -136,4 +115,3 @@ $.fn.flexirails = (method) ->
   else
     # no method was called. try to initialize flexirails
     methods.init.apply this, arguments
-    
