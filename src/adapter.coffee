@@ -21,7 +21,6 @@ class window.Adapter
   # Sort the data of an adapter by a given column. As soon as the data is sorted
   # an ready event has to be triggered on the Adapter
   sort: (column) ->
-    
     $(this).trigger 'ready'
   
   # Paginate the data to a given page
