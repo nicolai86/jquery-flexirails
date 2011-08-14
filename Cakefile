@@ -1,21 +1,40 @@
+async         = require 'async'
 fs            = require 'fs'
 {print}       = require 'sys'
 {spawn,exec}  = require 'child_process'
 
-build = (watch, callback) ->
-  if typeof watch is 'function'
-    callback = watch
-    watch = false
-  options = ['-c', '-j', 'dist/flexirails.js', 'src/views.coffee', 'src/plugin.coffee', 'src/adapter.coffee', 'src/adapter.array.coffee', 'src/adapter.remote.coffee']
-  options.unshift '-w' if watch
+build = (output, files) ->  
+  options = ['-c', '-j', output]
+  
+  for file in files 
+    options.push file
   
   coffee = spawn 'coffee', options
   coffee.stdout.on 'data', (data) -> print data.toString()
   coffee.stderr.on 'data', (data) -> print data.toString()
   coffee.on 'exit', (status) -> callback?() if status is 0
   
-task 'build', 'Compile CoffeeScript source files', ->
-  build()
+buildSource = ->
+  (callback) ->
+    build 'dist/flexirails.js', [
+      'src/views.coffee', 
+      'src/plugin.coffee', 
+      'src/adapter.coffee', 
+      'src/adapter.array.coffee', 
+      'src/adapter.remote.coffee'
+    ]
   
-task 'watch', 'Recompile CoffeeScript source files when modified', ->
-  build true
+buildTests = ->
+  (callback) ->
+    build 'dist/flexirails.tests.js', [
+      'test/flexirails/plugin.test.coffee', 
+      'test/flexirails/adapter.test.coffee', 
+      'test/flexirails/adapter.array.test.coffee'
+    ]
+  
+task 'build', 'Compile all CoffeeScript source files', ->
+  async.parallel [
+    buildSource(),
+    buildTests()
+  ], ->
+    console.log "done"
