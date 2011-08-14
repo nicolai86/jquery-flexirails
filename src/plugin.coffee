@@ -72,7 +72,7 @@ $.flexirails = (el, options) ->
   createNavigation = ->
     data = $el.data 'flexirails'
   
-    data.flexiTable.prepend data.createFlexiNavigation data
+    data.flexiTable.prepend data.createFlexiNavigation plugin.adapter
     plugin.flexiNavigation = $el.find '.fr-navigation'
     
     bindNavigation()
@@ -124,6 +124,12 @@ $.flexirails = (el, options) ->
       rowData = buildRowData item
       table.append data.createFlexiRow rowData
       true
+      
+    currentPage = $el.find '.fr-current-page'
+    currentPage.html adapter.options.currentPage
+    
+    totalPages = $el.find '.fr-total-pages'
+    totalPages.html adapter.totalPages()
       
   # public methods
   

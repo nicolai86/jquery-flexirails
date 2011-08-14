@@ -31,7 +31,7 @@ navigation = '''<div class="fr-navigation">
   <a href="#" class="fr-first-page">First Page</a>
   <a href="#" class="fr-prev-page">Prev Page</a>
   <div>
-    Page 1 of 1
+    Page <span class="fr-current-page">{{options.currentPage}}</span> of <span class="fr-total-pages">{{totalPages}}</span>
   </div>
   <a href="#" class="fr-next-page">Next Page</a>
   <a href="#" class="fr-last-page">Last Page</a>

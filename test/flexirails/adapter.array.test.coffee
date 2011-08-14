@@ -26,17 +26,16 @@ describe 'flexirails-adapter.array', ->
       expect(adapter).toBeA ArrayAdapter
       
     describe "pagination", ->
+      # we have 4 items in the datasource
       it "should have the correct totalPages count", ->
         # default perPage option is 5
         expect(adapter.totalPages()).toBe 1
         
       it "should have the correct totalPages count for multiples of perPage", ->
-        # we have 4 items in the datasource
         adapter.perPage 2
         expect(adapter.totalPages()).toBe 2
       
       it "should have the correct totalPages count for odds of perPage", ->
-        # we have 4 items in the datasource
         adapter.perPage 3
         expect(adapter.totalPages()).toBe 2
       
