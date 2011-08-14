@@ -64,20 +64,17 @@ $.flexirails = (el, options) ->
     data = $el.data 'flexirails'
   
     $el.append data.createFlexiTable data
-    data.flexiTable = $el.find '.fr-table'
-  
-    $el.data 'flexirails', data
+    plugin.flexiTable = $el.find '.fr-table'
   
   # append flexirails navigation elements 
   createNavigation = ->
     data = $el.data 'flexirails'
   
-    data.flexiTable.prepend data.createFlexiNavigation plugin.adapter
+    $el.append data.createFlexiNavigation plugin.adapter
+    $(data.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
     plugin.flexiNavigation = $el.find '.fr-navigation'
     
     bindNavigation()
-  
-    $el.data 'flexirails', data
   
   # bind events to navigational elements
   bindNavigation = ->
@@ -132,7 +129,7 @@ $.flexirails = (el, options) ->
     
     adapter = plugin.adapter
     
-    table = data.flexiTable
+    table = plugin.flexiTable
     table.find("tr:not(.fr-header)").remove()
     
     for item in adapter.paginatedData()
@@ -140,6 +137,11 @@ $.flexirails = (el, options) ->
       table.append data.createFlexiRow rowData
       true
       
+    updateNavigation()
+      
+  updateNavigation = ->
+    adapter = plugin.adapter
+    
     currentPage = $el.find '.fr-current-page'
     currentPage.html adapter.options.currentPage
     
@@ -148,6 +150,9 @@ $.flexirails = (el, options) ->
     
     totalResults = $el.find '.fr-total-results'
     totalResults.html adapter.options.entries
+    
+    perPage = $el.find '.fr-per-page'
+    perPage.val adapter.options.perPage
       
   # public methods
   
@@ -155,6 +160,7 @@ $.flexirails = (el, options) ->
   plugin.destroy = ->
     $el.data 'flexirails', null
     $el.find(".fr-table").remove()
+    $el.find(".fr-navigation").remove()
 
   # set up a datasource for flexirails
   plugin.initializeAdapter = (ds) ->
