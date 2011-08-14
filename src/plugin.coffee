@@ -9,6 +9,8 @@ $.flexirails = (el, options) ->
   defaults = 
     navigationOnBottom: true
     navigationOnTop: true
+    adapter:
+      perPageOptions: [5,10,20,50]
   
   plugin = this
   $el = el
@@ -171,9 +173,9 @@ $.flexirails = (el, options) ->
   # set up a datasource for flexirails
   plugin.initializeAdapter = (ds) ->
     if ds instanceof Array
-      plugin.adapter = new ArrayAdapter ds
+      plugin.adapter = new ArrayAdapter ds, plugin.settings.adapter
     else
-      plugin.adapter = new RemoteAdapter ds
+      plugin.adapter = new RemoteAdapter ds, plugin.settings.adapter
     
     $(plugin.adapter).bind 'ready', () ->
       populateTable()

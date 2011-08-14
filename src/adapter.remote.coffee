@@ -1,3 +1,3 @@
 # Remote data source adapter
 class window.RemoteAdapter
-  constructor: (@url) ->
+  constructor: (@url, options = {}) ->

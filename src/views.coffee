@@ -23,8 +23,9 @@ navigation = '''<div class="fr-navigation">
 <div>
   Results per Page
   <select class="fr-per-page">
-    <option value="2">2</option>
-    <option value="5">5</option>
+    {{#options/perPageOptions}}
+      <option value="{{this}}">{{this}}</option>
+    {{/options/perPageOptions}}
   </select>
 </div>
 <div>

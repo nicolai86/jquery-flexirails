@@ -25,7 +25,7 @@
             {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
           ]
         
-        window.example1 = new $.flexirails $("#example1"), {'datasource':cities, 'view':view, 'locales':{}, 'navigationOnBottom': false}
+        window.example1 = new $.flexirails $("#example1"), {'datasource':cities, 'view':view, 'locales':{}, 'navigationOnBottom': false, adapter: {perPageOptions:[1,2,3,4,5]}}
     </script>
   </head>
   

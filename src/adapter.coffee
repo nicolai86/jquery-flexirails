@@ -9,6 +9,7 @@ class window.Adapter
     @options = options
     @options.perPage ?= 5
     @options.currentPage ?= 1
+    @options.perPageOptions ?= [5,10,15,20,25]
     @options.entries ?= 0
     @data = []
     @first = null
