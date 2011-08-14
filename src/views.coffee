@@ -37,6 +37,6 @@ navigation = '''<div class="fr-navigation">
   <a href="#" class="fr-last-page">Last Page</a>
 </div>
 <div>
-  0 Results
+  <span class="fr-total-results">{{options.entries}}</span> Results
 </div>
 </div>'''

@@ -70,6 +70,9 @@ describe "jquery-flexirails", ->
     afterEach ->
       destroyFlexirails()
       
+    it "should display the total number of entries", ->
+      expect($('.fr-total-results').html()).toBe instance.adapter.options.entries.toString()
+      
     it "should display the correct currentPage", ->
       expect($(".fr-current-page").html()).toBe instance.adapter.options.currentPage.toString()
       

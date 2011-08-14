@@ -145,6 +145,9 @@ $.flexirails = (el, options) ->
     
     totalPages = $el.find '.fr-total-pages'
     totalPages.html adapter.totalPages()
+    
+    totalResults = $el.find '.fr-total-results'
+    totalResults.html adapter.options.entries
       
   # public methods
   
