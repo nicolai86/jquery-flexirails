@@ -6,7 +6,7 @@ build = (watch, callback) ->
   if typeof watch is 'function'
     callback = watch
     watch = false
-  options = ['-j', '-o', 'dist', '-c', 'src']
+  options = ['-c', '-j', 'dist/flexirails.js', 'src/views.coffee', 'src/plugin.coffee', 'src/adapter.coffee', 'src/adapter.array.coffee', 'src/adapter.remote.coffee']
   options.unshift '-w' if watch
   
   coffee = spawn 'coffee', options
@@ -16,3 +16,6 @@ build = (watch, callback) ->
   
 task 'build', 'Compile CoffeeScript source files', ->
   build()
+  
+task 'watch', 'Recompile CoffeeScript source files when modified', ->
+  build true
