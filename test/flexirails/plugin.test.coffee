@@ -65,6 +65,7 @@ describe "jquery-flexirails", ->
   describe "flexirails-navigation", ->
     beforeEach ->
       initFlexirails data, view
+      instance.adapter.perPage 2
       
     afterEach ->
       destroyFlexirails()
@@ -76,12 +77,23 @@ describe "jquery-flexirails", ->
       expect($(".fr-total-pages").html()).toBe instance.adapter.totalPages().toString()
       
     it "should display the correct page count after perPage is called", ->
-      instance.adapter.perPage 2
       instance.adapter.paginate 2
       expect($(".fr-current-page").html()).toBe '2'
       
     it "should display the correct total pages counter after perPage is called", ->
-      instance.adapter.perPage 2
+      instance.adapter.perPage 3
       expect($(".fr-total-pages").html()).toBe '2'
       
+    it "should paginate when next link is clicked", ->
+      $(".fr-next-page").click()
+      expect(instance.adapter.options.currentPage).toBe 2
       
+    it "should paginate to last page when last page is clicked", ->
+      $(".fr-last-page").click()
+      expect(instance.adapter.options.currentPage).toBe instance.adapter.totalPages()
+      
+    it "should paginate to currentPage when clicking next-prev", ->
+      page = instance.adapter.options.currentPage
+      $(".fr-next-page").click()
+      $(".fr-prev-page").click()
+      expect(instance.adapter.options.currentPage).toBe page
