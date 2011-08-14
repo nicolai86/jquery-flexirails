@@ -21,16 +21,32 @@ describe "flexirails-adapter", ->
       expect(typeof adapter.paginatedData).toBe 'function'
       
     describe "per-page", ->
-      it "should change perPage option value when calling perPage", ->
+      it "should change options.perPage value when calling perPage", ->
         adapter.perPage 2
         expect(adapter.options.perPage).toBe 2
+      
+      it "should fire a ready event when perPage is changed", ->
+        $(adapter).one 'ready', ->
+          expect(true).toBeTruthy()
+        adapter.perPage 2
         
-      it "should change currentPage to 1 when changing perPage", ->
+      it "should change options.currentPage to 1 when changing perPage", ->
         adapter.options.currentPage = 2
         adapter.perPage 2
         expect(adapter.options.currentPage).toBe 1
     
+    describe "sorting", ->
+      it "should fire a ready event when sort is called", ->
+        $(adapter).one 'ready', ->
+          expect(true).toBeTruthy()
+        adapter.sort {}
+        
     describe "pagination", ->
+      it "should fire a ready event when paginate is called", ->
+        $(adapter).one 'ready', ->
+          expect(true).toBeTruthy()
+        adapter.paginate 2
+      
       it "should change options.currentPage value when paginate is called", ->
         adapter.paginate 2
         expect(adapter.options.currentPage).toBe 2
