@@ -95,7 +95,22 @@ $.flexirails = (el, options) ->
   bindPageNavigation = ->
     toFirstPage = $el.find '.fr-first-page'
     toFirstPage.bind 'click', ->
-      plugin.adapter.paginate 1
+      plugin.adapter.paginateToFirstPage()
+      false
+      
+    toLastPage = $el.find '.fr-last-page'
+    toLastPage.bind 'click', ->
+      plugin.adapter.paginateToLastPage()
+      false
+      
+    toNextPage = $el.find '.fr-next-page'
+    toNextPage.bind 'click', ->
+      plugin.adapter.paginateToNextPage()
+      false
+      
+    toPrevPage = $el.find '.fr-prev-page'
+    toPrevPage.bind 'click', ->
+      plugin.adapter.paginateToPrevPage()
       false
       
   # builds the rowData object for the Handlebars row template

@@ -53,3 +53,7 @@ class window.Adapter
   # paginate to the prev page
   paginateToPrevPage: ->
     @paginate @options.currentPage - 1
+    
+  # paginate to the last page
+  paginateToLastPage: ->
+    @paginate @totalPages()
