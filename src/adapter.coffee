@@ -13,7 +13,7 @@ class window.Adapter
     @data = []
     @first = null
     
-  # 
+  # total number of pages available for pagination
   totalPages: ->
     Math.ceil @options.entries / @options.perPage
     
@@ -30,10 +30,9 @@ class window.Adapter
   
   # Paginate the data to a given page
   paginate: (to) ->
-    if @paginationPossible to
-      @options.currentPage = to
+    @options.currentPage = to
     
-      $(this).trigger 'ready'
+    $(this).trigger 'ready'
     
   # Returns the currently visible data
   paginatedData: ->
@@ -41,7 +40,7 @@ class window.Adapter
   
   # check if pagination is possible  
   paginationPossible: (to) ->
-    to >= 1
+    to >= 1 && to <= @totalPages()
     
   # paginates to first page
   paginateToFirstPage: ->
