@@ -1,7 +1,7 @@
 # watch coffee-script source and recompile the entire project if a single file changes
 guard 'shell' do
-  watch(%r{^src/coffee/.+\.coffee}) do
-    %x{ coffee -j dist/flexirails.js -c src/coffee/views.coffee src/coffee/plugin.coffee src/coffee/adapter.coffee src/coffee/adapter.array.coffee src/coffee/adapter.remote.coffee }
+  watch(%r{^src/.+\.coffee}) do
+    %x{ coffee -j dist/flexirails.js -c src/views.coffee src/plugin.coffee src/adapter.coffee src/adapter.array.coffee src/adapter.remote.coffee }
     "#{Time.now.strftime "%H:%M"} : flexirails compiled."
   end
   
