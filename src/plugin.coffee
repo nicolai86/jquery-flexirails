@@ -6,7 +6,9 @@ $ = jQuery
 
 # el is a jQuery selector object, or array
 $.flexirails = (el, options) ->
-  defaults = {}
+  defaults = 
+    navigationOnBottom: true
+    navigationOnTop: true
   
   plugin = this
   $el = el
@@ -70,8 +72,11 @@ $.flexirails = (el, options) ->
   createNavigation = ->
     data = $el.data 'flexirails'
   
-    $el.append data.createFlexiNavigation plugin.adapter
-    $(data.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
+    if plugin.settings.navigationOnBottom
+      $el.append data.createFlexiNavigation plugin.adapter
+    if plugin.settings.navigationOnTop
+      $(data.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
+      
     plugin.flexiNavigation = $el.find '.fr-navigation'
     
     bindNavigation()
@@ -138,7 +143,8 @@ $.flexirails = (el, options) ->
       true
       
     updateNavigation()
-      
+  
+  # update the navigation with adapter information
   updateNavigation = ->
     adapter = plugin.adapter
     
