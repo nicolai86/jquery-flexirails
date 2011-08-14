@@ -73,15 +73,20 @@ $.flexirails = (el, options) ->
     data = $el.data 'flexirails'
   
     data.flexiTable.prepend data.createFlexiNavigation data
-    data.flexiNavigation = $el.find '.fr-navigation'
-  
+    plugin.flexiNavigation = $el.find '.fr-navigation'
+    
     bindNavigation()
   
     $el.data 'flexirails', data
   
   # bind events to navigational elements
   bindNavigation = ->
+    bindPerPageSelection()
+    
+  # bind per page selection events
+  bindPerPageSelection = ->
     perPage = $el.find '.fr-per-page'
+    perPage.val plugin.adapter.options.perPage
     perPage.bind 'change', ->
       plugin.adapter.perPage $(this).val()
       
