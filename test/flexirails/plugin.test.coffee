@@ -1,18 +1,25 @@
 describe "jquery-flexirails", ->
-
+  instance = null
+  
+  initFlexirails = (data = [], view = {}) ->
+    $("#flexirails").empty()
+    instance = $.flexirails $("#flexirails"), {'datasource':data, 'view': view, locales:{}}
+  
+  destroyFlexirails = ->
+    instance.destroy()
+  
   it "should export $.flexirails", ->
-    expect(typeof $.fn.flexirails).toEqual "function"
+    expect(typeof $.flexirails).toEqual "function"
     
   describe "flexirails-instanciation", ->
     beforeEach ->
-      $("#flexirails").empty()
-      $("#flexirails").flexirails [], {}
+      initFlexirails()
     
     afterEach ->
-      $("#flexirails").flexirails 'destroy'
+      destroyFlexirails()
       
     it "should add a table to the page", ->
-      expect( $("#flexirails > .fr-table").length ).toBeGreaterThan 0
+      expect( $(".fr-table").length ).toBeGreaterThan 0
     
     it "should add a header row to the table", ->
       expect( $(".fr-header").length ).toBeGreaterThan 0
@@ -31,11 +38,10 @@ describe "jquery-flexirails", ->
   
   describe "flexirails-header", ->
     beforeEach ->
-      $("#flexirails").empty()
-      $("#flexirails").flexirails data, view
+      initFlexirails data, view
     
     afterEach ->
-      $("#flexirails").flexirails 'destroy'
+      destroyFlexirails()
       
     it "should create a td for every column", ->
       expect( $(".fr-header").children().length ).toBe 2
@@ -46,11 +52,10 @@ describe "jquery-flexirails", ->
       
   describe "flexirails-column", ->
     beforeEach ->
-      $("#flexirails").empty()
-      $("#flexirails").flexirails data, view
+      initFlexirails data, view
     
     afterEach ->
-      $("#flexirails").flexirails 'destroy'
+      destroyFlexirails()
       
     it "should add the attribute as td selector", ->
       expect( $(".fr-row .city").length ).toBeGreaterThan 0

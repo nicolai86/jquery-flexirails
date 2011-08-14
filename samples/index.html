@@ -25,7 +25,7 @@
             {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
           ]
         
-        $("#example1").flexirails cities, view
+        window.example1 = new $.flexirails $("#example1"), {'datasource':cities, 'view':view, 'locales':{}}
     </script>
   </head>
   
