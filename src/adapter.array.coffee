@@ -2,6 +2,7 @@
 class window.ArrayAdapter extends Adapter
   constructor: (data, options = {}) ->        
     super options
+    @options.entries = data.length
     @data = data
     @paginate 1
     

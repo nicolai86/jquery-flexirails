@@ -9,13 +9,18 @@ class window.Adapter
     @options = options
     @options.perPage ?= 5
     @options.currentPage ?= 1
+    @options.entries ?= 0
     @data = []
     @first = null
+    
+  # 
+  totalPages: ->
+    Math.ceil @options.entries / @options.perPage
     
   # sets the perPage option
   perPage: (val) ->
     @options.perPage = val
-    
+
     @paginate 1
     
   # Sort the data of an adapter by a given column. As soon as the data is sorted

@@ -20,6 +20,9 @@ describe "flexirails-adapter", ->
     it "should export paginatedData as a function", ->
       expect(typeof adapter.paginatedData).toBe 'function'
       
+    it "should export totalPages as a function", ->
+      expect(typeof adapter.totalPages).toBe 'function'
+      
     describe "per-page", ->
       it "should change options.perPage value when calling perPage", ->
         adapter.perPage 2

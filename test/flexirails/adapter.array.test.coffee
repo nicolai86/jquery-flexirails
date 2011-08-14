@@ -25,6 +25,21 @@ describe 'flexirails-adapter.array', ->
       adapter = new ArrayAdapter []
       expect(adapter).toBeA ArrayAdapter
       
+    describe "pagination", ->
+      it "should have the correct totalPages count", ->
+        # default perPage option is 5
+        expect(adapter.totalPages()).toBe 1
+        
+      it "should have the correct totalPages count for multiples of perPage", ->
+        # we have 4 items in the datasource
+        adapter.perPage 2
+        expect(adapter.totalPages()).toBe 2
+      
+      it "should have the correct totalPages count for odds of perPage", ->
+        # we have 4 items in the datasource
+        adapter.perPage 3
+        expect(adapter.totalPages()).toBe 2
+      
     describe "sorting", ->
       it "should be able to sort data in descending order", ->
         $(adapter).one 'ready', ->
