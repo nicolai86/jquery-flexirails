@@ -35,10 +35,11 @@ class window.ArrayAdapter extends Adapter
   
   #
   paginate: (to) ->
-    @minIndex = (to - 1) * @options.perPage
-    @maxIndex = to * @options.perPage
-    
-    super to
+    if @paginationPossible to
+      @minIndex = (to - 1) * @options.perPage
+      @maxIndex = to * @options.perPage
+      
+      super to
     
   #
   paginatedData: () ->

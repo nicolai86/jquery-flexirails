@@ -82,6 +82,7 @@ $.flexirails = (el, options) ->
   # bind events to navigational elements
   bindNavigation = ->
     bindPerPageSelection()
+    bindPageNavigation()
     
   # bind per page selection events
   bindPerPageSelection = ->
@@ -89,6 +90,13 @@ $.flexirails = (el, options) ->
     perPage.val plugin.adapter.options.perPage
     perPage.bind 'change', ->
       plugin.adapter.perPage $(this).val()
+    
+  # bind first, prev, next and last-link events
+  bindPageNavigation = ->
+    toFirstPage = $el.find '.fr-first-page'
+    toFirstPage.bind 'click', ->
+      plugin.adapter.paginate 1
+      false
       
   # builds the rowData object for the Handlebars row template
   buildRowData = (item) ->

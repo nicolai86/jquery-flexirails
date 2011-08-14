@@ -25,10 +25,27 @@ class window.Adapter
   
   # Paginate the data to a given page
   paginate: (to) ->
-    @options.currentPage = to
+    if @paginationPossible to
+      @options.currentPage = to
     
-    $(this).trigger 'ready'
+      $(this).trigger 'ready'
     
   # Returns the currently visible data
-  paginatedData: () ->
+  paginatedData: ->
     @data
+  
+  # check if pagination is possible  
+  paginationPossible: (to) ->
+    to >= 1
+    
+  # paginates to first page
+  paginateToFirstPage: ->
+    @paginate 1
+  
+  # paginates to the next page
+  paginateToNextPage: ->
+    @paginate @options.currentPage + 1
+    
+  # paginate to the prev page
+  paginateToPrevPage: ->
+    @paginate @options.currentPage - 1

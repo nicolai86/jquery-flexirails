@@ -6,7 +6,7 @@ guard 'shell' do
   end
   
   watch(%r{^test/flexirails/.+\.coffee}) do |m|
-    %x{ cake build-test }
+    %x{ cake build }
     "#{Time.now.strftime "%H:%M"} : flexirails tests compiled."
   end
 end

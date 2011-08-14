@@ -28,13 +28,13 @@ navigation = '''<div class="fr-navigation">
   </select>
 </div>
 <div>
-  <a href="#">First Page</a>
-  <a href="#">Prev Page</a>
+  <a href="#" class="fr-first-page">First Page</a>
+  <a href="#" class="fr-prev-page">Prev Page</a>
   <div>
     Page 1 of 1
   </div>
-  <a href="#">Next Page</a>
-  <a href="#">Last Page</a>
+  <a href="#" class="fr-next-page">Next Page</a>
+  <a href="#" class="fr-last-page">Last Page</a>
 </div>
 <div>
   0 Results
