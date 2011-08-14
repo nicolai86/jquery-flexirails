@@ -68,13 +68,22 @@ $.flexirails = (el, options) ->
   
     $el.data 'flexirails', data
   
+  # append flexirails navigation elements 
   createNavigation = ->
     data = $el.data 'flexirails'
   
     data.flexiTable.prepend data.createFlexiNavigation data
     data.flexiNavigation = $el.find '.fr-navigation'
   
+    bindNavigation()
+  
     $el.data 'flexirails', data
+  
+  # bind events to navigational elements
+  bindNavigation = ->
+    perPage = $el.find '.fr-per-page'
+    perPage.bind 'change', ->
+      plugin.adapter.perPage $(this).val()
       
   # builds the rowData object for the Handlebars row template
   buildRowData = (item) ->
@@ -92,12 +101,13 @@ $.flexirails = (el, options) ->
   # populates the table with data
   populateTable = ->
     data = $el.data 'flexirails'
-    ds = data.datasource
+    
+    adapter = plugin.adapter
     
     table = data.flexiTable
     table.find("tr:not(.fr-header)").remove()
     
-    for item in ds.paginatedData()
+    for item in adapter.paginatedData()
       rowData = buildRowData item
       table.append data.createFlexiRow rowData
       true
@@ -111,19 +121,15 @@ $.flexirails = (el, options) ->
 
   # set up a datasource for flexirails
   plugin.initializeAdapter = (ds) ->
-    data = $el.data 'flexirails'
-    
     if ds instanceof Array
-      data.datasource = new ArrayAdapter ds
+      plugin.adapter = new ArrayAdapter ds
     else
-      data.datasource = new RemoteAdapter ds
+      plugin.adapter = new RemoteAdapter ds
     
-    $(data.datasource).bind 'ready', () ->
+    $(plugin.adapter).bind 'ready', () ->
       populateTable()
     
-    data.datasource.paginate 1
-    
-    $el.data 'flexirails', data
+    plugin.adapter.paginate 1
   
   init()
   plugin

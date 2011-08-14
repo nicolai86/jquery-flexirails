@@ -22,7 +22,8 @@ flexiRow = '''<tr class="fr-row">
 navigation = '''<div class="fr-navigation">
 <div>
   Results per Page
-  <select>
+  <select class="fr-per-page">
+    <option value="2">2</option>
     <option value="5">5</option>
   </select>
 </div>
