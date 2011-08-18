@@ -10,7 +10,7 @@
   };
   flexiTable = '<table class="fr-table">\n<tbody>\n  <tr class="fr-header">\n    {{#view/columns}}\n      <td class="{{selector}}">{{title}}</td>\n    {{/view/columns}}\n  </tr>\n</tbody>\n</table>';
   flexiRow = '<tr class="fr-row">\n{{#cells}}\n  <td class="fr-cell {{selector}}">\n    {{value}}\n  </td>\n{{/cells}}\n</tr>';
-  navigation = '<div class="fr-navigation">\n<div>\n  <span rel="localize[pagination.resultsPerPage]">Results per Page</span>\n  <select class="fr-per-page">\n    {{#options/perPageOptions}}\n      <option value="{{this}}">{{this}}</option>\n    {{/options/perPageOptions}}\n  </select>\n</div>\n<div>\n  <a href="#" class="fr-first-page">First Page</a>\n  <a href="#" class="fr-prev-page">Prev Page</a>\n  <div>\n    Page <span class="fr-current-page">{{options.currentPage}}</span> of <span class="fr-total-pages">{{totalPages}}</span>\n  </div>\n  <a href="#" class="fr-next-page">Next Page</a>\n  <a href="#" class="fr-last-page">Last Page</a>\n</div>\n<div>\n  <span class="fr-total-results">{{options.entries}}</span> Results\n</div>\n</div>';
+  navigation = '<div class="fr-navigation">\n<div>\n  <span rel="localize[pagination.resultsPerPage]">Results per Page</span>\n  <select class="fr-per-page">\n    {{#options/perPageOptions}}\n      <option value="{{this}}">{{this}}</option>\n    {{/options/perPageOptions}}\n  </select>\n</div>\n<div>\n  <a href="#" class="fr-first-page">\n    <span rel="localize[pagination.toFirstPage]">First Page</span>\n  </a>\n  <a href="#" class="fr-prev-page">\n    <span rel="localize[pagination.toPreviousPage]">Prev Page</span>\n  </a>\n  <div>\n    <span rel="localize[pagination.page]">Page</span> \n    <span class="fr-current-page">{{options.currentPage}}</span> \n    <span rel="localize[pagination.of]">of</span> \n    <span class="fr-total-pages">{{totalPages}}</span>\n  </div>\n  <a href="#" class="fr-next-page">\n    <span rel="localize[pagination.toNextPage]">Next Page</span>\n  </a>\n  <a href="#" class="fr-last-page">\n    <span rel="localize[pagination.toLastPage]">Last Page</span>\n  </a>\n</div>\n<div>\n  <span class="fr-total-results">{{options.entries}}</span> \n  <span rel="localize[pagination.results]">Results</span>\n</div>\n</div>';
   /*
   jquery-flexirails
   Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
@@ -19,8 +19,8 @@
   $.flexirails = function(el, options) {
     var $el, bindNavigation, bindPageNavigation, bindPerPageSelection, buildRowData, compileViews, createNavigation, createTable, defaults, init, plugin, populateTable, prepareView, updateNavigation;
     defaults = {
-      navigationOnBottom: true,
-      navigationOnTop: true,
+      paginationOnBottom: true,
+      paginationOnTop: true,
       adapter: {
         perPageOptions: [5, 10, 20, 50]
       }
@@ -82,10 +82,10 @@
     createNavigation = function() {
       var data;
       data = $el.data('flexirails');
-      if (plugin.settings.navigationOnBottom) {
+      if (plugin.settings.paginationOnBottom) {
         $el.append(data.createFlexiNavigation(plugin.adapter));
       }
-      if (plugin.settings.navigationOnTop) {
+      if (plugin.settings.paginationOnTop) {
         $(data.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
       }
       plugin.flexiNavigation = $el.find('.fr-navigation');
@@ -310,5 +310,14 @@
       return Array.prototype.slice.call(this.data, this.minIndex, this.maxIndex);
     };
     return ArrayAdapter;
+  })();
+  window.RemoteAdapter = (function() {
+    function RemoteAdapter(url, options) {
+      this.url = url;
+      if (options == null) {
+        options = {};
+      }
+    }
+    return RemoteAdapter;
   })();
 }).call(this);
