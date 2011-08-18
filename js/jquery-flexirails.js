@@ -28,16 +28,13 @@
     plugin = this;
     $el = el;
     plugin.settings = {};
-    init = function() {
+    init = function(options) {
       var data;
       data = $el.data('flexirails');
       plugin.settings = $.extend({}, defaults, options);
       plugin.el = el;
       if (!data) {
-        data = {
-          'view': options.view
-        };
-        $el.data('flexirails', data);
+        $el.data('flexirails', plugin);
         compileViews();
         prepareView();
         createTable();
@@ -48,9 +45,8 @@
       }
     };
     prepareView = function() {
-      var column, data, view, _i, _len, _ref, _ref2;
-      data = $el.data('flexirails');
-      view = data.view;
+      var column, view, _i, _len, _ref, _ref2;
+      view = plugin.view || plugin.settings.view;
       if (view.hasOwnProperty('columns')) {
         _ref = view.columns;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -62,31 +58,23 @@
           };
         }
       }
-      data.view = view;
-      return $el.data('flexirails', data);
+      return plugin.view = view;
     };
     compileViews = function() {
-      var data;
-      data = $el.data('flexirails');
-      data.createFlexiTable = Handlebars.compile(flexiTable);
-      data.createFlexiRow = Handlebars.compile(flexiRow);
-      data.createFlexiNavigation = Handlebars.compile(navigation);
-      return $el.data('flexirails', data);
+      plugin.createFlexiTable = Handlebars.compile(flexiTable);
+      plugin.createFlexiRow = Handlebars.compile(flexiRow);
+      return plugin.createFlexiNavigation = Handlebars.compile(navigation);
     };
     createTable = function() {
-      var data;
-      data = $el.data('flexirails');
-      $el.append(data.createFlexiTable(data));
+      $el.append(plugin.createFlexiTable(plugin));
       return plugin.flexiTable = $el.find('.fr-table');
     };
     createNavigation = function() {
-      var data;
-      data = $el.data('flexirails');
       if (plugin.settings.paginationOnBottom) {
-        $el.append(data.createFlexiNavigation(plugin.adapter));
+        $el.append(plugin.createFlexiNavigation(plugin.adapter));
       }
       if (plugin.settings.paginationOnTop) {
-        $(data.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
+        $(plugin.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
       }
       plugin.flexiNavigation = $el.find('.fr-navigation');
       return bindNavigation();
@@ -127,10 +115,9 @@
       });
     };
     buildRowData = function(item) {
-      var column, data, rowData, _i, _len, _ref;
-      data = $el.data('flexirails');
+      var column, rowData, _i, _len, _ref;
       rowData = [];
-      _ref = data.view.columns;
+      _ref = plugin.view.columns;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         column = _ref[_i];
         rowData.push({
@@ -143,8 +130,7 @@
       };
     };
     populateTable = function() {
-      var adapter, data, item, rowData, table, _i, _len, _ref;
-      data = $el.data('flexirails');
+      var adapter, item, rowData, table, _i, _len, _ref;
       adapter = plugin.adapter;
       table = plugin.flexiTable;
       table.find("tr:not(.fr-header)").remove();
@@ -152,7 +138,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
         rowData = buildRowData(item);
-        table.append(data.createFlexiRow(rowData));
+        table.append(plugin.createFlexiRow(rowData));
         true;
       }
       return updateNavigation();
@@ -185,8 +171,16 @@
       });
       return plugin.adapter.paginate(1);
     };
-    init();
+    init(options);
     return plugin;
+  };
+  $.fn.flexirails = function(options) {
+    return this.each(function() {
+      return new $.flexirails($(this), options);
+    });
+  };
+  $.fn.getFlexirails = function() {
+    return this.data('flexirails');
   };
   /*
   jquery-flexirails datasource adapter
