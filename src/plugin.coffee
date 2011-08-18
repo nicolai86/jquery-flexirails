@@ -46,6 +46,7 @@ $.flexirails = (el, options) ->
     
     plugin.settings = $.extend {}, defaults, options
     plugin.el = el
+    plugin.formatters ?= {}
     
     if !data
       $el.data 'flexirails', plugin
@@ -58,23 +59,27 @@ $.flexirails = (el, options) ->
     else
       console.log "initialized"
       
-  #
+  # prepare the view to be used in the handlebars view template
   prepareView = ->
     view = plugin.view || plugin.settings.view
+    
+    defaultFormatter = (td, col, obj, attr) ->
+      td.append attr
   
     if view.hasOwnProperty 'columns'
       for column in view.columns
         column.selector ?= column.attribute
+
+        plugin.formatters[column.selector] ?= defaultFormatter
         
     plugin.view = view
     
-  # compiles all Handlebars templates
+  # compiles all Handlebars templates and attach them to the plugin
   compileViews = ->
     plugin.createFlexiTable = Handlebars.compile flexiTable
-    plugin.createFlexiRow = Handlebars.compile flexiRow
     plugin.createFlexiNavigation = Handlebars.compile navigation
       
-  # creates the flexitable and appends it to the container
+  # creates the flexitable and appends it to the DOM element
   createTable = ->
     $el.append plugin.createFlexiTable plugin
     plugin.flexiTable = $el.find '.fr-table'
@@ -126,14 +131,17 @@ $.flexirails = (el, options) ->
       
   # builds the rowData object for the Handlebars row template
   buildRowData = (item) ->
-    rowData = []
+    tr = $ document.createElement 'tr'
+    tr.addClass 'fr-row'
+    
     for column in plugin.view.columns
-      rowData.push { 
-        value: item[column.attribute] 
-        selector: column.attribute
-      }
-  
-    { cells: rowData }
+      td = $ document.createElement 'td'
+      td.addClass column.attribute
+      td.append item[column.attribute]
+      
+      tr.append td
+      
+    tr
   
   # populates the table with data
   populateTable = ->
@@ -144,7 +152,7 @@ $.flexirails = (el, options) ->
     
     for item in adapter.paginatedData()
       rowData = buildRowData item
-      table.append plugin.createFlexiRow rowData
+      table.append rowData
       true
       
     updateNavigation()
@@ -172,6 +180,10 @@ $.flexirails = (el, options) ->
     $el.data 'flexirails', null
     $el.find(".fr-table").remove()
     $el.find(".fr-navigation").remove()
+
+  # register a formatter for a certain cell
+  plugin.registerFormatter = (selector, fnc) ->
+    plugin.formatter[selector] = fnc
 
   # set up a datasource for flexirails
   plugin.initializeAdapter = (ds) ->

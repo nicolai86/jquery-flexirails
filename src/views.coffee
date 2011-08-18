@@ -9,15 +9,6 @@ flexiTable = '''<table class="fr-table">
 </tbody>
 </table>'''
 
-# a Flexirails row
-flexiRow = '''<tr class="fr-row">
-  {{#cells}}
-    <td class="fr-cell {{selector}}">
-      {{value}}
-    </td>
-  {{/cells}}
-</tr>'''
-
 # Flexirails pagination
 navigation = '''<div class="fr-navigation">
 <div>

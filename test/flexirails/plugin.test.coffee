@@ -63,6 +63,16 @@ describe "jquery-flexirails", ->
     it "should add the attribute as td selector", ->
       expect( $(".fr-row .city").length ).toBeGreaterThan 0
       
+  describe "flexirails-cell", ->
+    beforeEach ->
+      initFlexirails data, view
+    
+    afterEach ->
+      destroyFlexirails()
+      
+    it "should be able to register formatter for cells", ->
+      expect( typeof instance.registerFormatter).toBe 'function'
+      
   describe "flexirails-navigation", ->
     beforeEach ->
       initFlexirails data, view
