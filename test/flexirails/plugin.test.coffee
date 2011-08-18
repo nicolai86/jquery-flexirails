@@ -3,7 +3,8 @@ describe "jquery-flexirails", ->
   
   initFlexirails = (data = [], view = {}) ->
     $("#flexirails").empty()
-    instance = $.flexirails $("#flexirails"), {'datasource':data, 'view': view, locales:{}}
+    elem = $("#flexirails").flexirails { 'datasource':data, 'view': view }
+    instance = $(elem).getFlexirails()
   
   destroyFlexirails = ->
     instance.destroy()
