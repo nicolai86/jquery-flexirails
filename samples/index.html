@@ -5,6 +5,7 @@
     <script src="/dependencies/jquery-1.6.2.js"></script>
     <script src="/dependencies/coffee-script-1.1.1.js"></script>
     <script src="/dependencies/handlebars-1.0.2.js"></script>
+    <script src="/dependencies/jquery-localize.js"></script>
     <script src="/dist/flexirails.js"></script>
     
     <!-- sample initializer -->
@@ -25,7 +26,19 @@
             {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
           ]
         
-        window.example1 = new $.flexirails $("#example1"), {'datasource':cities, 'view':view, 'locales':{}, 'navigationOnBottom': false, adapter: {perPageOptions:[1,2,3,4,5]}}
+        window.example1 = new $.flexirails $("#example1"), {
+          'datasource':cities, 
+          'view':view, 
+          'navigationOnBottom': false, 
+          adapter: {
+            perPageOptions: [1,2,3,4,5]
+          }
+        }
+        
+        $("[rel*=localize]").localize 'flexirails', { 
+          pathPrefix:'/lang',
+          language: 'en'
+        }
     </script>
   </head>
   

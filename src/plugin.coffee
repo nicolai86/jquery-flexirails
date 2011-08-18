@@ -28,7 +28,6 @@ $.flexirails = (el, options) ->
     if !data
       data = 
         'view': options.view
-        'locales': options.locales
 
       $el.data 'flexirails', data
       

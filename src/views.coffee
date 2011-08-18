@@ -21,7 +21,7 @@ flexiRow = '''<tr class="fr-row">
 # Flexirails pagination
 navigation = '''<div class="fr-navigation">
 <div>
-  Results per Page
+  <span rel="localize[pagination.resultsPerPage]">Results per Page</span>
   <select class="fr-per-page">
     {{#options/perPageOptions}}
       <option value="{{this}}">{{this}}</option>
