@@ -10,17 +10,39 @@
   };
   flexiTable = '<table class="fr-table">\n<tbody>\n  <tr class="fr-header">\n    {{#view/columns}}\n      <td class="{{selector}}">{{title}}</td>\n    {{/view/columns}}\n  </tr>\n</tbody>\n</table>';
   flexiRow = '<tr class="fr-row">\n{{#cells}}\n  <td class="fr-cell {{selector}}">\n    {{value}}\n  </td>\n{{/cells}}\n</tr>';
-  navigation = '<div class="fr-navigation">\n<div>\n  <span rel="localize[pagination.resultsPerPage]">Results per Page</span>\n  <select class="fr-per-page">\n    {{#options/perPageOptions}}\n      <option value="{{this}}">{{this}}</option>\n    {{/options/perPageOptions}}\n  </select>\n</div>\n<div>\n  <a href="#" class="fr-first-page">First Page</a>\n  <a href="#" class="fr-prev-page">Prev Page</a>\n  <div>\n    Page <span class="fr-current-page">{{options.currentPage}}</span> of <span class="fr-total-pages">{{totalPages}}</span>\n  </div>\n  <a href="#" class="fr-next-page">Next Page</a>\n  <a href="#" class="fr-last-page">Last Page</a>\n</div>\n<div>\n  <span class="fr-total-results">{{options.entries}}</span> Results\n</div>\n</div>';
+  navigation = '<div class="fr-navigation">\n<div>\n  <span rel="localize[pagination.resultsPerPage]">Results per Page</span>\n  <select class="fr-per-page">\n    {{#options/perPageOptions}}\n      <option value="{{this}}">{{this}}</option>\n    {{/options/perPageOptions}}\n  </select>\n</div>\n<div>\n  <a href="#" class="fr-first-page">\n    <span rel="localize[pagination.toFirstPage]">First Page</span>\n  </a>\n  <a href="#" class="fr-prev-page">\n    <span rel="localize[pagination.toPreviousPage]">Prev Page</span>\n  </a>\n  <div>\n    <span rel="localize[pagination.page]">Page</span> \n    <span class="fr-current-page">{{options.currentPage}}</span> \n    <span rel="localize[pagination.of]">of</span> \n    <span class="fr-total-pages">{{totalPages}}</span>\n  </div>\n  <a href="#" class="fr-next-page">\n    <span rel="localize[pagination.toNextPage]">Next Page</span>\n  </a>\n  <a href="#" class="fr-last-page">\n    <span rel="localize[pagination.toLastPage]">Last Page</span>\n  </a>\n</div>\n<div>\n  <span class="fr-total-results">{{options.entries}}</span> \n  <span rel="localize[pagination.results]">Results</span>\n</div>\n</div>';
   /*
   jquery-flexirails
-  Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
+  
+  Copyright © 2011 Raphael Randschau (https://github.com/leahpar)
+  
+  Released under MIT-LICENSE:
+  
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   */
   $ = jQuery;
   $.flexirails = function(el, options) {
     var $el, bindNavigation, bindPageNavigation, bindPerPageSelection, buildRowData, compileViews, createNavigation, createTable, defaults, init, plugin, populateTable, prepareView, updateNavigation;
     defaults = {
-      navigationOnBottom: true,
-      navigationOnTop: true,
+      paginationOnBottom: true,
+      paginationOnTop: true,
       adapter: {
         perPageOptions: [5, 10, 20, 50]
       }
@@ -28,16 +50,13 @@
     plugin = this;
     $el = el;
     plugin.settings = {};
-    init = function() {
+    init = function(options) {
       var data;
       data = $el.data('flexirails');
       plugin.settings = $.extend({}, defaults, options);
       plugin.el = el;
       if (!data) {
-        data = {
-          'view': options.view
-        };
-        $el.data('flexirails', data);
+        $el.data('flexirails', plugin);
         compileViews();
         prepareView();
         createTable();
@@ -48,9 +67,8 @@
       }
     };
     prepareView = function() {
-      var column, data, view, _i, _len, _ref, _ref2;
-      data = $el.data('flexirails');
-      view = data.view;
+      var column, view, _i, _len, _ref, _ref2;
+      view = plugin.view || plugin.settings.view;
       if (view.hasOwnProperty('columns')) {
         _ref = view.columns;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -62,31 +80,23 @@
           };
         }
       }
-      data.view = view;
-      return $el.data('flexirails', data);
+      return plugin.view = view;
     };
     compileViews = function() {
-      var data;
-      data = $el.data('flexirails');
-      data.createFlexiTable = Handlebars.compile(flexiTable);
-      data.createFlexiRow = Handlebars.compile(flexiRow);
-      data.createFlexiNavigation = Handlebars.compile(navigation);
-      return $el.data('flexirails', data);
+      plugin.createFlexiTable = Handlebars.compile(flexiTable);
+      plugin.createFlexiRow = Handlebars.compile(flexiRow);
+      return plugin.createFlexiNavigation = Handlebars.compile(navigation);
     };
     createTable = function() {
-      var data;
-      data = $el.data('flexirails');
-      $el.append(data.createFlexiTable(data));
+      $el.append(plugin.createFlexiTable(plugin));
       return plugin.flexiTable = $el.find('.fr-table');
     };
     createNavigation = function() {
-      var data;
-      data = $el.data('flexirails');
-      if (plugin.settings.navigationOnBottom) {
-        $el.append(data.createFlexiNavigation(plugin.adapter));
+      if (plugin.settings.paginationOnBottom) {
+        $el.append(plugin.createFlexiNavigation(plugin.adapter));
       }
-      if (plugin.settings.navigationOnTop) {
-        $(data.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
+      if (plugin.settings.paginationOnTop) {
+        $(plugin.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
       }
       plugin.flexiNavigation = $el.find('.fr-navigation');
       return bindNavigation();
@@ -127,10 +137,9 @@
       });
     };
     buildRowData = function(item) {
-      var column, data, rowData, _i, _len, _ref;
-      data = $el.data('flexirails');
+      var column, rowData, _i, _len, _ref;
       rowData = [];
-      _ref = data.view.columns;
+      _ref = plugin.view.columns;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         column = _ref[_i];
         rowData.push({
@@ -143,8 +152,7 @@
       };
     };
     populateTable = function() {
-      var adapter, data, item, rowData, table, _i, _len, _ref;
-      data = $el.data('flexirails');
+      var adapter, item, rowData, table, _i, _len, _ref;
       adapter = plugin.adapter;
       table = plugin.flexiTable;
       table.find("tr:not(.fr-header)").remove();
@@ -152,7 +160,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
         rowData = buildRowData(item);
-        table.append(data.createFlexiRow(rowData));
+        table.append(plugin.createFlexiRow(rowData));
         true;
       }
       return updateNavigation();
@@ -185,8 +193,16 @@
       });
       return plugin.adapter.paginate(1);
     };
-    init();
+    init(options);
     return plugin;
+  };
+  $.fn.flexirails = function(options) {
+    return this.each(function() {
+      return new $.flexirails($(this), options);
+    });
+  };
+  $.fn.getFlexirails = function() {
+    return this.data('flexirails');
   };
   /*
   jquery-flexirails datasource adapter
@@ -310,5 +326,14 @@
       return Array.prototype.slice.call(this.data, this.minIndex, this.maxIndex);
     };
     return ArrayAdapter;
+  })();
+  window.RemoteAdapter = (function() {
+    function RemoteAdapter(url, options) {
+      this.url = url;
+      if (options == null) {
+        options = {};
+      }
+    }
+    return RemoteAdapter;
   })();
 }).call(this);
