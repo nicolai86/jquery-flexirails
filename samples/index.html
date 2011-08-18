@@ -29,15 +29,15 @@
         window.example1 = new $.flexirails $("#example1"), {
           'datasource':cities, 
           'view':view, 
-          'navigationOnBottom': false, 
+          'paginationOnBottom': false, 
           adapter: {
-            perPageOptions: [1,2,3,4,5]
+            perPageOptions: [1, 2, 3, 4, 5]
           }
         }
         
         $("[rel*=localize]").localize 'flexirails', { 
           pathPrefix:'/lang',
-          language: 'en'
+          language: 'de'
         }
     </script>
   </head>

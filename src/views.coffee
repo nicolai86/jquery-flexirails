@@ -29,15 +29,27 @@ navigation = '''<div class="fr-navigation">
   </select>
 </div>
 <div>
-  <a href="#" class="fr-first-page">First Page</a>
-  <a href="#" class="fr-prev-page">Prev Page</a>
+  <a href="#" class="fr-first-page">
+    <span rel="localize[pagination.toFirstPage]">First Page</span>
+  </a>
+  <a href="#" class="fr-prev-page">
+    <span rel="localize[pagination.toPreviousPage]">Prev Page</span>
+  </a>
   <div>
-    Page <span class="fr-current-page">{{options.currentPage}}</span> of <span class="fr-total-pages">{{totalPages}}</span>
+    <span rel="localize[pagination.page]">Page</span> 
+    <span class="fr-current-page">{{options.currentPage}}</span> 
+    <span rel="localize[pagination.of]">of</span> 
+    <span class="fr-total-pages">{{totalPages}}</span>
   </div>
-  <a href="#" class="fr-next-page">Next Page</a>
-  <a href="#" class="fr-last-page">Last Page</a>
+  <a href="#" class="fr-next-page">
+    <span rel="localize[pagination.toNextPage]">Next Page</span>
+  </a>
+  <a href="#" class="fr-last-page">
+    <span rel="localize[pagination.toLastPage]">Last Page</span>
+  </a>
 </div>
 <div>
-  <span class="fr-total-results">{{options.entries}}</span> Results
+  <span class="fr-total-results">{{options.entries}}</span> 
+  <span rel="localize[pagination.results]">Results</span>
 </div>
 </div>'''
