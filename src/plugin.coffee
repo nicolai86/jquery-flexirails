@@ -7,8 +7,8 @@ $ = jQuery
 # el is a jQuery selector object, or array
 $.flexirails = (el, options) ->
   defaults = 
-    navigationOnBottom: true
-    navigationOnTop: true
+    paginationOnBottom: true
+    paginationOnTop: true
     adapter:
       perPageOptions: [5,10,20,50]
   
@@ -73,9 +73,9 @@ $.flexirails = (el, options) ->
   createNavigation = ->
     data = $el.data 'flexirails'
   
-    if plugin.settings.navigationOnBottom
+    if plugin.settings.paginationOnBottom
       $el.append data.createFlexiNavigation plugin.adapter
-    if plugin.settings.navigationOnTop
+    if plugin.settings.paginationOnTop
       $(data.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
       
     plugin.flexiNavigation = $el.find '.fr-navigation'
