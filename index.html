@@ -30,7 +30,7 @@
         window.example1 = new $.flexirails($("#example1"), {
           'datasource':cities, 
           'view':view, 
-          'navigationOnBottom': false, 
+          'paginationOnBottom': false, 
           adapter: {
             perPageOptions: [1,2,3,4,5]
           }
@@ -65,7 +65,37 @@
         
         <article id="documentation">
           <h1>Documentation</h1>
-          <!-- ToDo add options as supported by the plugin-->
+          <h2>$.fn.flexirails options</h2>
+          <table>
+            <thead>
+              <tr>
+                <td>Option</td>
+                <td>Description</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>datasource</td>
+                <td>The source which flexirails will use for data-retrieval. Can either be a static array, or an Adapter</td>
+              </tr>
+              <tr>
+                <td>view</td>
+                <td>The view which will be used to create the underlying HTML-table</td>
+              </tr>
+              <tr>
+                <td>adapter</td>
+                <td>Options to be used by the adapter</td>
+              </tr>
+              <tr>
+                <td>paginationOnBottom</td>
+                <td>Boolean. Display a pagination menu on the bottom of the flexirails table</td>
+              </tr>
+              <tr>
+                <td>paginationOnTop</td>
+                <td>Boolean. Display a pagination menu on the top of the flexirails table</td>
+              </tr>
+            </tbody>
+          </table>
         </article>
         
         <footer>
