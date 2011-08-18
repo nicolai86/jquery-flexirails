@@ -19,8 +19,8 @@
   $.flexirails = function(el, options) {
     var $el, bindNavigation, bindPageNavigation, bindPerPageSelection, buildRowData, compileViews, createNavigation, createTable, defaults, init, plugin, populateTable, prepareView, updateNavigation;
     defaults = {
-      paginationOnBottom: true,
-      paginationOnTop: true,
+      navigationOnBottom: true,
+      navigationOnTop: true,
       adapter: {
         perPageOptions: [5, 10, 20, 50]
       }
@@ -82,10 +82,10 @@
     createNavigation = function() {
       var data;
       data = $el.data('flexirails');
-      if (plugin.settings.paginationOnBottom) {
+      if (plugin.settings.navigationOnBottom) {
         $el.append(data.createFlexiNavigation(plugin.adapter));
       }
-      if (plugin.settings.paginationOnTop) {
+      if (plugin.settings.navigationOnTop) {
         $(data.createFlexiNavigation(plugin.adapter)).insertBefore(plugin.flexiTable);
       }
       plugin.flexiNavigation = $el.find('.fr-navigation');
