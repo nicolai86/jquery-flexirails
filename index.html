@@ -8,6 +8,40 @@
     <script src="js/handlebars-1.0.2.js"></script>
     <script src="js/jquery-localize.js"></script>
     <script src="js/jquery-flexirails.js"></script>
+    
+    <script type="text/javascript">
+      $(function() {
+        var cities = [
+          { name: 'Kiel', country: 'Germany' },
+          { name: 'New York', country: 'USA' },
+          { name: 'Oklahoma', country: 'USA' },
+          { name: 'Tenessee', country: 'USA' },
+          { name: 'Hamburg', country: 'Germany' },
+          { name: 'Frankfurt', country: 'Germany' },
+          { name: 'München', country: 'Germany' }
+        ]
+        
+        var view = {
+          columns: [
+            {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
+          ]
+        } 
+        
+        window.example1 = new $.flexirails($("#example1"), {
+          'datasource':cities, 
+          'view':view, 
+          'navigationOnBottom': false, 
+          adapter: {
+            perPageOptions: [1,2,3,4,5]
+          }
+        });
+        
+        $("[rel*=localize]").localize('flexirails', { 
+          pathPrefix:'/lang',
+          language: 'en'
+        })
+      });
+    </script>
   </head>
   <body>
     <div id="outer">
