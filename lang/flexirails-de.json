@@ -1,0 +1,12 @@
+{
+  "pagination": {
+    "resultsPerPage": "Ergebnisse pro Seite",
+    "toFirstPage": "Erste Seite",
+    "toLastPage": "Letzte Seite",
+    "toPreviousPage": "Vorherige Seite",
+    "toNextPage": "Nächste Seite",
+    "page": "Seite",
+    "of": "von",
+    "results": "Ergebnisse"
+  }
+}
