@@ -10,37 +10,12 @@
     <script src="js/jquery-flexirails.js"></script>
     
     <script type="text/javascript">
-      $(function() {
-        var cities = [
-          { name: 'Kiel', country: 'Germany' },
-          { name: 'New York', country: 'USA' },
-          { name: 'Oklahoma', country: 'USA' },
-          { name: 'Tenessee', country: 'USA' },
-          { name: 'Hamburg', country: 'Germany' },
-          { name: 'Frankfurt', country: 'Germany' },
-          { name: 'München', country: 'Germany' }
-        ]
-        
-        var view = {
-          columns: [
-            {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
-          ]
-        } 
-        
-        window.example1 = new $.flexirails($("#example1"), {
-          'datasource':cities, 
-          'view':view, 
-          'paginationOnBottom': false, 
-          adapter: {
-            perPageOptions: [1,2,3,4,5]
-          }
-        });
-        
-        $("[rel*=localize]").localize('flexirails', { 
-          pathPrefix:'lang',
-          language: 'en'
-        })
-      });
+      // $(function() {        
+      //   $("[rel*=localize]").localize('flexirails', { 
+      //     pathPrefix:'lang',
+      //     language: 'en'
+      //   });
+      // });
     </script>
   </head>
   <body>
@@ -56,11 +31,37 @@
           <p>Flexirails is a table plugin for jquery</p>
         </article>
         
-        <article id="examples">
-          <h1>Examples</h1>
+        <article id="example1">
+          <h1>Example #1 - Static Array as datasource</h1>
+          <div id="staticExample"></div>
           
-          <div id="example1"></div>
-          <!-- ToDo add examples from master branch-->
+          <script type="text/javascript">
+            
+            var cities = [
+              { name: 'Kiel', country: 'Germany' },
+              { name: 'New York', country: 'USA' },
+              { name: 'Oklahoma', country: 'USA' },
+              { name: 'Tenessee', country: 'USA' },
+              { name: 'Hamburg', country: 'Germany' },
+              { name: 'Frankfurt', country: 'Germany' },
+              { name: 'München', country: 'Germany' }
+            ]
+            
+            var view = {
+              columns: [
+                {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
+              ]
+            }
+          
+            window.example1 = new $.flexirails($("#staticExample"), {
+              'datasource': cities, 
+              'view': view, 
+              'paginationOnBottom': false, 
+              adapter: {
+                perPageOptions: [1,2,3,4,5]
+              }
+            });
+          </script>
         </article>
         
         <article id="documentation">
