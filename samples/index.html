@@ -21,15 +21,15 @@
           { name: 'München', country: 'Germany' }
         ]
         
-        window.view = 
+        window.v = 
           columns: [
             {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
           ]
         
-        window.example1 = new $.flexirails $("#example1"), {
-          'datasource':cities, 
-          'view':view, 
-          'paginationOnBottom': false, 
+        window.example1 = $("#example1").flexirails {
+          datasource:cities, 
+          view:v, 
+          paginationOnBottom: false, 
           adapter: {
             perPageOptions: [1, 2, 3, 4, 5]
           }

@@ -19,17 +19,14 @@ $.flexirails = (el, options) ->
   
   # private methods
   # initialize a new flexirails instance
-  init = ->
+  init = (options) ->
     data = $el.data 'flexirails'
     
     plugin.settings = $.extend {}, defaults, options
     plugin.el = el
     
     if !data
-      data = 
-        'view': options.view
-
-      $el.data 'flexirails', data
+      $el.data 'flexirails', plugin
       
       compileViews()
       prepareView()
@@ -41,42 +38,31 @@ $.flexirails = (el, options) ->
       
   #
   prepareView = ->
-    data = $el.data 'flexirails'
-  
-    view = data.view
+    view = plugin.view || plugin.settings.view
   
     if view.hasOwnProperty 'columns'
       for column in view.columns
         column.selector ?= column.attribute
-  
-    data.view = view
-    $el.data 'flexirails', data
+        
+    plugin.view = view
     
   # compiles all Handlebars templates
   compileViews = ->
-    data = $el.data 'flexirails'
-    
-    data.createFlexiTable = Handlebars.compile flexiTable
-    data.createFlexiRow = Handlebars.compile flexiRow
-    data.createFlexiNavigation = Handlebars.compile navigation
-    
-    $el.data 'flexirails', data
+    plugin.createFlexiTable = Handlebars.compile flexiTable
+    plugin.createFlexiRow = Handlebars.compile flexiRow
+    plugin.createFlexiNavigation = Handlebars.compile navigation
       
   # creates the flexitable and appends it to the container
   createTable = ->
-    data = $el.data 'flexirails'
-  
-    $el.append data.createFlexiTable data
+    $el.append plugin.createFlexiTable plugin
     plugin.flexiTable = $el.find '.fr-table'
   
   # append flexirails navigation elements 
   createNavigation = ->
-    data = $el.data 'flexirails'
-  
     if plugin.settings.paginationOnBottom
-      $el.append data.createFlexiNavigation plugin.adapter
+      $el.append plugin.createFlexiNavigation plugin.adapter
     if plugin.settings.paginationOnTop
-      $(data.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
+      $(plugin.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
       
     plugin.flexiNavigation = $el.find '.fr-navigation'
     
@@ -118,10 +104,8 @@ $.flexirails = (el, options) ->
       
   # builds the rowData object for the Handlebars row template
   buildRowData = (item) ->
-    data = $el.data 'flexirails'
-  
     rowData = []
-    for column in data.view.columns
+    for column in plugin.view.columns
       rowData.push { 
         value: item[column.attribute] 
         selector: column.attribute
@@ -131,8 +115,6 @@ $.flexirails = (el, options) ->
   
   # populates the table with data
   populateTable = ->
-    data = $el.data 'flexirails'
-    
     adapter = plugin.adapter
     
     table = plugin.flexiTable
@@ -140,7 +122,7 @@ $.flexirails = (el, options) ->
     
     for item in adapter.paginatedData()
       rowData = buildRowData item
-      table.append data.createFlexiRow rowData
+      table.append plugin.createFlexiRow rowData
       true
       
     updateNavigation()
@@ -181,5 +163,14 @@ $.flexirails = (el, options) ->
     
     plugin.adapter.paginate 1
   
-  init()
+  init options
   plugin
+
+# plugin instanciator
+$.fn.flexirails = (options) ->
+  this.each ->
+    new $.flexirails $(this), options
+
+# get the flexirails instance
+$.fn.getFlexirails = ->
+  this.data 'flexirails'
