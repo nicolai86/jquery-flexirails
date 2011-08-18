@@ -66,7 +66,7 @@
           <script type="text/javascript">
             $("#language").change(function() {
               var lang = $(this).val();
-              $("#localizeExample").find("[rel*=localize]").localize('flexirails', { 
+              $($("#localizeExample").find("[rel*=localize]")).localize('flexirails', { 
                 pathPrefix:'lang',
                 language: lang
               });
