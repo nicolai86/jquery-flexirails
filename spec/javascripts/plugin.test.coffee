@@ -2,6 +2,8 @@ describe "jquery-flexirails", ->
   instance = null
   
   initFlexirails = (data = [], view = {}) ->
+    $(document.body).append $("<div id='flexirails'></div>")
+    
     $("#flexirails").empty()
     elem = $("#flexirails").flexirails { 'datasource':data, 'view': view }
     instance = $(elem).getFlexirails()

@@ -65,7 +65,7 @@ $.flexirails = (el, options) ->
     
     defaultFormatter = (td, col, obj, attr) ->
       td.append attr
-  
+
     if view.hasOwnProperty 'columns'
       for column in view.columns
         column.selector ?= column.attribute
