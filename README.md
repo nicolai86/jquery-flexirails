@@ -6,22 +6,19 @@ The plugin is fully tested and written in CoffeeScript.
 
 ## Running the tests
 
-To execute the test suite you should be 
+To execute the test suite you should run
 
-  - running RVM, 
-  - Ruby 1.9.2 or higher
-  - Node 0.4.10 or higher
-  - Node Package Manager
-  - and Pow. 
-
-Then all you have to do is 
-
-  1. clone the project, 
-  2. run `cake build` to compile the CoffeeScript source
-  3. create a pow-domain for it 
-  4. and visit http://your-flexirails-pow-domain.dev/test/index.html.
+  1. `bundle install`
+  2. `jasmine-headless-webkit` or `guard start`
   
-All tests are loaded automatically and executed.
+All tests are loaded automatically and executed in order.  
+
+Please note that in order to run the testing suite you have to install all dependencies:
+ 
+  - jasmine-headless-webkit
+  - Ruby (RVM).
+  
+Installation instructions for jasmine-headless-webkit and ruby can be found on the respective project homepages.
 
 ## Please Note
 
