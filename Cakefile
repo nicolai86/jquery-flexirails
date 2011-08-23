@@ -15,26 +15,14 @@ build = (output, files) ->
   coffee.on 'exit', (status) -> callback?() if status is 0
   
 buildSource = ->
-  (callback) ->
-    build 'dist/flexirails.js', [
-      'src/views.coffee', 
-      'src/plugin.coffee', 
-      'src/adapter.coffee', 
-      'src/adapter.array.coffee', 
-      'src/adapter.remote.coffee'
-    ]
-  
-buildTests = ->
-  (callback) ->
-    build 'dist/flexirails.tests.js', [
-      'test/flexirails/plugin.test.coffee', 
-      'test/flexirails/adapter.test.coffee', 
-      'test/flexirails/adapter.array.test.coffee'
-    ]
+  build 'dist/flexirails.js', [
+    'src/views.coffee', 
+    'src/plugin.coffee', 
+    'src/adapter.coffee', 
+    'src/adapter.array.coffee', 
+    'src/adapter.remote.coffee'
+  ]
   
 task 'build', 'Compile all CoffeeScript source files', ->
-  async.parallel [
-    buildSource(),
-    buildTests()
-  ], ->
-    console.log "done"
+  buildSource()
+  console.log "done"
