@@ -1,2 +1,3 @@
 qt
 closure-compiler
+node
