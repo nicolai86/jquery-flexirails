@@ -16,9 +16,11 @@ All tests are loaded automatically and executed in order.
 Please note that in order to run the testing suite you have to install all dependencies:
  
   - jasmine-headless-webkit
-  - Ruby (RVM).
+  - Ruby (RVM)
+  - Node.js, NPM and the node-modules coffee-script
   
-Installation instructions for jasmine-headless-webkit and ruby can be found on the respective project homepages.
+Installation instructions for jasmine-headless-webkit and ruby can be found on the respective project homepages.  
+If you are using brewdler you can always run `brewdle install` to install the basic requirements.
 
 ## Please Note
 
