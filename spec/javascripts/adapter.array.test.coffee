@@ -38,8 +38,6 @@ describe 'flexirails-adapter.array', ->
     #
     describe "sorting", ->
       it "should notify when sorting data", ->
-        # notify is a function that triggers the ready-event, which one can
-        # bind to using $(adapter).bind 'ready'
         spyOn(adapter, 'notify').andCallThrough()
         adapter.sort 'id', false
         expect(adapter.notify).toHaveBeenCalled()
@@ -52,6 +50,7 @@ describe 'flexirails-adapter.array', ->
       
       it "should be able to sort data in ascending order", ->
         adapter.sort 'id', true
+        
         expect(adapter.data[0].id).toBe 1
         expect(adapter.data[adapter.data.length-1].id).toBe 4
     

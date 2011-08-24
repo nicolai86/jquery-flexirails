@@ -14,7 +14,8 @@ class window.Adapter
     @data = []
     @first = null
     
-  #
+  # notify is a function that triggers the ready-event, which one can
+  # bind to using $(adapter).bind 'ready'
   notify: ->
     $(this).trigger 'ready'
     
