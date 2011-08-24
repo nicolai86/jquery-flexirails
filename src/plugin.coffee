@@ -31,6 +31,7 @@ $.flexirails = (el, options) ->
   defaults = 
     paginationOnBottom: true
     paginationOnTop: true
+    formatters: {}
     adapter:
       perPageOptions: [5,10,20,50]
   
@@ -46,7 +47,6 @@ $.flexirails = (el, options) ->
     
     plugin.settings = $.extend {}, defaults, options
     plugin.el = el
-    plugin.formatters ?= {}
     
     if !data
       $el.data 'flexirails', plugin
@@ -70,7 +70,8 @@ $.flexirails = (el, options) ->
       for column in view.columns
         column.selector ?= column.attribute
 
-        plugin.formatters[column.selector] ?= defaultFormatter
+        unless plugin.settings.formatters.hasOwnProperty(column.selector)
+          plugin.settings.formatters[column.selector] = defaultFormatter
         
     plugin.view = view
     
@@ -137,7 +138,9 @@ $.flexirails = (el, options) ->
     for column in plugin.view.columns
       td = $ document.createElement 'td'
       td.addClass column.attribute
-      td.append item[column.attribute]
+      
+      formatter = plugin.settings.formatters[column.attribute]
+      formatter td, column, item, item[column.attribute]
       
       tr.append td
       
@@ -183,7 +186,7 @@ $.flexirails = (el, options) ->
 
   # register a formatter for a certain cell
   plugin.registerFormatter = (selector, fnc) ->
-    plugin.formatter[selector] = fnc
+    plugin.settings.formatters[selector] = fnc
 
   # set up a datasource for flexirails
   plugin.initializeAdapter = (ds) ->
