@@ -4,16 +4,20 @@ describe "jquery-flexirails", ->
   initFlexirails = (data = [], view = {}) ->
     $(document.body).append $("<div id='flexirails'></div>")
     
-    $("#flexirails").empty()
     elem = $("#flexirails").flexirails { 'datasource':data, 'view': view }
     instance = $(elem).getFlexirails()
   
   destroyFlexirails = ->
     instance.destroy()
+    $("#flexirails").remove()
   
   it "should export $.flexirails", ->
-    expect(typeof $.flexirails).toEqual "function"
+    expect(typeof $.flexirails).toEqual 'function'
     
+  it "should export $.getFlexirails", ->
+    expect(typeof $().getFlexirails).toEqual 'function'
+  
+  #
   describe "flexirails-instanciation", ->
     beforeEach ->
       initFlexirails()
@@ -26,6 +30,10 @@ describe "jquery-flexirails", ->
     
     it "should add a header row to the table", ->
       expect( $(".fr-header").length ).toBeGreaterThan 0
+      
+    it "should return the plugin instance when calling $.getFlexirails", ->
+      plugin = $("#flexirails").getFlexirails()
+      expect(plugin instanceof $.flexirails).toBeTruthy
   
   # mock data
   data = [
@@ -41,6 +49,7 @@ describe "jquery-flexirails", ->
       { title: 'Country', attribute: 'country' }
     ]
   
+  #
   describe "flexirails-header", ->
     beforeEach ->
       initFlexirails data, view
@@ -55,6 +64,7 @@ describe "jquery-flexirails", ->
       expect( $(".city").length ).toBeGreaterThan 1
       expect( $(".country").length ).toBeGreaterThan 1
       
+  #
   describe "flexirails-column", ->
     beforeEach ->
       initFlexirails data, view
@@ -64,17 +74,28 @@ describe "jquery-flexirails", ->
       
     it "should add the attribute as td selector", ->
       expect( $(".fr-row .city").length ).toBeGreaterThan 0
-      
-  describe "flexirails-cell", ->
-    beforeEach ->
-      initFlexirails data, view
-    
+  
+  #
+  describe "flexirails-cell", ->    
     afterEach ->
       destroyFlexirails()
       
     it "should be able to register formatter for cells", ->
+      initFlexirails data, view
       expect( typeof instance.registerFormatter).toBe 'function'
       
+    it "should use a custom formatter on matching cells", ->
+      called = 0
+      cityFormatter = (td, col, obj, attr) ->
+        called = called + 1
+        
+      $(document.body).append $("<div id='flexirails'></div>")
+      elem = $("#flexirails").flexirails { 'datasource':data, 'view': view, 'formatters': {'city':cityFormatter} }
+      instance = $(elem).getFlexirails()
+        
+      expect(called).toBeGreaterThan 0
+  
+  #
   describe "flexirails-navigation", ->
     beforeEach ->
       initFlexirails data, view
