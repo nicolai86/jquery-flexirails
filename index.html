@@ -14,7 +14,8 @@
     <script type="text/javascript" src="js/jquery-flexirails.js"></script>
     <script type="text/javascript">
       $(function() {
-        $( "#tabs" ).tabs();
+        $("#tabs").tabs();
+        $("#examples").tabs();
       });
     </script>
   </head>
@@ -36,115 +37,123 @@
         </div>
         
         <div id="examples">
-          <h1>Example #1 - Static Array as datasource</h1>
-          <div id="staticExample"></div>
+          <ul>
+            <li><a href="#example1">Array as datasource</a></li>
+            <li><a href="#example2">I18n using jquery localize</a></li>
+            <li><a href="#example3">Custom cell formatters</a></li>
+          </ul>
           
-          <script type="text/javascript">
+          <div id="example1">
+            <h1>Example #1 - Static Array as datasource</h1>
+            <div id="staticExample"></div>
             
-            var cities = [
-              { name: 'Kiel', country: 'Germany' },
-              { name: 'New York', country: 'USA' },
-              { name: 'Oklahoma', country: 'USA' },
-              { name: 'Tenessee', country: 'USA' },
-              { name: 'Hamburg', country: 'Germany' },
-              { name: 'Frankfurt', country: 'Germany' },
-              { name: 'München', country: 'Germany' }
-            ]
-            
-            var view = {
-              columns: [
-                {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
+            <script type="text/javascript">
+              
+              var cities = [
+                { name: 'Kiel', country: 'Germany' },
+                { name: 'New York', country: 'USA' },
+                { name: 'Oklahoma', country: 'USA' },
+                { name: 'Tenessee', country: 'USA' },
+                { name: 'Hamburg', country: 'Germany' },
+                { name: 'Frankfurt', country: 'Germany' },
+                { name: 'München', country: 'Germany' }
               ]
-            }
-          
-            $("#staticExample").flexirails({
-              'datasource': cities, 
-              'view': view, 
-              'paginationOnBottom': false, 
-              adapter: {
-                perPageOptions: [1,2,3,4,5]
+              
+              var view = {
+                columns: [
+                  {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
+                ]
               }
-            });
-          </script>
-
-          <hr/>
-        
-          <h1>Example #2 - I18n using jquery localize</h1>
-          <div id="localizeExample"></div>
-          <select id="language">
-            <option value="-">Select a language</option>
-            <option value="de">German</option>
-            <option value="en">English</option>
-          </select>
-          <script type="text/javascript">
-            $("#language").change(function() {
-              var lang = $(this).val();
-              $($("#localizeExample").find("[rel*=localize]")).localize('flexirails', { 
-                pathPrefix:'lang',
-                language: lang
-              });
-            });
             
-            var cities = [
-              { name: 'Kiel', country: 'Germany' },
-              { name: 'New York', country: 'USA' },
-              { name: 'Oklahoma', country: 'USA' },
-              { name: 'Tenessee', country: 'USA' },
-              { name: 'Hamburg', country: 'Germany' },
-              { name: 'Frankfurt', country: 'Germany' },
-              { name: 'München', country: 'Germany' }
-            ]
-            
-            var view = {
-              columns: [
-                {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
-              ]
-            }
-          
-            $("#localizeExample").flexirails({
-              'datasource': cities, 
-              'view': view, 
-              'paginationOnBottom': false, 
-              adapter: {
-                perPageOptions: [1,2,3,4,5]
-              }
-            });
-          </script>
-
-          <hr/>
-
-          <h1>Example #3 - Custom cell formatters</h1>
-          <div id="formattersExample"></div>
-          
-          <script type="text/javascript">
-            
-            var data = [
-              { a: 1 , b: 2,total: 0},
-              { a: 2 , b: 3,total: 0},
-              { a: 3 , b: 4,total: 0},
-              { a: 5 , b: 5,total: 0},
-              { a: 7 , b: 6,total: 0},
-              { a: 11, b: 7,total: 0},
-              { a: 13, b: 8,total: 0}
-            ]
-            
-            var view = {
-              columns: [
-                {title:'A',attribute:'a'}, {title:'B',attribute:'b'}, {title:'Total', attribute:'total'}
-              ]
-            }
-          
-            $("#formattersExample").flexirails({
-              'datasource': data, 
-              'view': view, 
-              'paginationOnBottom': false,
-              formatters: {
-                'total' : function(td, col, obj, atr) {
-                  td.append(obj.a + obj.b);
+              $("#staticExample").flexirails({
+                'datasource': cities, 
+                'view': view, 
+                'paginationOnBottom': false, 
+                adapter: {
+                  perPageOptions: [1,2,3,4,5]
                 }
+              });
+            </script>
+          </div>
+        
+          <div id="example2">
+            <h1>Example #2 - I18n using jquery localize</h1>
+            <div id="localizeExample"></div>
+            <select id="language">
+              <option value="-">Select a language</option>
+              <option value="de">German</option>
+              <option value="en">English</option>
+            </select>
+            <script type="text/javascript">
+              $("#language").change(function() {
+                var lang = $(this).val();
+                $($("#localizeExample").find("[rel*=localize]")).localize('flexirails', { 
+                  pathPrefix:'lang',
+                  language: lang
+                });
+              });
+              
+              var cities = [
+                { name: 'Kiel', country: 'Germany' },
+                { name: 'New York', country: 'USA' },
+                { name: 'Oklahoma', country: 'USA' },
+                { name: 'Tenessee', country: 'USA' },
+                { name: 'Hamburg', country: 'Germany' },
+                { name: 'Frankfurt', country: 'Germany' },
+                { name: 'München', country: 'Germany' }
+              ]
+              
+              var view = {
+                columns: [
+                  {title:'City',attribute:'name'}, {title:'Country',attribute:'country'}
+                ]
               }
-            });
-          </script>
+            
+              $("#localizeExample").flexirails({
+                'datasource': cities, 
+                'view': view, 
+                'paginationOnBottom': false, 
+                adapter: {
+                  perPageOptions: [1,2,3,4,5]
+                }
+              });
+            </script>
+          </div>
+
+          <div id="example3">
+            <h1>Example #3 - Custom cell formatters</h1>
+            <div id="formattersExample"></div>
+            
+            <script type="text/javascript">
+              
+              var data = [
+                { a: 1 , b: 2,total: 0},
+                { a: 2 , b: 3,total: 0},
+                { a: 3 , b: 4,total: 0},
+                { a: 5 , b: 5,total: 0},
+                { a: 7 , b: 6,total: 0},
+                { a: 11, b: 7,total: 0},
+                { a: 13, b: 8,total: 0}
+              ]
+              
+              var view = {
+                columns: [
+                  {title:'A',attribute:'a'}, {title:'B',attribute:'b'}, {title:'Total', attribute:'total'}
+                ]
+              }
+            
+              $("#formattersExample").flexirails({
+                'datasource': data, 
+                'view': view, 
+                'paginationOnBottom': false,
+                formatters: {
+                  'total' : function(td, col, obj, atr) {
+                    td.append(obj.a + obj.b);
+                  }
+                }
+              });
+            </script>
+          </div>
         </div>
         
         <div id="documentation">
