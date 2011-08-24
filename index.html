@@ -4,25 +4,38 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>jquery-flexirails</title>
     
-    <script src="js/jquery-1.6.2.min.js"></script>
-    <script src="js/handlebars-1.0.2.js"></script>
-    <script src="js/jquery-localize.js"></script>
-    <script src="js/jquery-flexirails.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui-1.8.16.css" type="text/css" media="all" />
+    
+    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.min.js"></script>
+    
+    <script type="text/javascript" src="js/handlebars-1.0.2.js"></script>
+    <script type="text/javascript" src="js/jquery-localize.js"></script>
+    <script type="text/javascript" src="js/jquery-flexirails.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $( "#tabs" ).tabs();
+      });
+    </script>
   </head>
   <body>
     <div id="outer">
       <div id="inner">
-        <header>
-          <!-- ToDo add navigation to different articles-->
-        </header>
+        
+        <div id="tabs">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#documentation">Documentation</a></li>
+          </ul>
         
         <!-- The about flexirails page -->
-        <article id="about">
+        <div id="about">
           <h1>jquery-flexirails</h1>
           <p>Flexirails is a table plugin for jquery</p>
-        </article>
+        </div>
         
-        <article id="example1">
+        <div id="examples">
           <h1>Example #1 - Static Array as datasource</h1>
           <div id="staticExample"></div>
           
@@ -53,9 +66,9 @@
               }
             });
           </script>
-        </article>
+
+          <hr/>
         
-        <article id="example2">
           <h1>Example #2 - I18n using jquery localize</h1>
           <div id="localizeExample"></div>
           <select id="language">
@@ -97,9 +110,9 @@
               }
             });
           </script>
-        </article>
-        
-        <article id="example3">
+
+          <hr/>
+
           <h1>Example #3 - Custom cell formatters</h1>
           <div id="formattersExample"></div>
           
@@ -132,9 +145,9 @@
               }
             });
           </script>
-        </article>
+        </div>
         
-        <article id="documentation">
+        <div id="documentation">
           <h1>Documentation</h1>
           <h2>$.fn.flexirails options</h2>
           <table>
@@ -172,11 +185,9 @@
             </tbody>
           </table>
           <!-- ToDo documentation for Adapter and view-->
-        </article>
+        </div>
         
-        <footer>
-          <!-- ToDo add jQuery flexirails footer -->
-        </footer>
+        </div>
       </div>
     </div>
   </body>
