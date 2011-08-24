@@ -99,6 +99,41 @@
           </script>
         </article>
         
+        <article id="example3">
+          <h1>Example #3 - Custom cell formatters</h1>
+          <div id="formattersExample"></div>
+          
+          <script type="text/javascript">
+            
+            var data = [
+              { a: 1 , b: 2,total: 0},
+              { a: 2 , b: 3,total: 0},
+              { a: 3 , b: 4,total: 0},
+              { a: 5 , b: 5,total: 0},
+              { a: 7 , b: 6,total: 0},
+              { a: 11, b: 7,total: 0},
+              { a: 13, b: 8,total: 0}
+            ]
+            
+            var view = {
+              columns: [
+                {title:'A',attribute:'a'}, {title:'B',attribute:'b'}, {title:'Total', attribute:'total'}
+              ]
+            }
+          
+            $("#formattersExample").flexirails({
+              'datasource': data, 
+              'view': view, 
+              'paginationOnBottom': false,
+              formatters: {
+                'total' : function(td, col, obj, atr) {
+                  td.append(obj.a + obj.b);
+                }
+              }
+            });
+          </script>
+        </article>
+        
         <article id="documentation">
           <h1>Documentation</h1>
           <h2>$.fn.flexirails options</h2>
@@ -129,6 +164,10 @@
               <tr>
                 <td>paginationOnTop</td>
                 <td>Boolean. Display a pagination menu on the top of the flexirails table</td>
+              </tr>
+              <tr>
+                <td>formatters</td>
+                <td>An object holding custom cell-formatters.</td>
               </tr>
             </tbody>
           </table>
