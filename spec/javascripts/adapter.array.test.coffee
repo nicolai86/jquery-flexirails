@@ -15,16 +15,12 @@ describe 'flexirails-adapter.array', ->
     
     beforeEach ->
       adapter = new ArrayAdapter data
-      
-      this.addMatchers {
-        toBeA: (type) ->
-          this.actual instanceof type
-      }
     
     it "should be instanciable", ->
       adapter = new ArrayAdapter []
-      expect(adapter).toBeA ArrayAdapter
-      
+      expect(adapter instanceof ArrayAdapter).toBeTruthy
+    
+    #
     describe "pagination", ->
       # we have 4 items in the datasource
       it "should have the correct totalPages count", ->
@@ -38,27 +34,28 @@ describe 'flexirails-adapter.array', ->
       it "should have the correct totalPages count for odds of perPage", ->
         adapter.perPage 3
         expect(adapter.totalPages()).toBe 2
-      
+    
+    #
     describe "sorting", ->
-      it "should be able to sort data in descending order", ->
-        $(adapter).one 'ready', ->
-          expect(adapter.data[0].id).toBe 4
-          expect(adapter.data[adapter.data.length-1].id).toBe 1
+      it "should notify when sorting data", ->
+        # notify is a function that triggers the ready-event, which one can
+        # bind to using $(adapter).bind 'ready'
+        spyOn(adapter, 'notify').andCallThrough()
         adapter.sort 'id', false
+        expect(adapter.notify).toHaveBeenCalled()
+        
+      it "should be able to sort data in descending order", ->
+        adapter.sort 'id', false
+        
+        expect(adapter.data[0].id).toBe 4
+        expect(adapter.data[adapter.data.length-1].id).toBe 1
       
       it "should be able to sort data in ascending order", ->
-        $(adapter).one 'ready', ->
-          expect(adapter.data[0].id).toBe 1
-          expect(adapter.data[adapter.data.length-1].id).toBe 4
         adapter.sort 'id', true
-      
-      it "should fire a ready event when done sorting", ->
-        $(adapter).one 'ready', ->
-          expect(true).toBeTruthy()
-        adapter.sort 'name'
+        expect(adapter.data[0].id).toBe 1
+        expect(adapter.data[adapter.data.length-1].id).toBe 4
     
     it "should change paginatedData on perPage call", ->
-      $(adapter).one 'ready', ->
-        expect(adapter.paginatedData().length).toBe 2
       adapter.perPage 2
+      expect(adapter.paginatedData().length).toBe 2
       

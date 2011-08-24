@@ -14,6 +14,10 @@ class window.Adapter
     @data = []
     @first = null
     
+  #
+  notify: ->
+    $(this).trigger 'ready'
+    
   # total number of pages available for pagination
   totalPages: ->
     Math.ceil @options.entries / @options.perPage
@@ -27,13 +31,12 @@ class window.Adapter
   # Sort the data of an adapter by a given column. As soon as the data is sorted
   # an ready event has to be triggered on the Adapter
   sort: (column) ->
-    $(this).trigger 'ready'
+    @notify()
   
   # Paginate the data to a given page
   paginate: (to) ->
     @options.currentPage = to
-    
-    $(this).trigger 'ready'
+    @notify()
     
   # Returns the currently visible data
   paginatedData: ->
