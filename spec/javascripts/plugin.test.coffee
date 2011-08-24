@@ -18,7 +18,7 @@ describe "jquery-flexirails", ->
     expect(typeof $().getFlexirails).toEqual 'function'
   
   #
-  describe "flexirails-instanciation", ->
+  describe "flexirails-instance", ->
     beforeEach ->
       initFlexirails()
     
@@ -34,6 +34,19 @@ describe "jquery-flexirails", ->
     it "should return the plugin instance when calling $.getFlexirails", ->
       plugin = $("#flexirails").getFlexirails()
       expect(plugin instanceof $.flexirails).toBeTruthy
+      
+    it "should have a view invalidation function", ->
+      expect(typeof instance.invalidate).toBe 'function'
+      
+    it "should empty the table on invalidation", ->
+      spyOn instance, 'emptyTable'
+      instance.invalidate()
+      expect(instance.emptyTable).toHaveBeenCalled()
+      
+    it "should populate the table on invalidation", ->
+      spyOn instance, 'populateTable'
+      instance.invalidate()
+      expect(instance.populateTable).toHaveBeenCalled()
   
   # mock data
   data = [

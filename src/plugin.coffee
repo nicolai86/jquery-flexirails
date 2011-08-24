@@ -145,13 +145,18 @@ $.flexirails = (el, options) ->
       tr.append td
       
     tr
-  
-  # populates the table with data
-  populateTable = ->
-    adapter = plugin.adapter
     
+  # remove all data from the table
+  plugin.emptyTable = ->
     table = plugin.flexiTable
     table.find("tr:not(.fr-header)").remove()
+    
+  # populates the table with data
+  plugin.populateTable = ->
+    adapter = plugin.adapter
+    
+    plugin.emptyTable()
+    table = plugin.flexiTable
     
     for item in adapter.paginatedData()
       rowData = buildRowData item
@@ -196,9 +201,14 @@ $.flexirails = (el, options) ->
       plugin.adapter = new RemoteAdapter ds, plugin.settings.adapter
     
     $(plugin.adapter).bind 'ready', () ->
-      populateTable()
+      plugin.populateTable()
     
     plugin.adapter.paginate 1
+    
+  # remove the view and re-render it
+  plugin.invalidate = ->
+    plugin.emptyTable()
+    plugin.populateTable()
   
   init options
   plugin
