@@ -209,6 +209,7 @@ $.flexirails = (el, options) ->
   plugin.invalidate = ->
     plugin.emptyTable()
     plugin.populateTable()
+    true
   
   init options
   plugin
