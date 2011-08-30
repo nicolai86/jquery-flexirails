@@ -1,6 +1,6 @@
 ###
 jquery-flexirails datasource adapter
-Copyright (c) 2011 Raphael Randschau (https://github.com/nicolai86)
+Copyright (c) 2011 Raphael Randschau
 ###
 
 # Datasource adapter stub. All methods must be implemented to have a custom adapter

@@ -22,6 +22,7 @@ build = (output, files) ->
 buildSource = ->
   build 'dist/flexirails.js', [
     'src/views.coffee', 
+    'src/column.coffee', 
     'src/plugin.coffee', 
     'src/adapter.coffee', 
     'src/adapter.array.coffee', 
