@@ -26,214 +26,176 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ###
 $ = jQuery
 
-`jQuery.fn.quickEach = (function() {
-  var jq = jQuery([1]);
-  return function(c) {
-   var i = -1,
-       el, len = this.length;
-   try {
-    while (++i < len && (el = jq[0] = this[i]) && c.call(jq, i, el) !== false);
-   } catch (e) {
-    delete jq[0];
-    throw e;
-   }
-   delete jq[0];
-   return this;
-  };
- }());`
-
 # el is a jQuery selector object, or array
-$.flexirails = (el, options) ->
-  defaults = 
-    paginationOnBottom: true
-    paginationOnTop: true
-    formatters: {}
-    adapter:
-      perPageOptions: [5,10,20,50]
-  
-  plugin = this
-  $el = el
-  
-  plugin.settings = {}
-  
-  # private methods
-  # initialize a new flexirails instance
-  init = (options) ->
-    data = $el.data 'flexirails'
+class window.Flexirails
+  constructor: (@el, options = {}) ->
+    @options = $.extend {}, Flexirails::defaultOptions, options
     
-    plugin.settings = $.extend {}, defaults, options
-    plugin.el = el
+    @el.data 'flexirails', @
     
-    if !data
-      $el.data 'flexirails', plugin
-      
-      compileViews()
-      prepareView()
-      createTable()
-      plugin.initializeAdapter options.datasource
-      createNavigation()
-    else
-      console.log "initialized"
+    @compileViews()
+    @prepareView()
+    @createTable()
+    @initializeAdapter options.datasource
+    @createNavigation()
+  
+  # compiles all Handlebars templates and attach them to the instance
+  compileViews: ->
+    @createFlexiTable = Handlebars.compile flexiTable
+    @createFlexiNavigation = Handlebars.compile navigation
       
   # prepare the view to be used in the handlebars view template
-  prepareView = ->
-    view = plugin.view || plugin.settings.view
-    
+  prepareView: ->
+    view = @view || @options.view
+  
     defaultFormatter = (td, col, obj, attr) ->
       td.append attr
-
+  
     if view.hasOwnProperty 'columns'
       for column in view.columns
         column.selector ?= column.attribute
-
-        unless plugin.settings.formatters.hasOwnProperty(column.selector)
-          plugin.settings.formatters[column.selector] = defaultFormatter
-        
-    plugin.view = view
-    
-  # compiles all Handlebars templates and attach them to the plugin
-  compileViews = ->
-    plugin.createFlexiTable = Handlebars.compile flexiTable
-    plugin.createFlexiNavigation = Handlebars.compile navigation
+  
+        unless @options.formatters.hasOwnProperty(column.selector)
+          @options.formatters[column.selector] = defaultFormatter
       
+    @view = view
+  
   # creates the flexitable and appends it to the DOM element
-  createTable = ->
-    $el.append plugin.createFlexiTable plugin
-    plugin.flexiTable = $el.find '.fr-table'
+  createTable: ->
+    @el.append @createFlexiTable @
+    @flexiTable = @el.find '.fr-table'
   
   # append flexirails navigation elements 
-  createNavigation = ->
-    if plugin.settings.paginationOnBottom
-      $el.append plugin.createFlexiNavigation plugin.adapter
-    if plugin.settings.paginationOnTop
-      $(plugin.createFlexiNavigation plugin.adapter).insertBefore plugin.flexiTable
-      
-    plugin.flexiNavigation = $el.find '.fr-navigation'
-    
-    bindNavigation()
+  createNavigation: ->
+    if @options.paginationOnBottom
+      @el.append @createFlexiNavigation @adapter
+    if @options.paginationOnTop
+      $(@createFlexiNavigation @adapter).insertBefore @flexiTable
+  
+    @flexiNavigation = @el.find '.fr-navigation'
+  
+    @bindNavigation()
   
   # bind events to navigational elements
-  bindNavigation = ->
-    bindPerPageSelection()
-    bindPageNavigation()
-    
+  bindNavigation: ->
+    @bindPerPageSelection()
+    @bindPageNavigation()
+  
   # bind per page selection events
-  bindPerPageSelection = ->
-    perPage = $el.find '.fr-per-page'
-    perPage.val plugin.adapter.options.perPage
-    perPage.bind 'change', ->
-      plugin.adapter.perPage $(this).val()
-    
+  bindPerPageSelection: ->
+    perPage = @el.find '.fr-per-page'
+    perPage.val @adapter.options.perPage
+    perPage.bind 'change', =>
+      @adapter.perPage perPage.val()
+  
   # bind first, prev, next and last-link events
-  bindPageNavigation = ->
-    toFirstPage = $el.find '.fr-first-page'
-    toFirstPage.bind 'click', ->
-      plugin.adapter.paginateToFirstPage()
+  bindPageNavigation: ->
+    toFirstPage = @el.find '.fr-first-page'
+    toFirstPage.bind 'click', =>
+      @adapter.paginateToFirstPage()
       false
-      
-    toLastPage = $el.find '.fr-last-page'
-    toLastPage.bind 'click', ->
-      plugin.adapter.paginateToLastPage()
+  
+    toLastPage = @el.find '.fr-last-page'
+    toLastPage.bind 'click', =>
+      @adapter.paginateToLastPage()
       false
-      
-    toNextPage = $el.find '.fr-next-page'
-    toNextPage.bind 'click', ->
-      plugin.adapter.paginateToNextPage()
+  
+    toNextPage = @el.find '.fr-next-page'
+    toNextPage.bind 'click', =>
+      @adapter.paginateToNextPage()
       false
-      
-    toPrevPage = $el.find '.fr-prev-page'
-    toPrevPage.bind 'click', ->
-      plugin.adapter.paginateToPrevPage()
+  
+    toPrevPage = @el.find '.fr-prev-page'
+    toPrevPage.bind 'click', =>
+      @adapter.paginateToPrevPage()
       false
-      
+  
   # builds the rowData object for the Handlebars row template
-  buildRowData = (item) ->
+  buildRowData: (item) ->
     tr = $ document.createElement 'tr'
     tr.addClass 'fr-row'
-    
-    for column in plugin.view.columns
+  
+    for column in @view.columns
       td = $ document.createElement 'td'
       td.addClass column.attribute
-      
-      formatter = plugin.settings.formatters[column.attribute]
+  
+      formatter = @options.formatters[column.attribute]
       formatter td, column, item, item[column.attribute]
-      
+  
       tr.append td
-      
+  
     tr
-    
+  
   # remove all data from the table
-  plugin.emptyTable = ->
-    table = plugin.flexiTable
+  emptyTable: ->
+    table = @flexiTable
     table.find("tr:not(.fr-header)").remove()
-    
+  
   # populates the table with data
-  plugin.populateTable = ->
-    adapter = plugin.adapter
-    
-    plugin.emptyTable()
-    table = plugin.flexiTable
-    
-    for item in adapter.paginatedData()
-      rowData = buildRowData item
+  populateTable: ->
+    @emptyTable()
+    table = @flexiTable
+  
+    for item in @adapter.paginatedData()
+      rowData = @buildRowData item
       table.append rowData
       true
-      
-    updateNavigation()
+  
+    @updateNavigation()
   
   # update the navigation with adapter information
-  updateNavigation = ->
-    adapter = plugin.adapter
-    
-    currentPage = $el.find '.fr-current-page'
-    currentPage.html adapter.options.currentPage
-    
-    totalPages = $el.find '.fr-total-pages'
-    totalPages.html adapter.totalPages()
-    
-    totalResults = $el.find '.fr-total-results'
-    totalResults.html adapter.options.entries
-    
-    perPage = $el.find '.fr-per-page'
-    perPage.val adapter.options.perPage
-      
-  # public methods
+  updateNavigation: ->
+    currentPage = @el.find '.fr-current-page'
+    currentPage.html @adapter.options.currentPage
+  
+    totalPages = @el.find '.fr-total-pages'
+    totalPages.html @adapter.totalPages()
+  
+    totalResults = @el.find '.fr-total-results'
+    totalResults.html @adapter.options.entries
+  
+    perPage = @el.find '.fr-per-page'
+    perPage.val @adapter.options.perPage
   
   # destroy this flexirails instance
-  plugin.destroy = ->
-    $el.data 'flexirails', null
-    $el.find(".fr-table").remove()
-    $el.find(".fr-navigation").remove()
-
-  # register a formatter for a certain cell
-  plugin.registerFormatter = (selector, fnc) ->
-    plugin.settings.formatters[selector] = fnc
-
-  # set up a datasource for flexirails
-  plugin.initializeAdapter = (ds) ->
-    if ds instanceof Array
-      plugin.adapter = new ArrayAdapter ds, plugin.settings.adapter
-    else
-      plugin.adapter = new RemoteAdapter ds, plugin.settings.adapter
-    
-    $(plugin.adapter).bind 'ready', () ->
-      plugin.populateTable()
-    
-    plugin.adapter.paginate 1
-    
-  # remove the view and re-render it
-  plugin.invalidate = ->
-    plugin.emptyTable()
-    plugin.populateTable()
-    true
+  destroy: ->
+    @el.data 'flexirails', null
+    @el.find(".fr-table").remove()
+    @el.find(".fr-navigation").remove()
   
-  init options
-  plugin
+  # register a formatter for a certain cell
+  registerFormatter: (selector, fnc) ->
+    @options.formatters[selector] = fnc
+  
+  # set up a datasource for flexirails
+  initializeAdapter: (ds) ->
+    if ds instanceof Array
+      @adapter = new ArrayAdapter ds, @options.adapter
+    else
+      @adapter = new RemoteAdapter ds, @options.adapter
+  
+    $(@adapter).bind 'ready', () =>
+      @populateTable()
+  
+    @adapter.paginate 1
+  
+  # remove the view and re-render it
+  invalidate: ->
+    @emptyTable()
+    @populateTable()
+    true
 
-# plugin instanciator
+window.Flexirails::defaultOptions =
+  paginationOnBottom: true
+  paginationOnTop: true
+  formatters: {}
+  adapter:
+    perPageOptions: [5,10,20,50]
+
+# jQuery instanciator
 $.fn.flexirails = (options) ->
   this.each ->
-    new $.flexirails $(this), options
+    new Flexirails $(this), options
 
 # get the flexirails instance
 $.fn.getFlexirails = ->

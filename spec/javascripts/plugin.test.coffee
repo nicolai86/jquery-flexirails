@@ -11,8 +11,8 @@ describe "jquery-flexirails", ->
     instance.destroy()
     $("#flexirails").remove()
   
-  it "should export $.flexirails", ->
-    expect(typeof $.flexirails).toEqual 'function'
+  it "should export $().flexirails", ->
+    expect(typeof $().flexirails).toEqual 'function'
     
   it "should export $.getFlexirails", ->
     expect(typeof $().getFlexirails).toEqual 'function'
@@ -33,7 +33,7 @@ describe "jquery-flexirails", ->
       
     it "should return the plugin instance when calling $.getFlexirails", ->
       plugin = $("#flexirails").getFlexirails()
-      expect(plugin instanceof $.flexirails).toBeTruthy
+      expect(plugin instanceof Flexirails).toBeTruthy
       
     it "should have a view invalidation function", ->
       expect(typeof instance.invalidate).toBe 'function'
